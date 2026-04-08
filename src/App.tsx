@@ -34,13 +34,14 @@ const LOGO_URL = 'https://i.ibb.co/bMdVhRn5/Chat-GPT-Image-Apr-6-2026-10-27-34-P
 export default function App() {
   const [currentHero, setCurrentHero] = useState(0);
   const [lang, setLang] = useState<'ENG' | 'ZUL'>('ENG');
-  const [currentPage, setCurrentPage] = useState<'home' | 'admissions' | 'academics' | 'gallery'>('home');
+  const [currentPage, setCurrentPage] = useState<'home' | 'admissions' | 'academics' | 'gallery' | 'uniforms'>('home');
 
   const t = {
     ENG: {
       academics: 'Academics',
       admissions: 'Admissions',
       gallery: 'Gallery',
+      uniforms: 'Uniforms',
       schoolName: 'Umzilikazi Senior Secondary',
       motto: '“Hlonipha Ze Uhlonishwe” — Respect so that you may be respected',
       rank: '#1 National Rank 2024',
@@ -63,12 +64,21 @@ export default function App() {
       academicsTitle: 'Academic Excellence',
       academicsSubtitle: 'A decade of consistent high performance and national recognition.',
       galleryTitle: 'School Gallery',
-      gallerySubtitle: 'Capturing moments of growth, achievement, and community spirit.'
+      gallerySubtitle: 'Capturing moments of growth, achievement, and community spirit.',
+      uniformTitle: 'School Uniform',
+      uniformSubtitle: 'Dressing with pride and representing our heritage.',
+      boysUniform: 'Boys Uniform',
+      boysDesc: 'Grey trousers, white long/short-sleeved shirt, maroon blazer with school badge, school tie, and black school shoes.',
+      girlsUniform: 'Girls Uniform',
+      girlsDesc: 'Maroon skirt or tunic, white long/short-sleeved shirt, maroon blazer with school badge, school tie, white socks or black tights, and black school shoes.',
+      sportsUniform: 'Sports & Tracksuit',
+      sportsDesc: 'Official school tracksuit and sports shirt, worn during physical education and sporting events.'
     },
     ZUL: {
       academics: 'Ezokufunda',
       admissions: 'Ukungena',
       gallery: 'Imifanekiso',
+      uniforms: 'Iyunifomu',
       schoolName: 'Umzilikazi Senior Secondary',
       motto: '“Hlonipha ukuze nawe uhlonishwe”',
       rank: 'Inombolo 1 Ezweni 2024',
@@ -91,7 +101,15 @@ export default function App() {
       academicsTitle: 'Ukusebenza Kahle Kwezemfundo',
       academicsSubtitle: 'Iminyaka eyishumi yokusebenza kahle okungaguquki nokuqashelwa kuzwelonke.',
       galleryTitle: 'Igalari Yesikole',
-      gallerySubtitle: 'Ukuthwebula izikhathi zokukhula, impumelelo, nomoya womphakathi.'
+      gallerySubtitle: 'Ukuthwebula izikhathi zokukhula, impumelelo, nomoya womphakathi.',
+      uniformTitle: 'Iyunifomu Yesikole',
+      uniformSubtitle: 'Ukugqoka ngokuziqhenya nokumela amagugu ethu.',
+      boysUniform: 'Iyunifomu Yabafana',
+      boysDesc: 'Ibhulukwe elimpunga, ihembe elimhlophe elinemikhono emide/emifushane, ibhantshi elibomvu (maroon) elinebheji lesikole, uthayi wesikole, nezicathulo zesikole ezimnyama.',
+      girlsUniform: 'Iyunifomu Yamantombazane',
+      girlsDesc: 'Isiketi esibomvu (maroon) noma itunic, ihembe elimhlophe elinemikhono emide/emifushane, ibhantshi elibomvu (maroon) elinebheji lesikole, uthayi wesikole, amasokisi amhlophe noma amateyithi amnyama, nezicathulo zesikole ezimnyama.',
+      sportsUniform: 'Izemidlalo neTracksuit',
+      sportsDesc: 'I-tracksuit yesikole esemthethweni nehembe lezemidlalo, okugqokwa ngesikhathi semfundo yomzimba nemicimbi yezemidlalo.'
     }
   };
 
@@ -145,6 +163,12 @@ export default function App() {
               className={`${currentPage === 'gallery' ? 'text-primary border-b-2 border-primary' : 'text-secondary hover:text-primary'} pb-1 text-editorial-label transition-colors duration-300`}
             >
               {t[lang].gallery}
+            </button>
+            <button 
+              onClick={() => setCurrentPage('uniforms')}
+              className={`${currentPage === 'uniforms' ? 'text-primary border-b-2 border-primary' : 'text-secondary hover:text-primary'} pb-1 text-editorial-label transition-colors duration-300`}
+            >
+              {t[lang].uniforms}
             </button>
           </nav>
           <div className="flex items-center gap-2">
@@ -719,7 +743,7 @@ export default function App() {
               </div>
             </section>
           </motion.div>
-        ) : (
+        ) : currentPage === 'gallery' ? (
           <motion.div 
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
@@ -762,6 +786,64 @@ export default function App() {
               </div>
             </section>
           </motion.div>
+        ) : (
+          <motion.div 
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            className="bg-surface min-h-screen"
+          >
+            {/* Uniform Hero */}
+            <section className="bg-primary text-white py-20">
+              <div className="max-w-7xl mx-auto px-6 md:px-8 text-center">
+                <h1 className="text-4xl md:text-6xl editorial-heading mb-6">{t[lang].uniformTitle}</h1>
+                <p className="text-xl md:text-2xl font-light opacity-90">{t[lang].uniformSubtitle}</p>
+              </div>
+            </section>
+
+            {/* Uniform Content */}
+            <section className="py-16 md:py-24">
+              <div className="max-w-7xl mx-auto px-6 md:px-8">
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-12">
+                  {[
+                    { 
+                      title: t[lang].boysUniform, 
+                      desc: t[lang].boysDesc, 
+                      img: 'https://picsum.photos/seed/uniform-boys/800/1000' 
+                    },
+                    { 
+                      title: t[lang].girlsUniform, 
+                      desc: t[lang].girlsDesc, 
+                      img: 'https://picsum.photos/seed/uniform-girls/800/1000' 
+                    },
+                    { 
+                      title: t[lang].sportsUniform, 
+                      desc: t[lang].sportsDesc, 
+                      img: 'https://picsum.photos/seed/uniform-sports/800/1000' 
+                    }
+                  ].map((item, idx) => (
+                    <motion.div 
+                      key={idx}
+                      initial={{ opacity: 0, y: 20 }}
+                      whileInView={{ opacity: 1, y: 0 }}
+                      transition={{ delay: idx * 0.1 }}
+                      className="flex flex-col"
+                    >
+                      <div className="aspect-[3/4] overflow-hidden rounded-sm shadow-lg mb-6">
+                        <img 
+                          src={item.img} 
+                          alt={item.title} 
+                          className="w-full h-full object-cover"
+                          referrerPolicy="no-referrer"
+                        />
+                      </div>
+                      <h3 className="text-2xl font-headline font-bold text-primary mb-4">{item.title}</h3>
+                      <p className="text-secondary leading-relaxed">{item.desc}</p>
+                    </motion.div>
+                  ))}
+                </div>
+              </div>
+            </section>
+          </motion.div>
         )}
       </main>
 
@@ -788,7 +870,8 @@ export default function App() {
                   { name: 'Home', page: 'home' },
                   { name: 'Academics', page: 'academics' },
                   { name: 'Admissions', page: 'admissions' },
-                  { name: 'Gallery', page: 'gallery' }
+                  { name: 'Gallery', page: 'gallery' },
+                  { name: 'Uniforms', page: 'uniforms' }
                 ].map((link, idx) => (
                   <button 
                     key={idx} 
