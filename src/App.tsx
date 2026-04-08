@@ -74,7 +74,7 @@ export default function App() {
       rank: '#1 National Rank 2024',
       passRate: '100% Pass Rate',
       heroTitle: 'Umzilikazi Senior Secondary',
-      heroDesc: 'As the only no-fee high school in our district, we are dedicated to providing world-class education to every learner, proving that excellence is a choice, not a privilege.',
+      heroDesc: 'As a leading rural high school in our district, we are dedicated to providing world-class education to every learner, proving that excellence is a choice, not a privilege.',
       discover: 'Discover Our Story',
       apply: 'Apply Now',
       admissionTitle: 'Admissions & Enrollment',
@@ -111,7 +111,7 @@ export default function App() {
       rank: 'Inombolo 1 Ezweni 2024',
       passRate: '100% Okuphasa',
       heroTitle: 'Isikole saseMzilikazi',
-      heroDesc: 'Njengoba kuwukuphela kwesikole samabanga aphakeme esingakhokhwa kuso esifundeni sethu, sizibophezele ekunikezeni imfundo esezingeni lomhlaba kuwo wonke umfundi, sikhombisa ukuthi ukusebenza kahle kuwukuzikhethela, hhayi ilungelo.',
+      heroDesc: 'Njengoba siyisikole samabanga aphakeme esihamba phambili emakhaya esifundeni sethu, sizibophezele ekunikezeni imfundo esezingeni lomhlaba kuwo wonke umfundi, sikhombisa ukuthi ukusebenza kahle kuwukuzikhethela, hhayi ilungelo.',
       discover: 'Thola Indaba Yethu',
       apply: 'Faka Isicelo Manje',
       admissionTitle: 'Ukungeniswa Nokubhaliswa',
@@ -396,7 +396,7 @@ export default function App() {
                 <span className="text-editorial-label text-primary mb-3 block">Our Heritage</span>
                 <h2 className="text-2xl md:text-5xl editorial-heading mb-6 leading-tight tracking-tight">Named for a King. Built by a Community.</h2>
                 <div className="space-y-4 md:space-y-6 text-on-surface/80 text-sm md:text-lg leading-relaxed">
-                  <p>Named in honour of King Mzilikazi — the great Zulu commander who founded the Matabele nation — our school stands as a pillar of hope in the Emadlangeni Local Municipality. As the only no-fee high school serving Wards 3 and 5 of Utrecht, we face immense challenges.</p>
+                  <p>Named in honour of King Mzilikazi — the great Zulu commander who founded the Matabele nation — our school stands as a pillar of hope in the Emadlangeni Local Municipality. As a dedicated rural high school serving Wards 3 and 5 of Utrecht, we face immense challenges.</p>
                   <p>Yet, under the unwavering leadership of Principal Mr. Zulu and our dedicated School Governing Body, our learners continue to defy every expectation, proving that talent lives everywhere.</p>
                 </div>
               </motion.div>
@@ -667,11 +667,11 @@ export default function App() {
                 <span className="text-editorial-label text-white/70 mb-3 block">Enrollment</span>
                 <h2 className="text-2xl md:text-5xl editorial-heading mb-6 leading-tight tracking-tight">Become Part of the Umzilikazi Family</h2>
                 <p className="text-sm md:text-xl font-light leading-relaxed mb-8 text-white/90">
-                  Umzilikazi Senior Secondary School is a public, no-fee institution. We welcome all learners from the Utrecht and surrounding Emadlangeni communities. Admission is open to Grade 8 through Grade 12 learners. For enquiries, contact our office directly or use the form below.
+                  Umzilikazi Senior Secondary School is a public, rural institution. We welcome all learners from the Utrecht and surrounding Emadlangeni communities. Admission is open to Grade 8 through Grade 12 learners. For enquiries, contact our office directly or use the form below.
                 </p>
                 <div className="grid grid-cols-2 gap-4 md:gap-6">
                   {[
-                    { label: 'School Type', value: 'Public No-Fee (Quintile 2)' },
+                    { label: 'School Type', value: 'Public Rural School (Quintile 2)' },
                     { label: 'Grades', value: 'Grade 8 to Grade 12' },
                     { label: 'Enrolment', value: '1,657+ Learners' },
                     { label: 'Educators', value: '23' }
