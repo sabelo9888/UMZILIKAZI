@@ -8,10 +8,36 @@ import {
   Phone, 
   User, 
   Share2,
-  ChevronRight
+  ChevronRight,
+  X
 } from 'lucide-react';
-import { motion, AnimatePresence } from 'motion/react';
-import { useState, useEffect } from 'react';
+import { motion, AnimatePresence, animate, useMotionValue, useTransform, useInView } from 'motion/react';
+import { useState, useEffect, useRef } from 'react';
+
+function Counter({ value, duration = 2, decimals = 0, prefix = '', suffix = '' }: { value: number, duration?: number, decimals?: number, prefix?: string, suffix?: string }) {
+  const count = useMotionValue(0);
+  const rounded = useTransform(count, (latest) => {
+    const val = latest.toFixed(decimals);
+    if (decimals === 0) return parseInt(val).toLocaleString();
+    return val;
+  });
+  const [displayValue, setDisplayValue] = useState("0");
+  const ref = useRef(null);
+  const isInView = useInView(ref, { once: true });
+
+  useEffect(() => {
+    if (isInView) {
+      const controls = animate(count, value, { duration, ease: "easeOut" });
+      return controls.stop;
+    }
+  }, [isInView, value, duration]);
+
+  useEffect(() => {
+    return rounded.on("change", (v) => setDisplayValue(v));
+  }, [rounded]);
+
+  return <span ref={ref}>{prefix}{displayValue}{suffix}</span>;
+}
 
 const HERO_IMAGES = [
   'https://i.ibb.co/WpW4CGMC/93013.jpg',
@@ -35,6 +61,7 @@ export default function App() {
   const [currentHero, setCurrentHero] = useState(0);
   const [lang, setLang] = useState<'ENG' | 'ZUL'>('ENG');
   const [currentPage, setCurrentPage] = useState<'home' | 'admissions' | 'academics' | 'gallery' | 'uniforms'>('home');
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   const t = {
     ENG: {
@@ -126,8 +153,13 @@ export default function App() {
       <header className="bg-white sticky top-0 shadow-sm z-50">
         <div className="flex justify-between items-center w-full px-4 md:px-6 py-3 max-w-screen-2xl mx-auto">
           <div className="flex items-center gap-3 md:gap-4">
-            <Menu className="text-primary w-6 h-6 cursor-pointer md:hidden" />
-            <div className="flex items-center gap-3">
+            <button 
+              onClick={() => setIsMenuOpen(!isMenuOpen)}
+              className="text-primary md:hidden p-1"
+            >
+              {isMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
+            </button>
+            <div className="flex items-center gap-3 cursor-pointer" onClick={() => { setCurrentPage('home'); setIsMenuOpen(false); }}>
               <img 
                 src={LOGO_URL} 
                 alt="Umzilikazi Logo" 
@@ -180,6 +212,39 @@ export default function App() {
             </button>
           </div>
         </div>
+
+        {/* Mobile Menu Overlay */}
+        <AnimatePresence>
+          {isMenuOpen && (
+            <motion.div
+              initial={{ opacity: 0, height: 0 }}
+              animate={{ opacity: 1, height: 'auto' }}
+              exit={{ opacity: 0, height: 0 }}
+              className="md:hidden bg-white border-t border-outline-variant/10 overflow-hidden"
+            >
+              <nav className="flex flex-col p-6 gap-4">
+                {[
+                  { name: 'Home', id: 'home' },
+                  { name: t[lang].academics, id: 'academics' },
+                  { name: t[lang].admissions, id: 'admissions' },
+                  { name: t[lang].gallery, id: 'gallery' },
+                  { name: t[lang].uniforms, id: 'uniforms' }
+                ].map((item) => (
+                  <button
+                    key={item.id}
+                    onClick={() => {
+                      setCurrentPage(item.id as any);
+                      setIsMenuOpen(false);
+                    }}
+                    className={`text-left py-2 text-lg font-headline ${currentPage === item.id ? 'text-primary font-bold' : 'text-secondary'}`}
+                  >
+                    {item.name}
+                  </button>
+                ))}
+              </nav>
+            </motion.div>
+          )}
+        </AnimatePresence>
       </header>
 
       <main className="flex-grow">
@@ -255,19 +320,22 @@ export default function App() {
           <div className="max-w-7xl mx-auto px-6 md:px-8">
             <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
               {[
-                { label: 'Enrolled Learners', value: '1,657+' },
-                { label: '10-Year Average Pass Rate', value: '97.8%' },
-                { label: 'National Rank in 2024', value: '#1' },
-                { label: 'Dedicated Educators', value: '23' }
+                { label: 'Enrolled Learners', value: 1657, suffix: '+' },
+                { label: '10-Year Average Pass Rate', value: 97.8, suffix: '%' },
+                { label: 'National Rank in 2024', value: 1, prefix: '#' },
+                { label: 'Dedicated Educators', value: 23 }
               ].map((stat, idx) => (
                 <motion.div 
                   key={idx}
-                  initial={{ opacity: 0, scale: 0.9 }}
-                  whileInView={{ opacity: 1, scale: 1 }}
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
                   transition={{ delay: idx * 0.1 }}
                   className="flex flex-col text-center md:text-left"
                 >
-                  <span className="text-3xl md:text-4xl font-headline font-extrabold text-primary tracking-tight">{stat.value}</span>
+                  <span className="text-3xl md:text-4xl font-headline font-extrabold text-primary tracking-tight">
+                    <Counter value={stat.value} prefix={stat.prefix} suffix={stat.suffix} decimals={stat.value % 1 !== 0 ? 1 : 0} />
+                  </span>
                   <span className="text-[10px] md:text-editorial-label text-secondary font-medium uppercase mt-1">{stat.label}</span>
                 </motion.div>
               ))}
@@ -276,9 +344,15 @@ export default function App() {
         </section>
 
         {/* WELCOME FROM PRINCIPAL */}
-        <section className="py-12 md:py-24 bg-surface">
+        <section className="py-12 md:py-24 bg-surface overflow-hidden">
           <div className="max-w-7xl mx-auto px-6 md:px-8 grid grid-cols-1 md:grid-cols-12 gap-8 md:gap-16 items-center">
-            <div className="md:col-span-5 relative order-first">
+            <motion.div 
+              initial={{ opacity: 0, x: -50 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.8 }}
+              className="md:col-span-5 relative order-first"
+            >
               <div className="aspect-[4/5] overflow-hidden rounded-sm shadow-xl">
                 <img 
                   alt="Principal Mr. Zulu" 
@@ -287,12 +361,13 @@ export default function App() {
                   referrerPolicy="no-referrer"
                 />
               </div>
-            </div>
+            </motion.div>
             <div className="md:col-span-7">
               <motion.div
-                initial={{ opacity: 0, x: 20 }}
+                initial={{ opacity: 0, x: 50 }}
                 whileInView={{ opacity: 1, x: 0 }}
-                transition={{ duration: 0.6 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.8 }}
               >
                 <span className="text-editorial-label text-primary mb-3 md:mb-6 block">Leadership Voice</span>
                 <h2 className="text-2xl md:text-5xl editorial-heading mb-4 md:mb-8 leading-tight tracking-tight">Welcome to Umzilikazi</h2>
@@ -313,8 +388,10 @@ export default function App() {
           <div className="max-w-7xl mx-auto px-6 md:px-8">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-10 md:gap-24 mb-12 md:mb-24">
               <motion.div
-                initial={{ opacity: 0, y: 20 }}
+                initial={{ opacity: 0, y: 30 }}
                 whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.8 }}
               >
                 <span className="text-editorial-label text-primary mb-3 block">Our Heritage</span>
                 <h2 className="text-2xl md:text-5xl editorial-heading mb-6 leading-tight tracking-tight">Named for a King. Built by a Community.</h2>
@@ -323,12 +400,18 @@ export default function App() {
                   <p>Yet, under the unwavering leadership of Principal Mr. Zulu and our dedicated School Governing Body, our learners continue to defy every expectation, proving that talent lives everywhere.</p>
                 </div>
               </motion.div>
-              <div className="flex items-center">
+              <motion.div 
+                initial={{ opacity: 0, scale: 0.95 }}
+                whileInView={{ opacity: 1, scale: 1 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.8 }}
+                className="flex items-center"
+              >
                 <blockquote className="text-base md:text-3xl font-light italic text-on-surface leading-relaxed border-l-4 md:border-l-8 border-primary pl-6 md:pl-8 py-2">
                   “Our teachers are the backbone of our success. Their dedication, sacrifice, and belief in every learner have transformed our school into a beacon of excellence.”
                   <footer className="mt-4 md:mt-6 text-xs md:text-base font-bold text-primary not-italic">— Mr. Zulu, School Principal</footer>
                 </blockquote>
-              </div>
+              </motion.div>
             </div>
             {/* Three Pillars */}
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-8">
@@ -339,6 +422,10 @@ export default function App() {
               ].map((pillar, idx) => (
                 <motion.div 
                   key={idx}
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ delay: idx * 0.2 }}
                   whileHover={{ y: -5 }}
                   className="bg-white p-6 md:p-8 border-t-4 border-primary shadow-sm"
                 >
@@ -353,11 +440,16 @@ export default function App() {
         {/* OUR EDUCATORS SECTION */}
         <section className="py-12 md:py-24 bg-surface-container-highest">
           <div className="max-w-7xl mx-auto px-6 md:px-8">
-            <div className="max-w-3xl mb-10 md:mb-16">
+            <motion.div 
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              className="max-w-3xl mb-10 md:mb-16"
+            >
               <span className="text-editorial-label text-primary mb-3 block">Our Team</span>
               <h2 className="text-2xl md:text-5xl editorial-heading mb-4 md:mb-6 leading-tight tracking-tight">Exceptional Teaching Staff</h2>
               <p className="text-sm md:text-lg text-secondary leading-relaxed">Behind every successful student is a dedicated educator. Our 23 teachers bring passion, expertise, and unwavering commitment to every classroom.</p>
-            </div>
+            </motion.div>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-8 mb-10 md:mb-16">
               {[
                 { title: 'Dedicated', desc: 'Our teachers go above and beyond, often staying after hours to help struggling students succeed.' },
@@ -365,13 +457,25 @@ export default function App() {
                 { title: 'Student-Focused', desc: 'Every educator is committed to understanding each student\'s unique learning needs.' },
                 { title: 'Results-Driven', desc: 'Their dedication is reflected in our consistent academic excellence and 100% pass rate.' }
               ].map((item, idx) => (
-                <div key={idx} className="bg-surface p-5 md:p-8 rounded-sm">
+                <motion.div 
+                  key={idx} 
+                  initial={{ opacity: 0, scale: 0.9 }}
+                  whileInView={{ opacity: 1, scale: 1 }}
+                  viewport={{ once: true }}
+                  transition={{ delay: idx * 0.1 }}
+                  className="bg-surface p-5 md:p-8 rounded-sm"
+                >
                   <h4 className="font-headline font-bold text-base md:text-lg mb-2">{item.title}</h4>
                   <p className="text-secondary text-xs md:text-sm leading-relaxed">{item.desc}</p>
-                </div>
+                </motion.div>
               ))}
             </div>
-            <div className="bg-primary text-white p-6 md:p-12 rounded-sm relative overflow-hidden">
+            <motion.div 
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              className="bg-primary text-white p-6 md:p-12 rounded-sm relative overflow-hidden"
+            >
               <div className="relative z-10">
                 <h3 className="text-lg md:text-3xl font-headline font-bold mb-4 md:mb-6 tracking-tight">The Heart of Our Success.</h3>
                 <p className="text-sm md:text-lg text-white/90 leading-relaxed mb-6 md:mb-8 max-w-4xl">
@@ -383,31 +487,48 @@ export default function App() {
                   ))}
                 </div>
               </div>
-            </div>
+            </motion.div>
           </div>
         </section>
 
         {/* ACADEMICS SECTION */}
         <section className="py-12 md:py-24 bg-surface">
           <div className="max-w-7xl mx-auto px-6 md:px-8">
-            <div className="text-center mb-10 md:mb-16">
+            <motion.div 
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              className="text-center mb-10 md:mb-16"
+            >
               <span className="text-editorial-label text-primary mb-3 inline-block">Our Results</span>
               <h2 className="text-2xl md:text-5xl editorial-heading mb-4 md:mb-6 leading-tight tracking-tight">A Decade of Academic Excellence</h2>
               <p className="text-sm md:text-lg text-secondary max-w-2xl mx-auto">Our matric results speak for themselves. Consistently ranked in the top 0.2% of all South African schools.</p>
-            </div>
+            </motion.div>
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 md:gap-8 mb-10 md:mb-16">
               {[
                 { title: '100% Pass Rate', desc: 'Achieved in 2024, 2019, and 2017. Ranked #1 nationally in 2024 out of 6,949 South African schools.' },
                 { title: 'Top 0.2% Nationally', desc: 'Consistently ranked in the top 0.2% of all schools nationally, and top 0.6% of all Quintile 2 schools in KwaZulu-Natal.' },
                 { title: 'Amajuba District Leader', desc: 'Ranked #1 in the Amajuba District in 2024 and #3 in 2025, out of 72 district schools.' }
               ].map((card, idx) => (
-                <div key={idx} className="bg-surface-container-low p-6 md:p-8 border-l-4 border-primary">
+                <motion.div 
+                  key={idx} 
+                  initial={{ opacity: 0, x: -20 }}
+                  whileInView={{ opacity: 1, x: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ delay: idx * 0.1 }}
+                  className="bg-surface-container-low p-6 md:p-8 border-l-4 border-primary"
+                >
                   <h3 className="font-headline font-bold text-lg md:text-xl mb-3 tracking-tight">{card.title}</h3>
                   <p className="text-xs md:text-sm text-secondary">{card.desc}</p>
-                </div>
+                </motion.div>
               ))}
             </div>
-            <div className="overflow-x-auto -mx-6 px-6">
+            <motion.div 
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              className="overflow-x-auto -mx-6 px-6"
+            >
               <table className="w-full text-left border-collapse min-w-[500px]">
                 <thead>
                   <tr className="bg-surface-container-high">
@@ -441,22 +562,31 @@ export default function App() {
                   ))}
                 </tbody>
               </table>
-            </div>
+            </motion.div>
           </div>
         </section>
 
         {/* SCHOOL LIFE SECTION */}
         <section className="py-12 md:py-24 bg-surface-container-low">
           <div className="max-w-7xl mx-auto px-6 md:px-8">
-            <div className="mb-10">
+            <motion.div 
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              className="mb-10"
+            >
               <span className="text-editorial-label text-primary mb-3 block">Campus Experience</span>
               <h2 className="text-2xl md:text-5xl editorial-heading mb-4 md:mb-6 leading-tight tracking-tight">Moments That Matter</h2>
               <p className="text-sm md:text-lg text-secondary">Explore the vibrant life at Umzilikazi Senior Secondary School through our gallery of achievements, events, and community moments.</p>
-            </div>
+            </motion.div>
             <div className="grid grid-cols-2 md:grid-cols-3 gap-3 md:gap-4 mb-10">
               {GALLERY_IMAGES.map((item, idx) => (
                 <motion.div 
                   key={idx}
+                  initial={{ opacity: 0, scale: 0.9 }}
+                  whileInView={{ opacity: 1, scale: 1 }}
+                  viewport={{ once: true }}
+                  transition={{ delay: idx * 0.1 }}
                   whileHover={{ scale: 1.02 }}
                   className="aspect-square bg-surface-dim relative group overflow-hidden cursor-pointer"
                 >
@@ -471,42 +601,69 @@ export default function App() {
                 </motion.div>
               ))}
             </div>
-            <div className="text-center">
-              <a className="inline-block border-2 border-primary text-primary px-8 py-3 font-bold uppercase text-[10px] md:text-sm hover:bg-primary hover:text-white transition-all" href="#">View Full Gallery</a>
-            </div>
+            <motion.div 
+              initial={{ opacity: 0 }}
+              whileInView={{ opacity: 1 }}
+              viewport={{ once: true }}
+              className="text-center"
+            >
+              <button 
+                onClick={() => setCurrentPage('gallery')}
+                className="inline-block border-2 border-primary text-primary px-8 py-3 font-bold uppercase text-[10px] md:text-sm hover:bg-primary hover:text-white transition-all"
+              >
+                View Full Gallery
+              </button>
+            </motion.div>
           </div>
         </section>
 
         {/* COMMUNITY PARTNERS SECTION */}
         <section className="py-12 md:py-24 bg-white">
           <div className="max-w-7xl mx-auto px-6 md:px-8">
-            <div className="text-center mb-10 md:mb-16">
+            <motion.div 
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              className="text-center mb-10 md:mb-16"
+            >
               <span className="text-editorial-label text-primary mb-3 inline-block">Our Alliances</span>
               <h2 className="text-2xl md:text-5xl editorial-heading mb-4 md:mb-6 leading-tight tracking-tight">Our Community Stands With Us</h2>
-            </div>
+            </motion.div>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-8">
               {[
                 { icon: <Radio className="text-primary" />, title: 'Gagasi FM (99.5 FM)', desc: 'Gagasi FM adopted Umzilikazi Senior Secondary School as part of their Geleza Ne Gagasi 2025 CSI campaign, providing essential resources for the 2025 academic year.' },
                 { icon: <GraduationCap className="text-primary" />, title: 'Durban University of Technology (DUT)', desc: 'DUT\'s UNI4ALL Community Engagement Programme sends students to assist our Grade 12 learners with tertiary applications, breaking down barriers to higher education.' },
                 { icon: <Landmark className="text-primary" />, title: 'eMadlangeni Local Municipality', desc: 'The eMadlangeni Municipality has honoured our school\'s academic excellence at Mayoral Excellence Awards ceremonies, recognising our consistent 100% pass rates.' }
               ].map((partner, idx) => (
-                <div key={idx} className="p-6 md:p-8 border border-outline-variant/20 rounded-sm hover:shadow-md transition-shadow">
+                <motion.div 
+                  key={idx} 
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ delay: idx * 0.1 }}
+                  className="p-6 md:p-8 border border-outline-variant/20 rounded-sm hover:shadow-md transition-shadow"
+                >
                   <div className="w-10 h-10 bg-primary/10 flex items-center justify-center mb-5">
                     {partner.icon}
                   </div>
                   <h4 className="font-headline font-bold text-lg md:text-xl mb-3 tracking-tight">{partner.title}</h4>
                   <p className="text-secondary text-xs md:text-sm leading-relaxed">{partner.desc}</p>
-                </div>
+                </motion.div>
               ))}
             </div>
           </div>
         </section>
 
         {/* JOIN US / ADMISSIONS SECTION */}
-        <section className="py-12 md:py-24 bg-primary text-white">
+        <section className="py-12 md:py-24 bg-primary text-white overflow-hidden">
           <div className="max-w-7xl mx-auto px-6 md:px-8">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-10 md:gap-16 items-center">
-              <div>
+              <motion.div
+                initial={{ opacity: 0, x: -50 }}
+                whileInView={{ opacity: 1, x: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.8 }}
+              >
                 <span className="text-editorial-label text-white/70 mb-3 block">Enrollment</span>
                 <h2 className="text-2xl md:text-5xl editorial-heading mb-6 leading-tight tracking-tight">Become Part of the Umzilikazi Family</h2>
                 <p className="text-sm md:text-xl font-light leading-relaxed mb-8 text-white/90">
@@ -525,8 +682,14 @@ export default function App() {
                     </div>
                   ))}
                 </div>
-              </div>
-              <div className="bg-white/10 backdrop-blur-md p-6 md:p-12 border border-white/10">
+              </motion.div>
+              <motion.div 
+                initial={{ opacity: 0, x: 50 }}
+                whileInView={{ opacity: 1, x: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.8 }}
+                className="bg-white/10 backdrop-blur-md p-6 md:p-12 border border-white/10"
+              >
                 <h3 className="text-lg md:text-2xl font-headline font-bold mb-6 md:mb-8 tracking-tight">Contact Information</h3>
                 <div className="space-y-6 md:space-y-8">
                   <div>
@@ -538,7 +701,7 @@ export default function App() {
                     <p className="text-base md:text-xl font-light">326 D-Off Utrecht Road, Utrecht, KZN</p>
                   </div>
                 </div>
-              </div>
+              </motion.div>
             </div>
           </div>
         </section>
@@ -547,7 +710,11 @@ export default function App() {
         <section className="py-12 md:py-24 bg-surface">
           <div className="max-w-7xl mx-auto px-6 md:px-8">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-12 md:gap-24">
-              <div>
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+              >
                 <h2 className="text-2xl md:text-4xl editorial-heading mb-8 md:mb-10 tracking-tight">Get in Touch / Contact Us</h2>
                 <form className="space-y-6" onSubmit={(e) => e.preventDefault()}>
                   {[
@@ -576,8 +743,13 @@ export default function App() {
                     SEND MESSAGE
                   </button>
                 </form>
-              </div>
-              <div>
+              </motion.div>
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: 0.2 }}
+              >
                 <div className="bg-surface-container-low mb-6 h-48 md:h-80 relative overflow-hidden group">
                   <img 
                     alt="Map" 
@@ -605,7 +777,7 @@ export default function App() {
                     </div>
                   ))}
                 </div>
-              </div>
+              </motion.div>
             </div>
           </div>
         </section>
@@ -627,7 +799,12 @@ export default function App() {
             {/* Admissions Content */}
             <section className="py-16 md:py-24">
               <div className="max-w-4xl mx-auto px-6 md:px-8">
-                <div className="bg-white p-8 md:p-12 shadow-xl border-t-8 border-primary rounded-sm mb-12">
+                <motion.div 
+                  initial={{ opacity: 0, y: 30 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  className="bg-white p-8 md:p-12 shadow-xl border-t-8 border-primary rounded-sm mb-12"
+                >
                   <div className="flex items-start gap-4 mb-8">
                     <div className="bg-primary/10 p-3 rounded-full">
                       <GraduationCap className="text-primary w-8 h-8" />
@@ -651,21 +828,31 @@ export default function App() {
                       </li>
                     ))}
                   </ul>
-                </div>
+                </motion.div>
 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-                  <div className="bg-surface-container-low p-8 rounded-sm">
+                  <motion.div 
+                    initial={{ opacity: 0, x: -20 }}
+                    whileInView={{ opacity: 1, x: 0 }}
+                    viewport={{ once: true }}
+                    className="bg-surface-container-low p-8 rounded-sm"
+                  >
                     <h4 className="font-headline font-bold text-lg mb-4">Grade 8 Enrollment</h4>
                     <p className="text-secondary text-sm leading-relaxed">
                       We prioritize learners from our local feeder primary schools in Utrecht and surrounding areas. Space is limited, so early application is encouraged once the window opens.
                     </p>
-                  </div>
-                  <div className="bg-surface-container-low p-8 rounded-sm">
+                  </motion.div>
+                  <motion.div 
+                    initial={{ opacity: 0, x: 20 }}
+                    whileInView={{ opacity: 1, x: 0 }}
+                    viewport={{ once: true }}
+                    className="bg-surface-container-low p-8 rounded-sm"
+                  >
                     <h4 className="font-headline font-bold text-lg mb-4">Transfer Students</h4>
                     <p className="text-secondary text-sm leading-relaxed">
                       Learners wishing to transfer into Grades 9-11 must provide a valid transfer letter and their most recent academic records for review by the School Governing Body.
                     </p>
-                  </div>
+                  </motion.div>
                 </div>
               </div>
             </section>
@@ -688,21 +875,31 @@ export default function App() {
             <section className="py-16 md:py-24">
               <div className="max-w-7xl mx-auto px-6 md:px-8">
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-16">
-                  <div className="bg-white p-8 shadow-md border-b-4 border-primary">
-                    <h3 className="text-3xl font-headline font-extrabold text-primary mb-2">#1</h3>
-                    <p className="text-editorial-label text-secondary uppercase">National Rank 2024</p>
-                  </div>
-                  <div className="bg-white p-8 shadow-md border-b-4 border-primary">
-                    <h3 className="text-3xl font-headline font-extrabold text-primary mb-2">100%</h3>
-                    <p className="text-editorial-label text-secondary uppercase">Pass Rate (Multiple Years)</p>
-                  </div>
-                  <div className="bg-white p-8 shadow-md border-b-4 border-primary">
-                    <h3 className="text-3xl font-headline font-extrabold text-primary mb-2">Top 0.2%</h3>
-                    <p className="text-editorial-label text-secondary uppercase">Nationally Ranked Schools</p>
-                  </div>
+                  {[
+                    { val: '#1', label: 'National Rank 2024' },
+                    { val: '100%', label: 'Pass Rate (Multiple Years)' },
+                    { val: 'Top 0.2%', label: 'Nationally Ranked Schools' }
+                  ].map((item, idx) => (
+                    <motion.div 
+                      key={idx}
+                      initial={{ opacity: 0, y: 20 }}
+                      whileInView={{ opacity: 1, y: 0 }}
+                      viewport={{ once: true }}
+                      transition={{ delay: idx * 0.1 }}
+                      className="bg-white p-8 shadow-md border-b-4 border-primary"
+                    >
+                      <h3 className="text-3xl font-headline font-extrabold text-primary mb-2">{item.val}</h3>
+                      <p className="text-editorial-label text-secondary uppercase">{item.label}</p>
+                    </motion.div>
+                  ))}
                 </div>
 
-                <div className="bg-white p-6 md:p-12 shadow-xl rounded-sm overflow-hidden">
+                <motion.div 
+                  initial={{ opacity: 0, y: 30 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  className="bg-white p-6 md:p-12 shadow-xl rounded-sm overflow-hidden"
+                >
                   <h2 className="text-2xl md:text-4xl editorial-heading mb-8">Matric Results History</h2>
                   <div className="overflow-x-auto">
                     <table className="w-full text-left border-collapse min-w-[600px]">
@@ -739,7 +936,7 @@ export default function App() {
                       </tbody>
                     </table>
                   </div>
-                </div>
+                </motion.div>
               </div>
             </section>
           </motion.div>
@@ -764,6 +961,10 @@ export default function App() {
                   {GALLERY_IMAGES.map((item, idx) => (
                     <motion.div 
                       key={idx}
+                      initial={{ opacity: 0, scale: 0.9 }}
+                      whileInView={{ opacity: 1, scale: 1 }}
+                      viewport={{ once: true }}
+                      transition={{ delay: idx * 0.1 }}
                       whileHover={{ y: -10 }}
                       className="bg-white shadow-lg overflow-hidden group cursor-pointer"
                     >
@@ -825,6 +1026,7 @@ export default function App() {
                       key={idx}
                       initial={{ opacity: 0, y: 20 }}
                       whileInView={{ opacity: 1, y: 0 }}
+                      viewport={{ once: true }}
                       transition={{ delay: idx * 0.1 }}
                       className="flex flex-col"
                     >
