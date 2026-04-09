@@ -52,18 +52,9 @@ const HERO_IMAGES = [
   'https://i.ibb.co/xKDbSqW8/93012-1.jpg'
 ];
 
-const GALLERY_IMAGES = [
-  { url: 'https://i.ibb.co/JjQQNNnN/93011.jpg', label: 'Academic Excellence' },
-  { url: 'https://i.ibb.co/xKDbSqW8/93012-1.jpg', label: 'Academic Excellence' },
-  { url: 'https://i.ibb.co/WpW4CGMC/93013.jpg', label: 'Gagasi FM Geleza Nathi' },
-  { url: 'https://i.ibb.co/YBZp9SWt/93014.jpg', label: 'Gagasi FM Geleza Nathi' },
-  { url: 'https://i.ibb.co/b5Rj96j4/93015.jpg', label: 'Gagasi FM Geleza Nathi' },
-  { url: 'https://i.ibb.co/JjQQNNnN/93011.jpg', label: 'Academic Excellence' }
-];
-
 const LOGO_URL = 'https://i.ibb.co/bMdVhRn5/Chat-GPT-Image-Apr-6-2026-10-27-34-PM.png';
 
-function CookieConsent() {
+function CookieConsent({ lang, t }: { lang: 'ENG' | 'ZUL', t: any }) {
   const [isVisible, setIsVisible] = useState(false);
 
   useEffect(() => {
@@ -90,9 +81,9 @@ function CookieConsent() {
         >
           <div className="max-w-4xl mx-auto bg-inverse-surface text-inverse-on-surface p-6 md:p-8 shadow-2xl border border-white/10 flex flex-col md:flex-row items-center justify-between gap-6">
             <div className="flex-grow">
-              <h4 className="font-headline font-bold text-lg mb-2 tracking-tight">Cookie Policy</h4>
+              <h4 className="font-headline font-bold text-lg mb-2 tracking-tight">{t[lang].cookiePolicy}</h4>
               <p className="text-xs md:text-sm opacity-80 leading-relaxed max-w-2xl">
-                We use cookies to enhance your experience, analyze site traffic, and serve better content. By clicking "Accept All", you consent to our use of cookies.
+                {t[lang].cookieDesc}
               </p>
             </div>
             <div className="flex items-center gap-4 w-full md:w-auto">
@@ -100,13 +91,13 @@ function CookieConsent() {
                 onClick={() => setIsVisible(false)}
                 className="flex-1 md:flex-none px-6 py-3 text-[10px] uppercase font-bold tracking-widest hover:bg-white/10 transition-colors"
               >
-                Decline
+                {t[lang].decline}
               </button>
               <button 
                 onClick={acceptCookies}
                 className="flex-1 md:flex-none px-8 py-3 bg-primary text-white text-[10px] uppercase font-bold tracking-widest hover:shadow-lg transition-all"
               >
-                Accept All
+                {t[lang].acceptAll}
               </button>
             </div>
           </div>
@@ -116,7 +107,7 @@ function CookieConsent() {
   );
 }
 
-function StormAppeal({ onContactClick }: { onContactClick: () => void }) {
+function StormAppeal({ lang, t, onContactClick }: { lang: 'ENG' | 'ZUL', t: any, onContactClick: () => void }) {
   const [currentImage, setCurrentImage] = useState(0);
   const images = [
     'https://i.ibb.co/nqgH8Vkz/jpeg.jpg',
@@ -140,26 +131,26 @@ function StormAppeal({ onContactClick }: { onContactClick: () => void }) {
             viewport={{ once: true }}
             className="relative"
           >
-            <span className="text-editorial-label text-white/70 mb-4 block">Urgent Appeal</span>
+            <span className="text-editorial-label text-white/70 mb-4 block">{t[lang].urgentAppeal}</span>
             <h2 className="text-3xl md:text-5xl editorial-heading mb-6 leading-tight tracking-tight">
-              Rebuilding After the Storm: A Call for Support
+              {t[lang].rebuildingTitle}
             </h2>
             <div className="space-y-6 text-white/90 text-sm md:text-lg leading-relaxed">
               <p>
-                On the 26th and 27th of December, our school was struck by devastating thunderstorms that leveled six classrooms and severely damaged ten others. This catastrophe has left over 1,600 learners with only six safe classrooms to share.
+                {t[lang].stormDesc1}
               </p>
               <p>
-                Currently, over 600 of our matric and Grade 11 learners are forced to commute to a neighboring primary school, where they face extreme overcrowding with 60 to 70 students packed into single classrooms.
+                {t[lang].stormDesc2}
               </p>
               <p className="font-bold text-white">
-                Despite achieving a 100% pass rate and proving our commitment to excellence, we are now fighting for our survival. We are making an urgent call to businesses and the private sector for assistance in rebuilding our facilities.
+                {t[lang].stormDesc3}
               </p>
               <div className="pt-4">
                 <button 
                   onClick={onContactClick}
                   className="inline-block px-8 py-4 bg-white text-tertiary font-bold uppercase tracking-widest text-sm hover:bg-white/90 transition-all"
                 >
-                  Offer Assistance
+                  {t[lang].offerAssistance}
                 </button>
               </div>
             </div>
@@ -223,10 +214,11 @@ const NEWS_ARTICLE = {
 function NewsPage({ lang, t, onBack }: { lang: 'ENG' | 'ZUL', t: any, onBack: () => void }) {
   const [isExpanded, setIsExpanded] = useState(false);
   const shareLink = window.location.href;
+  const article = t[lang].newsArticle;
 
   const handleShare = (platform: string) => {
     let url = "";
-    const text = encodeURIComponent(NEWS_ARTICLE.title);
+    const text = encodeURIComponent(article.title);
     const link = encodeURIComponent(shareLink);
 
     switch (platform) {
@@ -247,7 +239,7 @@ function NewsPage({ lang, t, onBack }: { lang: 'ENG' | 'ZUL', t: any, onBack: ()
     if (url) window.open(url, "_blank");
   };
 
-  const visibleContent = isExpanded ? NEWS_ARTICLE.content : NEWS_ARTICLE.content.slice(0, 3);
+  const visibleContent = isExpanded ? article.content : article.content.slice(0, 3);
 
   return (
     <motion.div 
@@ -261,14 +253,14 @@ function NewsPage({ lang, t, onBack }: { lang: 'ENG' | 'ZUL', t: any, onBack: ()
             onClick={onBack}
             className="flex items-center gap-2 text-[10px] uppercase tracking-widest font-bold mb-8 hover:text-white/70 transition-colors"
           >
-            <ChevronRight className="w-4 h-4 rotate-180" /> Back to Home
+            <ChevronRight className="w-4 h-4 rotate-180" /> {t[lang].backToHome}
           </button>
           <div className="flex items-center gap-4 text-[10px] md:text-xs text-white/70 mb-6 uppercase tracking-widest font-bold">
-            <span className="flex items-center gap-1"><Calendar className="w-3 h-3" /> {NEWS_ARTICLE.date}</span>
-            <span className="flex items-center gap-1"><User className="w-3 h-3" /> {NEWS_ARTICLE.author}</span>
+            <span className="flex items-center gap-1"><Calendar className="w-3 h-3" /> {article.date}</span>
+            <span className="flex items-center gap-1"><User className="w-3 h-3" /> {article.author}</span>
           </div>
           <h1 className="text-3xl md:text-6xl editorial-heading leading-tight mb-8">
-            {NEWS_ARTICLE.title}
+            {article.title}
           </h1>
         </div>
       </section>
@@ -282,7 +274,7 @@ function NewsPage({ lang, t, onBack }: { lang: 'ENG' | 'ZUL', t: any, onBack: ()
           <div className="aspect-video md:aspect-[21/9] overflow-hidden">
             <img 
               src={NEWS_ARTICLE.image} 
-              alt={NEWS_ARTICLE.title} 
+              alt={article.title} 
               className="w-full h-full object-cover"
               referrerPolicy="no-referrer"
             />
@@ -290,7 +282,7 @@ function NewsPage({ lang, t, onBack }: { lang: 'ENG' | 'ZUL', t: any, onBack: ()
           
           <div className="p-8 md:p-16">
             <div className={`space-y-8 text-on-surface/80 text-base md:text-xl leading-relaxed font-body relative ${!isExpanded ? 'max-h-[500px] overflow-hidden' : ''}`}>
-              {visibleContent.map((para, i) => (
+              {visibleContent.map((para: string, i: number) => (
                 <p key={i}>{para}</p>
               ))}
               
@@ -305,7 +297,7 @@ function NewsPage({ lang, t, onBack }: { lang: 'ENG' | 'ZUL', t: any, onBack: ()
                   onClick={() => setIsExpanded(true)}
                   className="px-10 py-4 bg-primary text-white font-bold uppercase tracking-widest text-xs hover:shadow-xl transition-all flex items-center gap-2 mx-auto"
                 >
-                  Read Full Article <ChevronRight className="w-4 h-4 rotate-90" />
+                  {t[lang].readFullArticle} <ChevronRight className="w-4 h-4 rotate-90" />
                 </button>
               </div>
             )}
@@ -551,6 +543,7 @@ export default function App() {
 
   const t = {
     ENG: {
+      home: 'Home',
       academics: 'Academics',
       admissions: 'Admissions',
       gallery: 'Gallery',
@@ -597,9 +590,146 @@ export default function App() {
       sportsDesc: 'Official school tracksuit and sports shirt, worn during physical education and sporting events.',
       offerAssistance: 'Offer Assistance',
       news: 'News',
-      schoolLife: 'School Life'
+      schoolLife: 'School Life',
+      latestUpdates: 'Latest Updates',
+      newsAnnouncements: 'News & Announcements',
+      readFullNotice: 'Read Full Notice',
+      shareUpdate: 'Share this update:',
+      returnHome: 'Return to Homepage',
+      backToHome: 'Back to Home',
+      readFullArticle: 'Read Full Article',
+      urgentAppeal: 'Urgent Appeal',
+      rebuildingTitle: 'Rebuilding After the Storm: A Call for Support',
+      stormDesc1: 'On the 26th and 27th of December, our school was struck by devastating thunderstorms that leveled six classrooms and severely damaged ten others. This catastrophe has left over 1,600 learners with only six safe classrooms to share.',
+      stormDesc2: 'Currently, over 600 of our matric and Grade 11 learners are forced to commute to a neighboring primary school, where they face extreme overcrowding with 60 to 70 students packed into single classrooms.',
+      stormDesc3: 'Despite achieving a 100% pass rate and proving our commitment to excellence, we are now fighting for our survival. We are making an urgent call to businesses and the private sector for assistance in rebuilding our facilities.',
+      leadershipVoice: 'Leadership Voice',
+      welcomeTitle: 'Welcome to Umzilikazi',
+      welcomeDesc: 'Where excellence is not just a goal, but a way of life. We believe every child deserves the opportunity to succeed, regardless of their circumstances.',
+      principalTitle: 'School Principal',
+      ourHeritage: 'Our Heritage',
+      heritageTitle: 'Named for a King. Built by a Community.',
+      heritageDesc1: 'Named in honour of King Mzilikazi — the great Zulu commander who founded the Matabele nation — our school stands as a pillar of hope in the Emadlangeni Local Municipality. As a dedicated rural high school serving Wards 3 and 5 of Emadlangeni, we face immense challenges.',
+      heritageDesc2: 'Yet, under the unwavering leadership of Principal Mr. Zulu and our dedicated School Governing Body, our learners continue to defy every expectation, proving that talent lives everywhere.',
+      principalQuote: '“Our teachers are the backbone of our success. Their dedication, sacrifice, and belief in every learner have transformed our school into a beacon of excellence.”',
+      pillar1Title: '1. Community First',
+      pillar1Desc: 'We serve our community with pride, ensuring every learner has access to quality education.',
+      pillar2Title: '2. Excellence Always',
+      pillar2Desc: 'Our 100% matric pass rate in 2024 proves dedication and hard work achieve results.',
+      pillar3Title: '3. Resilient Spirit',
+      pillar3Desc: 'Named after King Mzilikazi, we embody resilience and determination in everything we do.',
+      ourTeam: 'Our Team',
+      educatorsTitle: 'Exceptional Teaching Staff',
+      educatorsDesc: 'Behind every successful student is a dedicated educator. Our 23 teachers bring passion, expertise, and unwavering commitment to every classroom.',
+      eduFeature1Title: 'Dedicated',
+      eduFeature1Desc: 'Our teachers go above and beyond, often staying after hours to help struggling students succeed.',
+      eduFeature2Title: 'Expert Knowledge',
+      eduFeature2Desc: 'Qualified educators with deep subject expertise who make complex topics accessible.',
+      eduFeature3Title: 'Student-Focused',
+      eduFeature3Desc: 'Every educator is committed to understanding each student\'s unique learning needs.',
+      eduFeature4Title: 'Results-Driven',
+      eduFeature4Desc: 'Their dedication is reflected in our consistent academic excellence and 100% pass rate.',
+      heartSuccessTitle: 'The Heart of Our Success.',
+      heartSuccessDesc: 'Our teachers are more than educators — they are mentors, role models, and champions of every learner\'s potential. With limited resources but unlimited dedication, they transform challenges into opportunities for growth.',
+      tags: ['Innovative Teaching', 'Genuine Care', 'Proven Results'],
+      ourResults: 'Our Results',
+      academicDecadeTitle: 'A Decade of Academic Excellence',
+      academicDecadeDesc: 'Our matric results speak for themselves. Consistently ranked in the top 0.2% of all South African schools.',
+      result1Title: '100% Pass Rate',
+      result1Desc: 'Achieved in 2024, 2019, and 2017. Ranked #10 nationally in 2024 out of 6,949 South African schools.',
+      result2Title: 'Top 0.2% Nationally',
+      result2Desc: 'Consistently ranked in the top 0.2% of all schools nationally, and top 0.6% of all Quintile 2 schools in KwaZulu-Natal.',
+      result3Title: 'Amajuba District Leader',
+      result3Desc: 'Ranked #1 in the Amajuba District in 2024 and #3 in 2025, out of 72 district schools.',
+      tableYear: 'Year',
+      tableCandidates: 'Candidates',
+      tablePassed: 'Passed',
+      tablePassRate: 'Pass %',
+      tableStanding: 'Standing',
+      topTier: 'Top Tier',
+      tableNationalRank: 'National Rank',
+      momentsMatter: 'Moments That Matter',
+      momentsDesc: 'Explore the vibrant life at Umzilikazi Senior Secondary School through our gallery of achievements, events, and community moments.',
+      viewFullGallery: 'View Full Gallery',
+      ourAlliances: 'Our Alliances',
+      communityStands: 'Our Community Stands With Us',
+      partner1Title: 'Gagasi FM (99.5 FM)',
+      partner1Desc: 'Gagasi FM adopted Umzilikazi Senior Secondary School as part of their Geleza Ne Gagasi 2025 CSI campaign, providing essential resources for the 2025 academic year.',
+      partner2Title: 'Durban University of Technology (DUT)',
+      partner2Desc: 'DUT\'s UNI4ALL Community Engagement Programme sends students to assist our Grade 12 learners with tertiary applications, breaking down barriers to higher education.',
+      partner3Title: 'eMadlangeni Local Municipality',
+      partner3Desc: 'The eMadlangeni Municipality has honoured our school\'s academic excellence at Mayoral Excellence Awards ceremonies, recognising our consistent 100% pass rates.',
+      enrollment: 'Enrollment',
+      becomePart: 'Become Part of the Umzilikazi Family',
+      enrollmentDesc: 'Umzilikazi Senior Secondary School is a public, rural institution. We welcome learners from all Emadlangeni and surrounding areas. Admission is open to Grade 8 through Grade 12 learners. For enquiries, contact our office directly or use the form below.',
+      schoolType: 'School Type',
+      schoolTypeValue: 'Public Rural School (Quintile 2)',
+      grades: 'Grades',
+      gradesValue: 'Grade 8 to Grade 12',
+      enrolmentLabel: 'Ukubhaliswa',
+      learners: 'Learners',
+      educators: 'Educators',
+      contactInfo: 'Contact Information',
+      phoneEnquiries: 'Phone Enquiries',
+      address: 'Address',
+      location: 'Location',
+      postalAddress: 'Postal Address',
+      principal: 'Principal',
+      grade8Enroll: 'Grade 8 Enrollment',
+      grade8Desc: 'We prioritize learners from our local feeder primary schools in Emadlangeni and surrounding areas. Space is limited, so early application is encouraged once the window opens.',
+      transferStudents: 'Transfer Students',
+      transferDesc: 'Learners wishing to transfer into Grades 9-11 must provide a valid transfer letter and their most recent academic records for review by the School Governing Body.',
+      matricHistory: 'Matric Results History',
+      quickLinks: 'Quick Links',
+      districtAffiliation: 'District Affiliation',
+      districtDesc: 'Amajuba District, KwaZulu-Natal Department of Education.',
+      specialRecognition: 'Special Recognition',
+      gagasiRecognition: 'Proudly adopted by Gagasi FM — Geleza Ne Gagasi 2025',
+      allRightsReserved: 'All Rights Reserved.',
+      privacyPolicy: 'Privacy Policy',
+      termsOfUse: 'Terms of Use',
+      cookiePolicy: 'Cookie Policy',
+      cookieDesc: 'We use cookies to enhance your experience, analyze site traffic, and serve better content. By clicking "Accept All", you consent to our use of cookies.',
+      decline: 'Decline',
+      acceptAll: 'Accept All',
+      phone: 'Phone',
+      email: 'Email',
+      menu: 'Menu',
+      excellenceInEducation: 'Excellence in Education',
+      academicExcellence: 'Academic Excellence',
+      gagasiFmGelezaNathi: 'Gagasi FM Geleza Nathi',
+      nationalRank2024: 'National Rank 2024',
+      passRateMultipleYears: 'Pass Rate (Multiple Years)',
+      nationallyRankedSchools: 'Nationally Ranked Schools',
+      newsArticle: {
+        title: "Our Learners Relocated to Sgodiphola Primary Following Severe Storm Damage",
+        date: "2 months ago",
+        author: "School Administration",
+        excerpt: "Following the devastating storm damage that destroyed several of our classrooms earlier this month, we have temporarily relocated our learners to Sgodiphola Primary School...",
+        content: [
+          "Following the devastating storm damage that destroyed several of our classrooms earlier this month, we have temporarily relocated our learners to Sgodiphola Primary School to ensure their education continues without further disruption.",
+          "The KwaZulu-Natal Department of Education has confirmed that this move is an interim measure. 'This arrangement has been implemented as an interim measure to ensure the continuity of teaching and learning,' the Department stated.",
+          "Our School Governing Body (SGB) chairperson, Mduduzi Madi, noted that the storm has worsened an infrastructure problem we have faced for years. 'From the moment I took over as SGB chairperson, our school already had a serious shortage of classrooms,' Madi said. 'We did not have enough proper, permanent buildings, and most of our classrooms were mobile units or temporary structures.'",
+          "We have previously raised these safety and infrastructure concerns. Our principal at the time explained that there were ongoing discussions with the Department about building a permanent school, and all necessary documentation had been submitted to the Department of Public Works.",
+          "We still remember the unfortunate incident where one of our teachers was injured due to the poor condition of the mobile classrooms. Following that, we approached the district office again and were informed that plans to build were in place.",
+          "However, funding constraints have consistently delayed the construction of permanent buildings. We were told the Department lacked the necessary budget to proceed.",
+          "During the 2024 exam period, the MEC for Education visited us. We made a pledge that if we achieved a 100% pass rate, a permanent school would be built. We are proud to say we achieved that 100% pass rate, but the issue of funding was raised once again.",
+          "Instead of the permanent buildings we hoped for, we received additional mobile classrooms, six of which were unfortunately destroyed in the early January storm.",
+          "The storm also struck our administration block, blowing off the roof. We had to act immediately to repair it to protect our stationery and vital school materials.",
+          "In response to this crisis, we held consultative meetings between our SGB, our School Management Team, and our counterparts at Sgodiphola Primary School. We are deeply grateful to Sgodiphola for agreeing to assist us by providing 14 vacant classrooms.",
+          "On January 14, the Circuit Education Specialist (CES) formally secured this agreement. We want to thank our educators and the staff at Sgodiphola for their incredible cooperation during this transition.",
+          "While some of our learners now face longer travel distances, we are monitoring the situation closely and have not encountered major challenges so far. This remains a temporary arrangement while the Amajuba District works with the Head Office to provide more mobile classrooms as a medium-term solution."
+        ]
+      },
+      stats: [
+        { label: 'Enrolled Learners', value: 1657, suffix: '+' },
+        { label: '10-Year Average Pass Rate', value: 97.8, suffix: '%' },
+        { label: 'National Rank in 2024', value: 10, prefix: '#' },
+        { label: 'Dedicated Educators', value: 23 }
+      ]
     },
     ZUL: {
+      home: 'Ekhaya',
       academics: 'Ezokufunda',
       admissions: 'Ukungena',
       gallery: 'Imifanekiso',
@@ -646,9 +776,154 @@ export default function App() {
       sportsDesc: 'I-tracksuit yesikole esemthethweni nehembe lezemidlalo, okugqokwa ngesikhathi semfundo yomzimba nemicimbi yezemidlalo.',
       offerAssistance: 'Nikela Ngosizo',
       news: 'Izindaba',
-      schoolLife: 'Impilo Yasesikoleni'
+      schoolLife: 'Impilo Yasesikoleni',
+      latestUpdates: 'Izindaba Zakamuva',
+      newsAnnouncements: 'Izindaba Nezimemezelo',
+      readFullNotice: 'Funda Isaziso Esigcwele',
+      shareUpdate: 'Yabelana ngalezi zindaba:',
+      returnHome: 'Buyela Ekhasini Lasekhaya',
+      backToHome: 'Buyela Ekhaya',
+      readFullArticle: 'Funda Isihloko Esigcwele',
+      urgentAppeal: 'Isicelo Esiphuthumayo',
+      rebuildingTitle: 'Ukuvuselela Ngemuva Kwesiphepho: Isicelo Sokusekelwa',
+      stormDesc1: 'Ngomhla zingama-26 nezama-27 kuZibandlela, isikole sethu sahlaselwa yizulu elinamandla elaceka amagumbi okufundela ayisithupha kwathi amanye ayishumi onakala kakhulu. Le nhlekelele ishiye abafundi abangaphezu kwe-1,600 namagumbi okufundela ayisithupha kuphela aphephile.',
+      stormDesc2: 'Njengamanje, abafundi bethu bakamatikuletsheni nabasebangeni le-11 abangaphezu kwama-600 baphoqeleka ukuba baye esikoleni samabanga aphansi esingumakhelwane, lapho bebhekana nokuminyana okwedlulele lapho abafundi abangama-60 kuya kwama-70 beminyene egumbini elilodwa.',
+      stormDesc3: 'Naphezu kokuthola izinga lokuphasa elingama-100% nokukhombisa ukuzibophezela kwethu ekusebenzeni kahle, manje silwela ukuphila kwethu. Senza isicelo esiphuthumayo emabhizinisini nasezinkampanini ezizimele ukuba basisize ekuvuseleleni izakhiwo zethu.',
+      leadershipVoice: 'Izwi Lobuholi',
+      welcomeTitle: 'Siyakwamukela eMzilikazi',
+      welcomeDesc: 'Lapho ukusebenza kahle kungeyona nje inhloso, kodwa kuyindlela yokuphila. Sikholelwa ukuthi wonke umntwana ufanelwe yithuba lokuphumelela, kungakhathaliseki izimo zakhe.',
+      principalTitle: 'Uthishanhloko Wesikole',
+      ourHeritage: 'Amagugu Ethu',
+      heritageTitle: 'Eqanjwe Ngenkosi. Yakhiwe Ngumphakathi.',
+      heritageDesc1: 'Eqanjwe ngokuhlonipha iNkosi uMzilikazi — umkhuzi omkhulu wamaZulu owasungula isizwe samaNdebele — isikole sethu simi njengensika yethemba kuMasipala waseMadlangeni. Njengesikole samabanga aphakeme sasemakhaya esikhonza amaWadi 3 no-5 waseMadlangeni, sibhekene nezinselelo ezinkulu.',
+      heritageDesc2: 'Nokho, ngaphansi kobuholi obungantengantengi bukaThishanhloko uMnu. Zulu kanye neBhodi elilawula isikole (SGB), abafundi bethu bayaqhubeka nokunqoba zonke izithiyo, bakhombisa ukuthi ithalente likhona yonke indawo.',
+      principalQuote: '“Othisha bethu bayinsika yempumelelo yethu. Ukuzinikela kwabo, ukuzidela kwabo, nokukholelwa kwabo kuwo wonke umfundi kuguqule isikole sethu saba yisibani sokusebenza kahle.”',
+      pillar1Title: '1. Umphakathi Kuqala',
+      pillar1Desc: 'Sikhonza umphakathi wethu ngokuziqhenya, siqinisekisa ukuthi wonke umfundi uthola imfundo esezingeni eliphezulu.',
+      pillar2Title: '2. Ukusebenza Kahle Njalo',
+      pillar2Desc: 'Izinga lethu lokuphasa likamatikuletsheni elingama-100% ngo-2024 likhombisa ukuthi ukuzinikela nokusebenza kanzima kuletha imiphumela.',
+      pillar3Title: '3. Umoya Wokuqina',
+      pillar3Desc: 'Eqanjwe ngeNkosi uMzilikazi, simele ukuqina nokuzimisela kukho konke esikwenzayo.',
+      ourTeam: 'Ithimba Lethu',
+      educatorsTitle: 'Abasebenzi Bokufundisa Abavelele',
+      educatorsDesc: 'Ngemuva kwawo wonke umfundi ophumelelayo kukhona uthisha ozinikele. Othisha bethu abangama-23 baletha intshisekelo, ubuchwepheshe, nokuzibophezela okungaguquki kuwo wonke amagumbi okufundela.',
+      eduFeature1Title: 'Ozinikele',
+      eduFeature1Desc: 'Othisha bethu benza okungaphezu kwalokho okulindelekile, bavame ukuhlala ngemuva kwamahora omsebenzi ukuze basize abafundi abashaywayo ukuze baphumelele.',
+      eduFeature2Title: 'Ulwazi Lobuchwepheshe',
+      eduFeature2Desc: 'Othisha abaqeqeshiwe abanolwazi olujulile lwezifundo abenza izihloko ezinzima ziqondakale kalula.',
+      eduFeature3Title: 'Okugxile Kumfundi',
+      eduFeature3Desc: 'Wonke uthisha uzibophezele ekuqondeni izidingo zokufunda zomfundi ngamunye.',
+      eduFeature4Title: 'Okuqhutshwa Yimiphumela',
+      eduFeature4Desc: 'Ukuzinikela kwabo kubonakala ekusebenzeni kwethu kahle kwezemfundo okuqhubekayo kanye nezinga lokuphasa elingama-100%.',
+      heartSuccessTitle: 'Inhliziyo Yempumelelo Yethu.',
+      heartSuccessDesc: 'Othisha bethu bangaphezu kwabafundisi — bangabeluleki, bayizibonelo ezinhle, nabavikeli bamakhono awo wonke umfundi. Ngezinsiza ezilinganiselwe kodwa ngokuzinikela okungenamkhawulo, baguqula izinselelo zibe ngamathuba okukhula.',
+      tags: ['Ukufundisa Okusha', 'Ukunakekela Kwangempela', 'Imiphumela Eqinisekisiwe'],
+      ourResults: 'Imiphumela Yethu',
+      academicDecadeTitle: 'Iminyaka Eyishumi Yokusebenza Kahle Kwezemfundo',
+      academicDecadeDesc: 'Imiphumela yethu kamatikuletsheni iyazikhulumela. Sihlale sibalwa phakathi kwama-0.2% aphezulu azo zonke izikole zaseNingizimu Afrika.',
+      result1Title: '100% Izinga Lokuphasa',
+      result1Desc: 'Kutholwe ngo-2024, 2019, nango-2017. Sibekwe endaweni ye-10 ezweni lonke ngo-2024 phakathi kwezikole zaseNingizimu Afrika eziyizinkulungwane eziyisithupha namakhulu ayisishiyagalolunye namashumi amane nesishiyagalolunye (6,949).',
+      result2Title: 'Ama-0.2% Aphezulu Ezweni',
+      result2Desc: 'Sihlale sibalwa phakathi kwama-0.2% aphezulu azo zonke izikole ezweni lonke, kanye nama-0.6% aphezulu azo zonke izikole ze-Quintile 2 KwaZulu-Natal.',
+      result3Title: 'Umholi Wesifunda sase-Amajuba',
+      result3Desc: 'Sibekwe endaweni yoku-1 esifundeni sase-Amajuba ngo-2024 nendawo yesi-3 ngo-2025, phakathi kwezikole zesifunda ezingama-72.',
+      tableYear: 'Unyaka',
+      tableCandidates: 'Abafundi',
+      tablePassed: 'Abaphasile',
+      tablePassRate: 'Ukuphasa %',
+      tableStanding: 'Isimo',
+      topTier: 'Izinga Eliphezulu',
+      tableNationalRank: 'Izinga Ezweni',
+      momentsMatter: 'Izikhathi Ezibalulekile',
+      momentsDesc: 'Hlola impilo enomdlandla eMzilikazi Senior Secondary School ngegalari yethu yempumelelo, imicimbi, nezikhathi zomphakathi.',
+      viewFullGallery: 'Buka Igalari Ephelele',
+      ourAlliances: 'Ukusebenzisana Kwethu',
+      communityStands: 'Umphakathi Wethu Unathi',
+      partner1Title: 'Gagasi FM (99.5 FM)',
+      partner1Desc: 'IGagasi FM lamukela iMzilikazi Senior Secondary School njengengxenye yomkhankaso wabo we-Geleza Ne Gagasi 2025 CSI, linikeza izinsiza ezibalulekile zonyaka wokufunda ka-2025.',
+      partner2Title: 'Durban University of Technology (DUT)',
+      partner2Desc: 'Uhlelo lwe-DUT UNI4ALL Community Engagement luthumela abafundi ukuzosiza abafundi bethu bebanga le-12 ngezicelo zemfundo ephakeme, basuse izithiyo zemfundo ephakeme.',
+      partner3Title: 'uMasipala waseMadlangeni',
+      partner3Desc: 'UMasipala waseMadlangeni uhloniphe ukusebenza kahle kwesikole sethu kwezemfundo emicimbini ye-Mayoral Excellence Awards, uqaphela amazinga ethu okuphasa angama-100%.',
+      enrollment: 'Ukubhaliswa',
+      becomePart: 'Yiba Ingxenye Yomndeni waseMzilikazi',
+      enrollmentDesc: 'Umzilikazi Senior Secondary School isikole somphakathi sasemakhaya. Samukela abafundi abavela kuyo yonke iMadlangeni nezindawo ezizungezile. Ukwamukelwa kuvulelekile kubafundi beBanga lesi-8 kuya kwele-12. Ngemibuzo, thintana nehhovisi lethu ngqo noma usebenzise ifomu elingezansi.',
+      schoolType: 'Uhlobo lwesikole',
+      schoolTypeValue: 'Isikole Somphakathi Sasemakhaya (Quintile 2)',
+      grades: 'Amabanga',
+      gradesValue: 'IBanga lesi-8 kuya kwele-12',
+      enrolmentLabel: 'Ukubhaliswa',
+      learners: 'Abafundi',
+      educators: 'Othisha',
+      contactInfo: 'Imininingwane Yokuxhumana',
+      phoneEnquiries: 'Imibuzo Ngocingo',
+      address: 'Ikheli',
+      location: 'Indawo',
+      postalAddress: 'Ikheli Leposi',
+      principal: 'Uthishanhloko',
+      grade8Enroll: 'Ukubhaliswa kweBanga lesi-8',
+      grade8Desc: 'Sibeka eqhulwini abafundi abavela ezikoleni zethu zamabanga aphansi zaseMadlangeni nezindawo ezizungezile. Isikhala silinganiselwe, ngakho-ke ukufaka isicelo kusenesikhathi kuyakhuthazwa uma iwindi livulwa.',
+      transferStudents: 'Abafundi Abadluliswayo',
+      transferDesc: 'Abafundi abafuna ukudluliselwa emabangeni 9-11 kumele balethe incwadi yokudlulisa esemthethweni nemibiko yabo yakamuva yezemfundo ukuze ibuyekezwe yiBhodi elilawula isikole.',
+      matricHistory: 'Umlando Wemiphumela Kamatikuletsheni',
+      quickLinks: 'Izixhumanisi Ezisheshayo',
+      districtAffiliation: 'Ukuxhumana Nesifunda',
+      districtDesc: 'Isifunda sase-Amajuba, uMnyango Wezemfundo KwaZulu-Natal.',
+      specialRecognition: 'Ukuqashelwa Okukhethekile',
+      gagasiRecognition: 'Samukelwe ngokuziqhenya yiGagasi FM — Geleza Ne Gagasi 2025',
+      allRightsReserved: 'Wonke Amalungelo Agodliwe.',
+      privacyPolicy: 'Inqubomgomo Yobumfihlo',
+      termsOfUse: 'Imigomo Yokusebenzisa',
+      cookiePolicy: 'Inqubomgomo Yama-Cookie',
+      cookieDesc: 'Sisebenzisa ama-cookie ukuze sithuthukise ulwazi lwakho, sihlaziye ithrafikhi yesayithi, futhi sinikeze okuqukethwe okungcono. Ngokuchofoza "Yamukela Konke", uvumela ukusetshenziswa kwethu kwama-cookie.',
+      decline: 'Yenqaba',
+      acceptAll: 'Yamukela Konke',
+      phone: 'Ucingo',
+      email: 'I-imeyili',
+      menu: 'Imenyu',
+      excellenceInEducation: 'Ukusebenza Kahle Kwezemfundo',
+      academicExcellence: 'Ukusebenza Kahle Kwezemfundo',
+      gagasiFmGelezaNathi: 'IGagasi FM Geleza Nathi',
+      nationalRank2024: 'Izinga Ezweni ngo-2024',
+      passRateMultipleYears: 'Izinga Lokuphasa (Iminyaka Eminingi)',
+      nationallyRankedSchools: 'Izikole Ezibalwa Phakathi Kweziphezulu Ezweni',
+      newsArticle: {
+        title: "Abafundi Bethu Bathuthelwe eSgodiphola Primary Ngemuva Komonakalo Omkhulu Wesiphepho",
+        date: "ezinyangeni ezi-2 ezedlule",
+        author: "Abaphathi Besikole",
+        excerpt: "Ngemuva komonakalo owesabekayo wesiphepho ocekele phansi amagumbi ethu okufundela amaningi ekuqaleni kwale nyanga, sibathuthele okwesikhashana abafundi bethu eSgodiphola Primary School...",
+        content: [
+          "Ngemuva komonakalo owesabekayo wesiphepho ocekele phansi amagumbi ethu okufundela amaningi ekuqaleni kwale nyanga, sibathuthele okwesikhashana abafundi bethu eSgodiphola Primary School ukuze siqinisekise ukuthi imfundo yabo iyaqhubeka ngaphandle kokuphazamiseka okwengeziwe.",
+          "UMnyango Wezemfundo KwaZulu-Natal ukuqinisekisile ukuthi lokhu kuthutha kuyisinyathelo sesikhashana. 'Lolu hlelo lwenziwe njengesinyathelo sesikhashana sokuqinisekisa ukuqhubeka kokufundisa nokufunda,' kusho uMnyango.",
+          "Usihlalo weBhodi elilawula isikole (SGB), uMduduzi Madi, uthe isiphepho sibhebhethekise inkinga yengqalasizinda esibhekane nayo iminyaka. 'Kusukela ngesikhathi ngithatha izintambo njengosihlalo we-SGB, isikole sethu besivele sinenkinga enkulu yokushoda kwamagumbi okufundela,' kusho uMadi. 'Besingenazo izakhiwo ezifanele nezingunaphakade, futhi amaningi amagumbi ethu okufundela bekungamobile units noma izakhiwo zesikhashana.'",
+          "Sike saziveza lezi zinkinga zokuphepha nengqalasizinda ngaphambilini. Uthishanhloko wethu ngaleso sikhathi wachaza ukuthi kunezingxoxo eziqhubekayo noMnyango mayelana nokwakhiwa kwesikole esingunaphakade, futhi yonke imibhalo edingekayo yayihanjisiwe eMnyangweni Wezemisebenzi Yomphakathi.",
+          "Sisakhumbula isigameko esibi lapho omunye wothisha bethu alimala khona ngenxa yesimo esibi samagumbi okufundela angomahamba-nendlwana. Ngemuva kwalokho, saphinde sathinta ihhovisi lesifunda sazikwa ukuthi izinhlelo zokwakha zikhona.",
+          "Nokho, ukushoda kwezimali kuye kwabambezela njalo ukwakhiwa kwezakhiwo ezingunaphakade. Satshelwa ukuthi uMnyango awunayo isabelomali esidingekayo ukuze uqhubeke.",
+          "Ngesikhathi sokuhlolwa kuka-2024, u-MEC Wezemfundo wasivakashela. Senza isithembiso sokuthi uma sithola izinga lokuphasa elingama-100%, kuzokwakhiwa isikole esingunaphakade. Siyaziqhenya ngokuthi sasilithola lelo zinga lokuphasa elingama-100%, kodwa inkinga yezimali yaphakanyiswa futhi.",
+          "Esikhundleni sezakhiwo ezingunaphakade ebesizithembe, sathola amanye amagumbi okufundela angomahamba-nendlwana, ayisithupha kuwo adliwa yisiphepho sasekuqaleni kukaZibandlela.",
+          "Isiphepho siphinde sahlasela ibhulokhi yethu yokuphatha, saphephetha uphahla. Kwadingeka sithathe isinyathelo ngokushesha ukuze silulungise ukuze sivikele izinto zethu zokubhala nezinto zesikole ezibalulekile.",
+          "Ekuphenduleni le nkinga, saba nemihlangano yokubonisana phakathi kwe-SGB yethu, Ithimba Labaphathi Besikole, nabalingani bethu eSgodiphola Primary School. Sibonga kakhulu eSgodiphola ngokuvuma ukusisiza ngokusinika amagumbi okufundela ayi-14 ayengasetshenziswa.",
+          "Ngomhla ziyi-14 kuMasingana, uCircuit Education Specialist (CES) wasiqinisekisa ngokusemthethweni lesi sivumelwano. Sifuna ukubonga othisha bethu nabasebenzi baseSgodiphola ngokubambisana kwabo okumangalisayo phakathi nalolu shintsho.",
+          "Nakuba abanye babafundi bethu manje bebhekene namabanga amade okuhamba, siyasigada isimo eduze futhi asikaze sihlangabezane nezinselelo ezinkulu kuze kube manje. Lokhu kuhlala kuyilungiselelo lesikhashana ngenkathi isifunda sase-Amajuba sisebenzisana neHhovisi Elikhulu ukuhlinzeka ngamagumbi okufundela angomahamba-nendlwana amaningi njengesixazululo sesikhathi esiphakathi."
+        ]
+      },
+      stats: [
+        { label: 'Abafundi Ababhalisile', value: 1657, suffix: '+' },
+        { label: 'Isilinganiso sokuphasa seminyaka eyi-10', value: 97.8, suffix: '%' },
+        { label: 'Izinga Ezweni ngo-2024', value: 10, prefix: '#' },
+        { label: 'Othisha Abazinikele', value: 23 }
+      ]
     }
   };
+
+  const GALLERY_IMAGES = [
+    { url: 'https://i.ibb.co/JjQQNNnN/93011.jpg', label: t[lang].academicExcellence },
+    { url: 'https://i.ibb.co/xKDbSqW8/93012-1.jpg', label: t[lang].academicExcellence },
+    { url: 'https://i.ibb.co/WpW4CGMC/93013.jpg', label: t[lang].gagasiFmGelezaNathi },
+    { url: 'https://i.ibb.co/YBZp9SWt/93014.jpg', label: t[lang].gagasiFmGelezaNathi },
+    { url: 'https://i.ibb.co/b5Rj96j4/93015.jpg', label: t[lang].gagasiFmGelezaNathi },
+    { url: 'https://i.ibb.co/JjQQNNnN/93011.jpg', label: t[lang].academicExcellence }
+  ];
 
   useEffect(() => {
     const timer = setInterval(() => {
@@ -676,7 +951,7 @@ export default function App() {
                   {t[lang].schoolName}
                 </span>
                 <span className="text-[8px] md:text-[10px] uppercase tracking-[0.2em] text-secondary font-medium mt-1">
-                  Excellence in Education
+                  {t[lang].excellenceInEducation}
                 </span>
               </div>
             </div>
@@ -686,7 +961,7 @@ export default function App() {
               onClick={() => setCurrentPage('home')}
               className={`${currentPage === 'home' ? 'text-primary border-b-2 border-primary' : 'text-secondary hover:text-primary'} pb-1 text-editorial-label transition-colors duration-300`}
             >
-              Home
+              {t[lang].home}
             </button>
             <button 
               onClick={() => setCurrentPage('academics')}
@@ -768,10 +1043,10 @@ export default function App() {
                   />
                   <div className="flex flex-col">
                     <span className="text-xs font-bold text-primary font-headline uppercase tracking-wider">
-                      Menu
+                      {t[lang].menu}
                     </span>
                     <span className="text-[8px] text-secondary uppercase tracking-widest font-medium">
-                      Umzilikazi School
+                      {t[lang].schoolName}
                     </span>
                   </div>
                 </div>
@@ -785,7 +1060,7 @@ export default function App() {
 
               <nav className="flex-grow overflow-y-auto p-4 flex flex-col gap-1">
                 {[
-                  { name: 'Home', id: 'home' },
+                  { name: t[lang].home, id: 'home' },
                   { name: t[lang].news, id: 'news' },
                   { name: t[lang].academics, id: 'academics' },
                   { name: t[lang].admissions, id: 'admissions' },
@@ -890,10 +1165,10 @@ export default function App() {
               </span>
               <div className="flex flex-wrap gap-2 md:gap-4 mb-3 md:mb-4">
                 <span className="text-white text-[10px] md:text-sm font-bold bg-white/10 backdrop-blur px-2 py-1 border border-white/20">
-                  <Counter value={10} prefix="#" /> {lang === 'ENG' ? 'National Rank 2024' : 'Ezweni 2024'}
+                  <Counter value={10} prefix="#" /> {t[lang].nationalRank2024}
                 </span>
                 <span className="text-white text-[10px] md:text-sm font-bold bg-white/10 backdrop-blur px-2 py-1 border border-white/20">
-                  <Counter value={100} suffix="%" /> {lang === 'ENG' ? 'Pass Rate' : 'Okuphasa'}
+                  <Counter value={100} suffix="%" /> {t[lang].tablePassRate}
                 </span>
               </div>
               <h1 className="text-4xl md:text-8xl editorial-heading text-white mb-4 md:mb-6 leading-tight tracking-tight">
@@ -924,12 +1199,7 @@ export default function App() {
         <section className="py-12 bg-surface-container-lowest border-b border-outline-variant/30">
           <div className="max-w-7xl mx-auto px-6 md:px-8">
             <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
-              {[
-                { label: 'Enrolled Learners', value: 1657, suffix: '+' },
-                { label: '10-Year Average Pass Rate', value: 97.8, suffix: '%' },
-                { label: 'National Rank in 2024', value: 10, prefix: '#' },
-                { label: 'Dedicated Educators', value: 23 }
-              ].map((stat, idx) => (
+              {t[lang].stats.map((stat: any, idx: number) => (
                 <motion.div 
                   key={idx}
                   initial={{ opacity: 0, y: 20 }}
@@ -974,14 +1244,14 @@ export default function App() {
                 viewport={{ once: true }}
                 transition={{ duration: 0.8 }}
               >
-                <span className="text-editorial-label text-primary mb-3 md:mb-6 block">Leadership Voice</span>
-                <h2 className="text-2xl md:text-5xl editorial-heading mb-4 md:mb-8 leading-tight tracking-tight">Welcome to Umzilikazi</h2>
+                <span className="text-editorial-label text-primary mb-3 md:mb-6 block">{t[lang].leadershipVoice}</span>
+                <h2 className="text-2xl md:text-5xl editorial-heading mb-4 md:mb-8 leading-tight tracking-tight">{t[lang].welcomeTitle}</h2>
                 <p className="text-base md:text-2xl font-light text-on-surface leading-relaxed mb-6 md:mb-10">
-                  Where excellence is not just a goal, but a way of life. We believe every child deserves the opportunity to succeed, regardless of their circumstances.
+                  {t[lang].welcomeDesc}
                 </p>
                 <div className="mt-6 md:mt-8">
                   <p className="text-lg md:text-2xl font-bold font-headline text-primary tracking-tight">Mr. Zulu</p>
-                  <p className="text-editorial-label text-secondary mt-1">School Principal</p>
+                  <p className="text-editorial-label text-secondary mt-1">{t[lang].principalTitle}</p>
                 </div>
               </motion.div>
             </div>
@@ -998,11 +1268,11 @@ export default function App() {
                 viewport={{ once: true }}
                 transition={{ duration: 0.8 }}
               >
-                <span className="text-editorial-label text-primary mb-3 block">Our Heritage</span>
-                <h2 className="text-2xl md:text-5xl editorial-heading mb-6 leading-tight tracking-tight">Named for a King. Built by a Community.</h2>
+                <span className="text-editorial-label text-primary mb-3 block">{t[lang].ourHeritage}</span>
+                <h2 className="text-2xl md:text-5xl editorial-heading mb-6 leading-tight tracking-tight">{t[lang].heritageTitle}</h2>
                 <div className="space-y-4 md:space-y-6 text-on-surface/80 text-sm md:text-lg leading-relaxed">
-                  <p>Named in honour of King Mzilikazi — the great Zulu commander who founded the Matabele nation — our school stands as a pillar of hope in the Emadlangeni Local Municipality. As a dedicated rural high school serving Wards 3 and 5 of Emadlangeni, we face immense challenges.</p>
-                  <p>Yet, under the unwavering leadership of Principal Mr. Zulu and our dedicated School Governing Body, our learners continue to defy every expectation, proving that talent lives everywhere.</p>
+                  <p>{t[lang].heritageDesc1}</p>
+                  <p>{t[lang].heritageDesc2}</p>
                 </div>
               </motion.div>
               <motion.div 
@@ -1013,17 +1283,17 @@ export default function App() {
                 className="flex items-center"
               >
                 <blockquote className="text-base md:text-3xl font-light italic text-on-surface leading-relaxed border-l-4 md:border-l-8 border-primary pl-6 md:pl-8 py-2">
-                  “Our teachers are the backbone of our success. Their dedication, sacrifice, and belief in every learner have transformed our school into a beacon of excellence.”
-                  <footer className="mt-4 md:mt-6 text-xs md:text-base font-bold text-primary not-italic">— Mr. Zulu, School Principal</footer>
+                  {t[lang].principalQuote}
+                  <footer className="mt-4 md:mt-6 text-xs md:text-base font-bold text-primary not-italic">— Mr. Zulu, {t[lang].principalTitle}</footer>
                 </blockquote>
               </motion.div>
             </div>
             {/* Three Pillars */}
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-8">
               {[
-                { title: '1. Community First', desc: 'We serve our community with pride, ensuring every learner has access to quality education.' },
-                { title: '2. Excellence Always', desc: 'Our 100% matric pass rate in 2024 proves dedication and hard work achieve results.' },
-                { title: '3. Resilient Spirit', desc: 'Named after King Mzilikazi, we embody resilience and determination in everything we do.' }
+                { title: t[lang].pillar1Title, desc: t[lang].pillar1Desc },
+                { title: t[lang].pillar2Title, desc: t[lang].pillar2Desc },
+                { title: t[lang].pillar3Title, desc: t[lang].pillar3Desc }
               ].map((pillar, idx) => (
                 <motion.div 
                   key={idx}
@@ -1051,16 +1321,16 @@ export default function App() {
               viewport={{ once: true }}
               className="max-w-3xl mb-10 md:mb-16"
             >
-              <span className="text-editorial-label text-primary mb-3 block">Our Team</span>
-              <h2 className="text-2xl md:text-5xl editorial-heading mb-4 md:mb-6 leading-tight tracking-tight">Exceptional Teaching Staff</h2>
-              <p className="text-sm md:text-lg text-secondary leading-relaxed">Behind every successful student is a dedicated educator. Our 23 teachers bring passion, expertise, and unwavering commitment to every classroom.</p>
+              <span className="text-editorial-label text-primary mb-3 block">{t[lang].ourTeam}</span>
+              <h2 className="text-2xl md:text-5xl editorial-heading mb-4 md:mb-6 leading-tight tracking-tight">{t[lang].educatorsTitle}</h2>
+              <p className="text-sm md:text-lg text-secondary leading-relaxed">{t[lang].educatorsDesc}</p>
             </motion.div>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-8 mb-10 md:mb-16">
               {[
-                { title: 'Dedicated', desc: 'Our teachers go above and beyond, often staying after hours to help struggling students succeed.' },
-                { title: 'Expert Knowledge', desc: 'Qualified educators with deep subject expertise who make complex topics accessible.' },
-                { title: 'Student-Focused', desc: 'Every educator is committed to understanding each student\'s unique learning needs.' },
-                { title: 'Results-Driven', desc: 'Their dedication is reflected in our consistent academic excellence and 100% pass rate.' }
+                { title: t[lang].eduFeature1Title, desc: t[lang].eduFeature1Desc },
+                { title: t[lang].eduFeature2Title, desc: t[lang].eduFeature2Desc },
+                { title: t[lang].eduFeature3Title, desc: t[lang].eduFeature3Desc },
+                { title: t[lang].eduFeature4Title, desc: t[lang].eduFeature4Desc }
               ].map((item, idx) => (
                 <motion.div 
                   key={idx} 
@@ -1082,12 +1352,12 @@ export default function App() {
               className="bg-primary text-white p-6 md:p-12 rounded-sm relative overflow-hidden"
             >
               <div className="relative z-10">
-                <h3 className="text-lg md:text-3xl font-headline font-bold mb-4 md:mb-6 tracking-tight">The Heart of Our Success.</h3>
+                <h3 className="text-lg md:text-3xl font-headline font-bold mb-4 md:mb-6 tracking-tight">{t[lang].heartSuccessTitle}</h3>
                 <p className="text-sm md:text-lg text-white/90 leading-relaxed mb-6 md:mb-8 max-w-4xl">
-                  Our teachers are more than educators — they are mentors, role models, and champions of every learner's potential. With limited resources but unlimited dedication, they transform challenges into opportunities for growth.
+                  {t[lang].heartSuccessDesc}
                 </p>
                 <div className="flex flex-wrap gap-2 md:gap-3">
-                  {['Innovative Teaching', 'Genuine Care', 'Proven Results'].map((tag, idx) => (
+                  {t[lang].tags.map((tag: string, idx: number) => (
                     <span key={idx} className="px-2 py-1 bg-white/10 border border-white/20 text-[9px] md:text-xs uppercase tracking-widest font-bold">{tag}</span>
                   ))}
                 </div>
@@ -1105,15 +1375,15 @@ export default function App() {
               viewport={{ once: true }}
               className="text-center mb-10 md:mb-16"
             >
-              <span className="text-editorial-label text-primary mb-3 inline-block">Our Results</span>
-              <h2 className="text-2xl md:text-5xl editorial-heading mb-4 md:mb-6 leading-tight tracking-tight">A Decade of Academic Excellence</h2>
-              <p className="text-sm md:text-lg text-secondary max-w-2xl mx-auto">Our matric results speak for themselves. Consistently ranked in the top 0.2% of all South African schools.</p>
+              <span className="text-editorial-label text-primary mb-3 inline-block">{t[lang].ourResults}</span>
+              <h2 className="text-2xl md:text-5xl editorial-heading mb-4 md:mb-6 leading-tight tracking-tight">{t[lang].academicDecadeTitle}</h2>
+              <p className="text-sm md:text-lg text-secondary max-w-2xl mx-auto">{t[lang].academicDecadeDesc}</p>
             </motion.div>
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 md:gap-8 mb-10 md:mb-16">
               {[
-                { title: '100% Pass Rate', desc: 'Achieved in 2024, 2019, and 2017. Ranked #10 nationally in 2024 out of 6,949 South African schools.' },
-                { title: 'Top 0.2% Nationally', desc: 'Consistently ranked in the top 0.2% of all schools nationally, and top 0.6% of all Quintile 2 schools in KwaZulu-Natal.' },
-                { title: 'Amajuba District Leader', desc: 'Ranked #1 in the Amajuba District in 2024 and #3 in 2025, out of 72 district schools.' }
+                { title: t[lang].result1Title, desc: t[lang].result1Desc },
+                { title: t[lang].result2Title, desc: t[lang].result2Desc },
+                { title: t[lang].result3Title, desc: t[lang].result3Desc }
               ].map((card, idx) => (
                 <motion.div 
                   key={idx} 
@@ -1137,25 +1407,25 @@ export default function App() {
               <table className="w-full text-left border-collapse min-w-[500px]">
                 <thead>
                   <tr className="bg-surface-container-high">
-                    <th className="p-3 text-[10px] md:text-editorial-label text-primary">Year</th>
-                    <th className="p-3 text-[10px] md:text-editorial-label text-primary">Candidates</th>
-                    <th className="p-3 text-[10px] md:text-editorial-label text-primary">Passed</th>
-                    <th className="p-3 text-[10px] md:text-editorial-label text-primary">Pass %</th>
-                    <th className="p-3 text-[10px] md:text-editorial-label text-primary">Standing</th>
+                    <th className="p-3 text-[10px] md:text-editorial-label text-primary">{t[lang].tableYear}</th>
+                    <th className="p-3 text-[10px] md:text-editorial-label text-primary">{t[lang].tableCandidates}</th>
+                    <th className="p-3 text-[10px] md:text-editorial-label text-primary">{t[lang].tablePassed}</th>
+                    <th className="p-3 text-[10px] md:text-editorial-label text-primary">{t[lang].tablePassRate}</th>
+                    <th className="p-3 text-[10px] md:text-editorial-label text-primary">{t[lang].tableStanding}</th>
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-outline-variant/10 text-[10px] md:text-sm">
                   {[
                     { year: '2025', cand: '321', passed: '320', perc: '99.69%', standing: '#3' },
                     { year: '2024', cand: '177', passed: '177', perc: '100.00%', standing: '#1', highlight: true },
-                    { year: '2023', cand: '284', passed: '270', perc: '95.07%', standing: 'Top Tier' },
-                    { year: '2022', cand: '229', passed: '214', perc: '93.45%', standing: 'Top Tier' },
-                    { year: '2021', cand: '168', passed: '160', perc: '95.24%', standing: 'Top Tier' },
-                    { year: '2020', cand: '80', passed: '79', perc: '98.75%', standing: 'Top Tier' },
-                    { year: '2019', cand: '64', passed: '64', perc: '100.00%', standing: 'Top Tier' },
-                    { year: '2018', cand: '59', passed: '58', perc: '98.31%', standing: 'Top Tier' },
-                    { year: '2017', cand: '25', passed: '25', perc: '100.00%', standing: 'Top Tier' },
-                    { year: '2016', cand: '39', passed: '38', perc: '97.44%', standing: 'Top Tier' }
+                    { year: '2023', cand: '284', passed: '270', perc: '95.07%', standing: t[lang].topTier },
+                    { year: '2022', cand: '229', passed: '214', perc: '93.45%', standing: t[lang].topTier },
+                    { year: '2021', cand: '168', passed: '160', perc: '95.24%', standing: t[lang].topTier },
+                    { year: '2020', cand: '80', passed: '79', perc: '98.75%', standing: t[lang].topTier },
+                    { year: '2019', cand: '64', passed: '64', perc: '100.00%', standing: t[lang].topTier },
+                    { year: '2018', cand: '59', passed: '58', perc: '98.31%', standing: t[lang].topTier },
+                    { year: '2017', cand: '25', passed: '25', perc: '100.00%', standing: t[lang].topTier },
+                    { year: '2016', cand: '39', passed: '38', perc: '97.44%', standing: t[lang].topTier }
                   ].map((row, idx) => (
                     <tr key={idx} className={`${row.highlight ? 'bg-primary/5 font-bold' : 'hover:bg-primary/5 transition-colors'}`}>
                       <td className="p-3">{row.year}</td>
@@ -1171,7 +1441,7 @@ export default function App() {
           </div>
         </section>
 
-        <StormAppeal onContactClick={() => setCurrentPage('contact')} />
+        <StormAppeal lang={lang} t={t} onContactClick={() => setCurrentPage('contact')} />
 
         {/* SCHOOL LIFE SECTION */}
         <section className="py-12 md:py-24 bg-surface-container-low">
@@ -1183,8 +1453,8 @@ export default function App() {
               className="mb-10"
             >
               <span className="text-editorial-label text-primary mb-3 block">{t[lang].schoolLife}</span>
-              <h2 className="text-2xl md:text-5xl editorial-heading mb-4 md:mb-6 leading-tight tracking-tight">Moments That Matter</h2>
-              <p className="text-sm md:text-lg text-secondary">Explore the vibrant life at Umzilikazi Senior Secondary School through our gallery of achievements, events, and community moments.</p>
+              <h2 className="text-2xl md:text-5xl editorial-heading mb-4 md:mb-6 leading-tight tracking-tight">{t[lang].momentsMatter}</h2>
+              <p className="text-sm md:text-lg text-secondary">{t[lang].momentsDesc}</p>
             </motion.div>
             <div className="grid grid-cols-2 md:grid-cols-3 gap-3 md:gap-4 mb-10">
               {GALLERY_IMAGES.map((item, idx) => (
@@ -1217,7 +1487,7 @@ export default function App() {
                 onClick={() => setCurrentPage('gallery')}
                 className="inline-block border-2 border-primary text-primary px-8 py-3 font-bold uppercase text-[10px] md:text-sm hover:bg-primary hover:text-white transition-all"
               >
-                View Full Gallery
+                {t[lang].viewFullGallery}
               </button>
             </motion.div>
           </div>
@@ -1232,14 +1502,14 @@ export default function App() {
               viewport={{ once: true }}
               className="text-center mb-10 md:mb-16"
             >
-              <span className="text-editorial-label text-primary mb-3 inline-block">Our Alliances</span>
-              <h2 className="text-2xl md:text-5xl editorial-heading mb-4 md:mb-6 leading-tight tracking-tight">Our Community Stands With Us</h2>
+              <span className="text-editorial-label text-primary mb-3 inline-block">{t[lang].ourAlliances}</span>
+              <h2 className="text-2xl md:text-5xl editorial-heading mb-4 md:mb-6 leading-tight tracking-tight">{t[lang].communityStands}</h2>
             </motion.div>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-8">
               {[
-                { icon: <Radio className="text-primary" />, title: 'Gagasi FM (99.5 FM)', desc: 'Gagasi FM adopted Umzilikazi Senior Secondary School as part of their Geleza Ne Gagasi 2025 CSI campaign, providing essential resources for the 2025 academic year.' },
-                { icon: <GraduationCap className="text-primary" />, title: 'Durban University of Technology (DUT)', desc: 'DUT\'s UNI4ALL Community Engagement Programme sends students to assist our Grade 12 learners with tertiary applications, breaking down barriers to higher education.' },
-                { icon: <Landmark className="text-primary" />, title: 'eMadlangeni Local Municipality', desc: 'The eMadlangeni Municipality has honoured our school\'s academic excellence at Mayoral Excellence Awards ceremonies, recognising our consistent 100% pass rates.' }
+                { icon: <Radio className="text-primary" />, title: t[lang].partner1Title, desc: t[lang].partner1Desc },
+                { icon: <GraduationCap className="text-primary" />, title: t[lang].partner2Title, desc: t[lang].partner2Desc },
+                { icon: <Landmark className="text-primary" />, title: t[lang].partner3Title, desc: t[lang].partner3Desc }
               ].map((partner, idx) => (
                 <motion.div 
                   key={idx} 
@@ -1272,17 +1542,17 @@ export default function App() {
                 viewport={{ once: true }}
                 transition={{ duration: 0.8 }}
               >
-                <span className="text-editorial-label text-white/70 mb-3 block">Enrollment</span>
-                <h2 className="text-2xl md:text-5xl editorial-heading mb-6 leading-tight tracking-tight">Become Part of the Umzilikazi Family</h2>
+                <span className="text-editorial-label text-white/70 mb-3 block">{t[lang].enrollment}</span>
+                <h2 className="text-2xl md:text-5xl editorial-heading mb-6 leading-tight tracking-tight">{t[lang].becomePart}</h2>
                 <p className="text-sm md:text-xl font-light leading-relaxed mb-8 text-white/90">
-                  Umzilikazi Senior Secondary School is a public, rural institution. We welcome learners from all Emadlangeni and surrounding areas. Admission is open to Grade 8 through Grade 12 learners. For enquiries, contact our office directly or use the form below.
+                  {t[lang].enrollmentDesc}
                 </p>
                 <div className="grid grid-cols-2 gap-4 md:gap-6">
                   {[
-                    { label: 'School Type', value: 'Public Rural School (Quintile 2)' },
-                    { label: 'Grades', value: 'Grade 8 to Grade 12' },
-                    { label: 'Enrolment', value: <><Counter value={1657} suffix="+" /> Learners</> },
-                    { label: 'Educators', value: <Counter value={23} /> }
+                    { label: t[lang].schoolType, value: t[lang].schoolTypeValue },
+                    { label: t[lang].grades, value: t[lang].gradesValue },
+                    { label: t[lang].enrolmentLabel, value: <><Counter value={1657} suffix="+" /> {t[lang].learners}</> },
+                    { label: t[lang].educators, value: <Counter value={23} /> }
                   ].map((info, idx) => (
                     <div key={idx}>
                       <span className="text-[9px] uppercase tracking-widest text-white/60 block mb-1">{info.label}</span>
@@ -1298,14 +1568,14 @@ export default function App() {
                 transition={{ duration: 0.8 }}
                 className="bg-white/10 backdrop-blur-md p-6 md:p-12 border border-white/10"
               >
-                <h3 className="text-lg md:text-2xl font-headline font-bold mb-6 md:mb-8 tracking-tight">Contact Information</h3>
+                <h3 className="text-lg md:text-2xl font-headline font-bold mb-6 md:mb-8 tracking-tight">{t[lang].contactInfo}</h3>
                 <div className="space-y-6 md:space-y-8">
                   <div>
-                    <span className="text-[9px] uppercase tracking-widest text-white/60 block mb-1">Phone Enquiries</span>
+                    <span className="text-[9px] uppercase tracking-widest text-white/60 block mb-1">{t[lang].phoneEnquiries}</span>
                     <p className="text-xl md:text-3xl font-light">073 336 3970 / 084 485 5879</p>
                   </div>
                   <div>
-                    <span className="text-[9px] uppercase tracking-widest text-white/60 block mb-1">Address</span>
+                    <span className="text-[9px] uppercase tracking-widest text-white/60 block mb-1">{t[lang].address}</span>
                     <p className="text-base md:text-xl font-light">326 D-Off Utrecht Road, Utrecht, KZN</p>
                   </div>
                 </div>
@@ -1323,12 +1593,12 @@ export default function App() {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
               >
-                <h2 className="text-2xl md:text-4xl editorial-heading mb-8 md:mb-10 tracking-tight">Get in Touch / Contact Us</h2>
+                <h2 className="text-2xl md:text-4xl editorial-heading mb-8 md:mb-10 tracking-tight">{t[lang].contactTitle}</h2>
                 <form className="space-y-6" onSubmit={(e) => e.preventDefault()}>
-                  {[
-                    { label: 'Full Name', placeholder: 'Your Name', type: 'text' },
-                    { label: 'Email Address', placeholder: 'email@example.com', type: 'email' },
-                    { label: 'Phone Number', placeholder: '071 234 5678', type: 'tel' }
+                   {[
+                    { label: t[lang].contactName, placeholder: 'Your Name', type: 'text' },
+                    { label: t[lang].contactEmail, placeholder: 'email@example.com', type: 'email' },
+                    { label: t[lang].phone, placeholder: '071 234 5678', type: 'tel' }
                   ].map((field, idx) => (
                     <div key={idx} className="relative pt-4">
                       <label className="text-[9px] uppercase tracking-widest text-secondary absolute top-0 left-0">{field.label}</label>
@@ -1340,7 +1610,7 @@ export default function App() {
                     </div>
                   ))}
                   <div className="relative pt-4">
-                    <label className="text-[9px] uppercase tracking-widest text-secondary absolute top-0 left-0">Message</label>
+                    <label className="text-[9px] uppercase tracking-widest text-secondary absolute top-0 left-0">{t[lang].contactMessage}</label>
                     <textarea 
                       className="w-full bg-transparent border-b-2 border-outline-variant py-2 focus:outline-none focus:border-primary transition-colors text-on-surface text-sm" 
                       placeholder="How can we assist you?" 
@@ -1348,7 +1618,7 @@ export default function App() {
                     ></textarea>
                   </div>
                   <button className="bg-primary text-white px-10 py-3 font-bold tracking-widest text-[10px] uppercase hover:shadow-lg transition-all w-full md:w-auto" type="submit">
-                    SEND MESSAGE
+                    {t[lang].contactSubmit}
                   </button>
                 </form>
               </motion.div>
@@ -1360,10 +1630,10 @@ export default function App() {
               >
                 <div className="space-y-5">
                   {[
-                    { icon: <MapPin className="text-primary w-5 h-5" />, label: 'Location', value: '326 D-Off Utrecht Road, Utrecht, KwaZulu-Natal' },
-                    { icon: <Mail className="text-primary w-5 h-5" />, label: 'Postal Address', value: 'P.O. Box 77, Utrecht, 2980' },
-                    { icon: <Phone className="text-primary w-5 h-5" />, label: 'Phone', value: '073 336 3970 / 084 485 5879' },
-                    { icon: <User className="text-primary w-5 h-5" />, label: 'Principal', value: 'Mr. Zulu' }
+                    { icon: <MapPin className="text-primary w-5 h-5" />, label: t[lang].location, value: '326 D-Off Utrecht Road, Utrecht, KwaZulu-Natal' },
+                    { icon: <Mail className="text-primary w-5 h-5" />, label: t[lang].postalAddress, value: 'P.O. Box 77, Utrecht, 2980' },
+                    { icon: <Phone className="text-primary w-5 h-5" />, label: t[lang].phone, value: '073 336 3970 / 084 485 5879' },
+                    { icon: <User className="text-primary w-5 h-5" />, label: t[lang].principal, value: 'Mr. Zulu' }
                   ].map((item, idx) => (
                     <div key={idx} className="flex gap-4">
                       {item.icon}
@@ -1407,7 +1677,7 @@ export default function App() {
                       <GraduationCap className="text-primary w-8 h-8" />
                     </div>
                     <div>
-                      <h2 className="text-2xl md:text-3xl editorial-heading text-primary mb-4">2027 Applications</h2>
+                      <h2 className="text-2xl md:text-3xl editorial-heading text-primary mb-4">{t[lang].newsAnnouncements}</h2>
                       <p className="text-lg text-secondary leading-relaxed font-medium">
                         {t[lang].admissionNotice}
                       </p>
@@ -1434,9 +1704,9 @@ export default function App() {
                     viewport={{ once: true }}
                     className="bg-surface-container-low p-8 rounded-sm"
                   >
-                    <h4 className="font-headline font-bold text-lg mb-4">Grade 8 Enrollment</h4>
+                    <h4 className="font-headline font-bold text-lg mb-4">{t[lang].grade8Enroll}</h4>
                     <p className="text-secondary text-sm leading-relaxed">
-                      We prioritize learners from our local feeder primary schools in Emadlangeni and surrounding areas. Space is limited, so early application is encouraged once the window opens.
+                      {t[lang].grade8Desc}
                     </p>
                   </motion.div>
                   <motion.div 
@@ -1445,9 +1715,9 @@ export default function App() {
                     viewport={{ once: true }}
                     className="bg-surface-container-low p-8 rounded-sm"
                   >
-                    <h4 className="font-headline font-bold text-lg mb-4">Transfer Students</h4>
+                    <h4 className="font-headline font-bold text-lg mb-4">{t[lang].transferStudents}</h4>
                     <p className="text-secondary text-sm leading-relaxed">
-                      Learners wishing to transfer into Grades 9-11 must provide a valid transfer letter and their most recent academic records for review by the School Governing Body.
+                      {t[lang].transferDesc}
                     </p>
                   </motion.div>
                 </div>
@@ -1473,9 +1743,9 @@ export default function App() {
               <div className="max-w-7xl mx-auto px-6 md:px-8">
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-16">
                   {[
-                    { val: '#10', label: 'National Rank 2024' },
-                    { val: '100%', label: 'Pass Rate (Multiple Years)' },
-                    { val: 'Top 0.2%', label: 'Nationally Ranked Schools' }
+                    { val: '#10', label: t[lang].nationalRank2024 },
+                    { val: '100%', label: t[lang].passRateMultipleYears },
+                    { val: 'Top 0.2%', label: t[lang].nationallyRankedSchools }
                   ].map((item, idx) => (
                     <motion.div 
                       key={idx}
@@ -1497,30 +1767,30 @@ export default function App() {
                   viewport={{ once: true }}
                   className="bg-white p-6 md:p-12 shadow-xl rounded-sm overflow-hidden"
                 >
-                  <h2 className="text-2xl md:text-4xl editorial-heading mb-8">Matric Results History</h2>
+                  <h2 className="text-2xl md:text-4xl editorial-heading mb-8">{t[lang].matricHistory}</h2>
                   <div className="overflow-x-auto">
                     <table className="w-full text-left border-collapse min-w-[600px]">
                       <thead>
                         <tr className="bg-surface-container-high">
-                          <th className="p-4 text-editorial-label text-primary">Year</th>
-                          <th className="p-4 text-editorial-label text-primary">Candidates</th>
-                          <th className="p-4 text-editorial-label text-primary">Passed</th>
-                          <th className="p-4 text-editorial-label text-primary">Pass Rate</th>
-                          <th className="p-4 text-editorial-label text-primary">National Rank</th>
+                          <th className="p-4 text-editorial-label text-primary">{t[lang].tableYear}</th>
+                          <th className="p-4 text-editorial-label text-primary">{t[lang].tableCandidates}</th>
+                          <th className="p-4 text-editorial-label text-primary">{t[lang].tablePassed}</th>
+                          <th className="p-4 text-editorial-label text-primary">{t[lang].tablePassRate}</th>
+                          <th className="p-4 text-editorial-label text-primary">{t[lang].tableNationalRank}</th>
                         </tr>
                       </thead>
                       <tbody className="divide-y divide-outline-variant/10">
                         {[
                           { year: '2025', cand: '321', passed: '320', perc: '99.69%', rank: '#3' },
                           { year: '2024', cand: '177', passed: '177', perc: '100.00%', rank: '#1', highlight: true },
-                          { year: '2023', cand: '284', passed: '270', perc: '95.07%', rank: 'Top Tier' },
-                          { year: '2022', cand: '229', passed: '214', perc: '93.45%', rank: 'Top Tier' },
-                          { year: '2021', cand: '168', passed: '160', perc: '95.24%', rank: 'Top Tier' },
-                          { year: '2020', cand: '80', passed: '79', perc: '98.75%', rank: 'Top Tier' },
-                          { year: '2019', cand: '64', passed: '64', perc: '100.00%', rank: 'Top Tier' },
-                          { year: '2018', cand: '59', passed: '58', perc: '98.31%', rank: 'Top Tier' },
-                          { year: '2017', cand: '25', passed: '25', perc: '100.00%', rank: 'Top Tier' },
-                          { year: '2016', cand: '39', passed: '38', perc: '97.44%', rank: 'Top Tier' }
+                          { year: '2023', cand: '284', passed: '270', perc: '95.07%', rank: t[lang].topTier },
+                          { year: '2022', cand: '229', passed: '214', perc: '93.45%', rank: t[lang].topTier },
+                          { year: '2021', cand: '168', passed: '160', perc: '95.24%', rank: t[lang].topTier },
+                          { year: '2020', cand: '80', passed: '79', perc: '98.75%', rank: t[lang].topTier },
+                          { year: '2019', cand: '64', passed: '64', perc: '100.00%', rank: t[lang].topTier },
+                          { year: '2018', cand: '59', passed: '58', perc: '98.31%', rank: t[lang].topTier },
+                          { year: '2017', cand: '25', passed: '25', perc: '100.00%', rank: t[lang].topTier },
+                          { year: '2016', cand: '39', passed: '38', perc: '97.44%', rank: t[lang].topTier }
                         ].map((row, idx) => (
                           <tr key={idx} className={`${row.highlight ? 'bg-primary/5 font-bold' : 'hover:bg-primary/5 transition-colors'}`}>
                             <td className="p-4">{row.year}</td>
@@ -1575,7 +1845,7 @@ export default function App() {
                         <div className="absolute inset-0 bg-black/20 group-hover:bg-black/0 transition-colors"></div>
                       </div>
                       <div className="p-6">
-                        <span className="text-editorial-label text-primary mb-1 block uppercase tracking-widest">Umzilikazi Life</span>
+                        <span className="text-editorial-label text-primary mb-1 block uppercase tracking-widest">{t[lang].schoolLife}</span>
                         <h3 className="text-xl font-headline font-bold text-on-surface">{item.label}</h3>
                       </div>
                     </motion.div>
@@ -1654,29 +1924,29 @@ export default function App() {
         <div className="max-w-7xl mx-auto px-6 py-10 md:px-8 md:py-16">
           <div className="grid grid-cols-1 md:grid-cols-3 gap-10">
             <div>
-              <h4 className="text-base font-bold mb-4 font-headline uppercase tracking-widest">Umzilikazi Senior Secondary School</h4>
+              <h4 className="text-base font-bold mb-4 font-headline uppercase tracking-widest">{t[lang].schoolName}</h4>
               <div className="text-white/80 text-[10px] md:text-xs space-y-2 mb-6 font-body">
                 <p>EMIS: 500401413</p>
                 <p>326 D-Off Utrecht Road, Utrecht, KZN</p>
                 <p>073 336 3970 / 084 485 5879</p>
-                <p>Principal: Mr. Zulu</p>
+                <p>{t[lang].principal}: Mr. Zulu</p>
               </div>
               <div className="p-4 bg-white/10 rounded-sm">
-                <p className="text-[9px] font-bold uppercase tracking-widest text-white/70 mb-2">Special Recognition</p>
-                <p className="text-[10px] md:text-xs italic">Proudly adopted by Gagasi FM — Geleza Ne Gagasi 2025</p>
+                <p className="text-[9px] font-bold uppercase tracking-widest text-white/70 mb-2">{t[lang].specialRecognition}</p>
+                <p className="text-[10px] md:text-xs italic">{t[lang].gagasiRecognition}</p>
               </div>
             </div>
             <div>
-              <h4 className="text-editorial-label text-white/50 mb-5 md:mb-6">Quick Links</h4>
+              <h4 className="text-editorial-label text-white/50 mb-5 md:mb-6">{t[lang].quickLinks}</h4>
               <nav className="grid grid-cols-2 gap-x-4 gap-y-3 text-[10px] md:text-xs">
                 {[
-                  { name: 'Home', page: 'home' },
-                  { name: 'News', page: 'news' },
-                  { name: 'Academics', page: 'academics' },
-                  { name: 'Admissions', page: 'admissions' },
-                  { name: 'Gallery', page: 'gallery' },
-                  { name: 'Uniforms', page: 'uniforms' },
-                  { name: 'Contact', page: 'contact' }
+                  { name: t[lang].home, page: 'home' },
+                  { name: t[lang].news, page: 'news' },
+                  { name: t[lang].academics, page: 'academics' },
+                  { name: t[lang].admissions, page: 'admissions' },
+                  { name: t[lang].gallery, page: 'gallery' },
+                  { name: t[lang].uniforms, page: 'uniforms' },
+                  { name: t[lang].contact, page: 'contact' }
                 ].map((link, idx) => (
                   <button 
                     key={idx} 
@@ -1689,9 +1959,9 @@ export default function App() {
               </nav>
             </div>
             <div>
-              <h4 className="text-editorial-label text-white/50 mb-5 md:mb-6">District Affiliation</h4>
+              <h4 className="text-editorial-label text-white/50 mb-5 md:mb-6">{t[lang].districtAffiliation}</h4>
               <p className="text-[10px] md:text-xs leading-relaxed text-white/80 mb-6 font-body">
-                Amajuba District, KwaZulu-Natal Department of Education.
+                {t[lang].districtDesc}
               </p>
               <div className="flex gap-3">
                 <a className="w-8 h-8 md:w-10 md:h-10 border border-white/20 flex items-center justify-center hover:bg-white hover:text-primary transition-all" href="#">
@@ -1701,15 +1971,15 @@ export default function App() {
             </div>
           </div>
           <div className="mt-12 md:mt-16 pt-6 md:pt-8 border-t border-white/10 flex flex-col md:flex-row justify-between items-center gap-4 text-[8px] md:text-[10px] text-white/50 uppercase tracking-widest font-bold">
-            <p>© 2026 Umzilikazi Senior Secondary School. All Rights Reserved.</p>
+            <p>© {new Date().getFullYear()} {t[lang].schoolName}. {t[lang].allRightsReserved}</p>
             <div className="flex gap-6">
-              <a href="#" className="hover:text-white transition-colors">Privacy Policy</a>
-              <a href="#" className="hover:text-white transition-colors">Terms of Use</a>
+              <a href="#" className="hover:text-white transition-colors">{t[lang].privacyPolicy}</a>
+              <a href="#" className="hover:text-white transition-colors">{t[lang].termsOfUse}</a>
             </div>
           </div>
         </div>
       </footer>
-      <CookieConsent />
+      <CookieConsent lang={lang} t={t} />
     </div>
   );
 }
