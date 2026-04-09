@@ -57,6 +57,59 @@ const GALLERY_IMAGES = [
 
 const LOGO_URL = 'https://i.ibb.co/bMdVhRn5/Chat-GPT-Image-Apr-6-2026-10-27-34-PM.png';
 
+function CookieConsent() {
+  const [isVisible, setIsVisible] = useState(false);
+
+  useEffect(() => {
+    const consent = localStorage.getItem('cookie-consent');
+    if (!consent) {
+      const timer = setTimeout(() => setIsVisible(true), 2000);
+      return () => clearTimeout(timer);
+    }
+  }, []);
+
+  const acceptCookies = () => {
+    localStorage.setItem('cookie-consent', 'true');
+    setIsVisible(false);
+  };
+
+  return (
+    <AnimatePresence>
+      {isVisible && (
+        <motion.div
+          initial={{ y: 100, opacity: 0 }}
+          animate={{ y: 0, opacity: 1 }}
+          exit={{ y: 100, opacity: 0 }}
+          className="fixed bottom-0 left-0 right-0 z-[100] p-4 md:p-6"
+        >
+          <div className="max-w-4xl mx-auto bg-inverse-surface text-inverse-on-surface p-6 md:p-8 shadow-2xl border border-white/10 flex flex-col md:flex-row items-center justify-between gap-6">
+            <div className="flex-grow">
+              <h4 className="font-headline font-bold text-lg mb-2 tracking-tight">Cookie Policy</h4>
+              <p className="text-xs md:text-sm opacity-80 leading-relaxed max-w-2xl">
+                We use cookies to enhance your experience, analyze site traffic, and serve better content. By clicking "Accept All", you consent to our use of cookies.
+              </p>
+            </div>
+            <div className="flex items-center gap-4 w-full md:w-auto">
+              <button 
+                onClick={() => setIsVisible(false)}
+                className="flex-1 md:flex-none px-6 py-3 text-[10px] uppercase font-bold tracking-widest hover:bg-white/10 transition-colors"
+              >
+                Decline
+              </button>
+              <button 
+                onClick={acceptCookies}
+                className="flex-1 md:flex-none px-8 py-3 bg-primary text-white text-[10px] uppercase font-bold tracking-widest hover:shadow-lg transition-all"
+              >
+                Accept All
+              </button>
+            </div>
+          </div>
+        </motion.div>
+      )}
+    </AnimatePresence>
+  );
+}
+
 export default function App() {
   const [currentHero, setCurrentHero] = useState(0);
   const [lang, setLang] = useState<'ENG' | 'ZUL'>('ENG');
@@ -1098,6 +1151,7 @@ export default function App() {
           </div>
         </div>
       </footer>
+      <CookieConsent />
     </div>
   );
 }
