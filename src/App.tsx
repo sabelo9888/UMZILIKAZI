@@ -47,12 +47,12 @@ const HERO_IMAGES = [
 ];
 
 const GALLERY_IMAGES = [
-  { url: 'https://i.ibb.co/JjQQNNnN/93011.jpg', label: 'School Spirit' },
+  { url: 'https://i.ibb.co/JjQQNNnN/93011.jpg', label: 'Academic Excellence' },
   { url: 'https://i.ibb.co/xKDbSqW8/93012-1.jpg', label: 'Academic Excellence' },
-  { url: 'https://i.ibb.co/WpW4CGMC/93013.jpg', label: 'Campus Life' },
-  { url: 'https://i.ibb.co/YBZp9SWt/93014.jpg', label: 'Student Achievements' },
-  { url: 'https://i.ibb.co/b5Rj96j4/93015.jpg', label: 'Sports & Culture' },
-  { url: 'https://i.ibb.co/JjQQNNnN/93011.jpg', label: 'Community Events' }
+  { url: 'https://i.ibb.co/WpW4CGMC/93013.jpg', label: 'Gagasi FM Geleza Nathi' },
+  { url: 'https://i.ibb.co/YBZp9SWt/93014.jpg', label: 'Gagasi FM Geleza Nathi' },
+  { url: 'https://i.ibb.co/b5Rj96j4/93015.jpg', label: 'Gagasi FM Geleza Nathi' },
+  { url: 'https://i.ibb.co/JjQQNNnN/93011.jpg', label: 'Academic Excellence' }
 ];
 
 const LOGO_URL = 'https://i.ibb.co/bMdVhRn5/Chat-GPT-Image-Apr-6-2026-10-27-34-PM.png';
@@ -291,8 +291,12 @@ export default function App() {
                 {t[lang].motto}
               </span>
               <div className="flex flex-wrap gap-2 md:gap-4 mb-3 md:mb-4">
-                <span className="text-white text-[10px] md:text-sm font-bold bg-white/10 backdrop-blur px-2 py-1 border border-white/20">{t[lang].rank}</span>
-                <span className="text-white text-[10px] md:text-sm font-bold bg-white/10 backdrop-blur px-2 py-1 border border-white/20">{t[lang].passRate}</span>
+                <span className="text-white text-[10px] md:text-sm font-bold bg-white/10 backdrop-blur px-2 py-1 border border-white/20">
+                  <Counter value={1} prefix="#" /> {lang === 'ENG' ? 'National Rank 2024' : 'Ezweni 2024'}
+                </span>
+                <span className="text-white text-[10px] md:text-sm font-bold bg-white/10 backdrop-blur px-2 py-1 border border-white/20">
+                  <Counter value={100} suffix="%" /> {lang === 'ENG' ? 'Pass Rate' : 'Okuphasa'}
+                </span>
               </div>
               <h1 className="text-4xl md:text-8xl editorial-heading text-white mb-4 md:mb-6 leading-tight tracking-tight">
                 {t[lang].heroTitle}
@@ -673,12 +677,12 @@ export default function App() {
                   {[
                     { label: 'School Type', value: 'Public Rural School (Quintile 2)' },
                     { label: 'Grades', value: 'Grade 8 to Grade 12' },
-                    { label: 'Enrolment', value: '1,657+ Learners' },
-                    { label: 'Educators', value: '23' }
+                    { label: 'Enrolment', value: <><Counter value={1657} suffix="+" /> Learners</> },
+                    { label: 'Educators', value: <Counter value={23} /> }
                   ].map((info, idx) => (
                     <div key={idx}>
                       <span className="text-[9px] uppercase tracking-widest text-white/60 block mb-1">{info.label}</span>
-                      <p className="font-bold text-xs md:text-base">{info.value}</p>
+                      <div className="font-bold text-xs md:text-base">{info.value}</div>
                     </div>
                   ))}
                 </div>
@@ -750,17 +754,6 @@ export default function App() {
                 viewport={{ once: true }}
                 transition={{ delay: 0.2 }}
               >
-                <div className="bg-surface-container-low mb-6 h-48 md:h-80 relative overflow-hidden group">
-                  <img 
-                    alt="Map" 
-                    className="w-full h-full object-cover grayscale opacity-50 group-hover:opacity-70 transition-opacity" 
-                    src="https://lh3.googleusercontent.com/aida-public/AB6AXuCnnvv3p8GHkuGEPAm564F2V2wvSQCXmHYA0IQASk715Jf5vPTMMZtr3zogPI-ZHoePMd1XkQxjMfrvILA0lOLZn8h62XEJt7EJ84V-gVdrVEOHRxsracJm_oTQ3vA2VigDBQ4jsoU1EJSFnoqdC_qh2pQER-MJzubQX6N1Q9eRqzG3BCnw0n14XzWJE18Smok4VABanLt8l4-H3tzWkSoOcC1SUDsLU8e6NpXf5AItegZ-Y7oB4ZeYU5VT0yKoTe8C_Ksu_ISdoOWJ"
-                    referrerPolicy="no-referrer"
-                  />
-                  <div className="absolute inset-0 flex items-center justify-center">
-                    <div className="bg-primary text-white px-4 py-2 shadow-2xl font-bold font-headline text-[10px]">UTRECHT, KWAZULU-NATAL</div>
-                  </div>
-                </div>
                 <div className="space-y-5">
                   {[
                     { icon: <MapPin className="text-primary w-5 h-5" />, label: 'Location', value: '326 D-Off Utrecht Road, Utrecht, KwaZulu-Natal' },
