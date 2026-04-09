@@ -25,6 +25,7 @@ import {
   Trophy,
   AlertCircle,
   ChevronLeft,
+  ArrowRight,
   Calendar as CalendarIcon
 } from 'lucide-react';
 import { motion, AnimatePresence, animate, useMotionValue, useTransform, useInView } from 'motion/react';
@@ -775,12 +776,12 @@ export default function App() {
       allRightsReserved: 'All Rights Reserved.',
       successPortalTitle: 'Your Future Starts Here',
       successPortalSubtitle: 'Calculate your points, find funding, and apply to university all in one place.',
-      apsCalculatorTitle: 'APS Score Calculator 🎓',
+      apsCalculatorTitle: 'APS Score Calculator',
       apsCalculatorDesc: 'Enter your percentages for 7 subjects. Life Orientation is automatically excluded from the total.',
       subjectLabel: 'Subject',
       percentageLabel: 'Percentage (%)',
       totalApsScore: 'TOTAL APS SCORE',
-      documentChecklistTitle: 'Document Readiness Checklist ✅',
+      documentChecklistTitle: 'Document Readiness Checklist',
       documentChecklistNote: 'Check these off once you have scanned them to your phone!',
       checklistItems: [
         'Certified ID Copy',
@@ -789,12 +790,12 @@ export default function App() {
         'Proof of Residence',
         'Affidavit of Income'
       ],
-      resourceHubTitle: 'External Resource Hub 💰',
+      resourceHubTitle: 'External Resource Hub',
       applyNsfas: 'Apply for NSFAS Funding',
       caoKzn: 'CAO KZN Applications',
       saYouth: 'SA Youth Career Portal',
       tvetCareers: 'TVET College Careers',
-      importantDatesTitle: 'Important Dates 📅',
+      importantDatesTitle: 'Important Dates',
       dateEvent: 'Event',
       dateDeadline: 'Deadline',
       eventCao: 'CAO/University Closures',
@@ -803,8 +804,8 @@ export default function App() {
       deadlineCao: '30 September',
       deadlineNsfas: 'Ends late November',
       deadlineResults: 'January',
-      congratsMessage: 'Congratulations! You qualify for most university degrees. Keep it up! 🎉',
-      workHarderMessage: 'Keep pushing! Aim for 23+ points to unlock more university options. You can do it! 💪',
+      congratsMessage: 'Congratulations! You qualify for most university degrees. Keep it up!',
+      workHarderMessage: 'Keep pushing! Aim for 23+ points to unlock more university options. You can do it!',
       subjectsList: [
         'isiZulu Home Language',
         'English First Additional Language',
@@ -821,9 +822,11 @@ export default function App() {
         'History',
         'Tourism'
       ],
-      enterSuccessPortal: 'Enter Success Portal 🎓',
+      enterSuccessPortal: 'Enter Success Portal',
       successPortalCtaTitle: 'Your Journey Beyond Matric Starts Here',
       successPortalCtaDesc: 'Calculate your APS score, find university funding, and access important application dates in our dedicated Success Portal.',
+      successPortalPreviewTitle: 'Success Portal',
+      successPortalPreviewDesc: 'Our dedicated Success Portal is designed to guide you through your post-matric journey. Calculate your APS score, check document readiness, and access vital resources for university and funding applications.',
       privacyPolicy: 'Privacy Policy',
       termsOfUse: 'Terms of Use',
       cookiePolicy: 'Cookie Policy',
@@ -1084,12 +1087,12 @@ export default function App() {
       allRightsReserved: 'Wonke Amalungelo Agodliwe.',
       successPortalTitle: 'Ikusasa Lakho Liqala Lapha',
       successPortalSubtitle: 'Bala amaphuzu akho, thola uxhaso, futhi ufake isicelo enyuvesi konke endaweni eyodwa.',
-      apsCalculatorTitle: 'Isibali Samaphuzu e-APS 🎓',
+      apsCalculatorTitle: 'Isibali Samaphuzu e-APS',
       apsCalculatorDesc: 'Faka amaphesenti akho ezifundo eziyisikhombisa. I-Life Orientation ikhishwa ngokuzenzakalelayo kwinani eliphelele.',
       subjectLabel: 'Isifundo',
       percentageLabel: 'Iphesenti (%)',
       totalApsScore: 'INANI ELIPHELELE LE-APS',
-      documentChecklistTitle: 'Uhlu Lokuhlola Amadokhumenti ✅',
+      documentChecklistTitle: 'Uhlu Lokuhlola Amadokhumenti',
       documentChecklistNote: 'Maka lokhu uma usukuphathile ocingweni lwakho!',
       checklistItems: [
         'Ikhophi ye-ID eqinisekisiwe',
@@ -1098,12 +1101,12 @@ export default function App() {
         'Ubufakazi Bendawo Yokuhlala',
         'I-Affidavit Yemali Engenayo'
       ],
-      resourceHubTitle: 'Isizinda Sezinsiza Zangaphandle 💰',
+      resourceHubTitle: 'Isizinda Sezinsiza Zangaphandle',
       applyNsfas: 'Faka isicelo soxhaso lwe-NSFAS',
       caoKzn: 'Izicelo ze-CAO KZN',
       saYouth: 'Ingosi Yemisebenzi ye-SA Youth',
       tvetCareers: 'Imisebenzi yama-TVET College',
-      importantDatesTitle: 'Izinsuku Ezibalulekile 📅',
+      importantDatesTitle: 'Izinsuku Ezibalulekile',
       dateEvent: 'Umcimbi',
       dateDeadline: 'Usuku Lokugcina',
       eventCao: 'Ukuvalwa kwe-CAO/Inyuvesi',
@@ -1112,8 +1115,8 @@ export default function App() {
       deadlineCao: '30 kuMandulo',
       deadlineNsfas: 'Kuphela ngasekupheleni kukaLwezi',
       deadlineResults: 'uMasingana',
-      congratsMessage: 'Siyakuhalalisela! Uyakufanelekela ukufunda iziqu eziningi zasenyuvesi. Qhubeka njalo! 🎉',
-      workHarderMessage: 'Qhubeka nokuzikhandla! Hlose amaphuzu angama-23+ ukuze uvule amathuba amaningi asenyuvesi. Ungakwenza! 💪',
+      congratsMessage: 'Siyakuhalalisela! Uyakufanelekela ukufunda iziqu eziningi zasenyuvesi. Qhubeka njalo!',
+      workHarderMessage: 'Qhubeka nokuzikhandla! Hlose amaphuzu angama-23+ ukuze uvule amathuba amaningi asenyuvesi. Ungakwenza!',
       subjectsList: [
         'IsiZulu Home Language',
         'English First Additional Language',
@@ -1130,9 +1133,11 @@ export default function App() {
         'I-History',
         'I-Tourism'
       ],
-      enterSuccessPortal: 'Ngena Kwingosi Yempumelelo 🎓',
+      enterSuccessPortal: 'Ngena Kwingosi Yempumelelo',
       successPortalCtaTitle: 'Uhambo Lwakho Ngale Kwamatric Luqala Lapha',
       successPortalCtaDesc: 'Bala amaphuzu akho e-APS, thola uxhaso lwenyuvesi, futhi ufinyelele izinsuku ezibalulekile zokufaka izicelo kwingosi yethu yempumelelo.',
+      successPortalPreviewTitle: 'Ingosi Yempumelelo',
+      successPortalPreviewDesc: 'Ingosi yethu yempumelelo ezinikele iklanyelwe ukukuqondisa ohambweni lwakho lwangemva kukamatikuletsheni. Bala amaphuzu akho e-APS, hlola ukulungela kwamadokhumenti, futhi ufinyelele izinsiza ezibalulekile zenyuvesi nezicelo zoxhaso.',
       privacyPolicy: 'Inqubomgomo Yobumfihlo',
       termsOfUse: 'Imigomo Yokusebenzisa',
       cookiePolicy: 'Inqubomgomo Yama-Cookie',
@@ -1772,6 +1777,72 @@ export default function App() {
                 {t[lang].viewFullGallery}
               </button>
             </motion.div>
+          </div>
+        </section>
+        
+        {/* SUCCESS PORTAL PREVIEW */}
+        <section className="py-12 md:py-24 bg-primary text-white overflow-hidden relative">
+          <div className="absolute top-0 right-0 w-64 h-64 bg-white/5 rounded-full -mr-32 -mt-32 blur-3xl"></div>
+          <div className="absolute bottom-0 left-0 w-96 h-96 bg-white/5 rounded-full -ml-48 -mb-48 blur-3xl"></div>
+          
+          <div className="max-w-7xl mx-auto px-6 md:px-8 relative z-10">
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+              <motion.div
+                initial={{ opacity: 0, x: -30 }}
+                whileInView={{ opacity: 1, x: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.8 }}
+              >
+                <span className="text-editorial-label text-[#FFD700] mb-3 block uppercase tracking-widest">
+                  {t[lang].successPortal}
+                </span>
+                <h2 className="text-3xl md:text-5xl editorial-heading mb-6 leading-tight">
+                  {t[lang].successPortalPreviewTitle}
+                </h2>
+                <p className="text-lg md:text-xl text-white/80 font-light leading-relaxed mb-8">
+                  {t[lang].successPortalPreviewDesc}
+                </p>
+                <button 
+                  onClick={() => setCurrentPage('success-portal')}
+                  className="inline-flex items-center gap-3 px-8 py-4 bg-[#FFD700] text-primary font-bold hover:bg-[#FFD700]/90 transition-all duration-300 tracking-widest text-sm uppercase group"
+                >
+                  {t[lang].enterSuccessPortal}
+                  <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
+                </button>
+              </motion.div>
+              
+              <motion.div
+                initial={{ opacity: 0, scale: 0.9 }}
+                whileInView={{ opacity: 1, scale: 1 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.8 }}
+                className="relative"
+              >
+                <div className="bg-white/10 backdrop-blur-sm p-8 rounded-sm border border-white/20 shadow-2xl">
+                  <div className="flex items-center gap-4 mb-6">
+                    <div className="w-12 h-12 bg-[#FFD700] rounded-full flex items-center justify-center">
+                      <Calculator className="text-primary w-6 h-6" />
+                    </div>
+                    <h3 className="text-xl font-headline font-bold">{t[lang].apsCalculatorTitle}</h3>
+                  </div>
+                  <div className="space-y-4 opacity-60">
+                    <div className="h-2 bg-white/20 rounded-full w-3/4"></div>
+                    <div className="h-2 bg-white/20 rounded-full w-1/2"></div>
+                    <div className="h-2 bg-white/20 rounded-full w-5/6"></div>
+                  </div>
+                  <div className="mt-8 pt-8 border-t border-white/10 flex items-center gap-4">
+                    <div className="w-12 h-12 bg-white/10 rounded-full flex items-center justify-center">
+                      <Check className="text-[#FFD700] w-6 h-6" />
+                    </div>
+                    <h3 className="text-xl font-headline font-bold">{t[lang].documentChecklistTitle}</h3>
+                  </div>
+                </div>
+                
+                {/* Decorative Elements */}
+                <div className="absolute -top-6 -right-6 w-24 h-24 bg-[#FFD700] opacity-20 blur-2xl rounded-full"></div>
+                <div className="absolute -bottom-10 -left-10 w-32 h-32 bg-white opacity-10 blur-3xl rounded-full"></div>
+              </motion.div>
+            </div>
           </div>
         </section>
 
