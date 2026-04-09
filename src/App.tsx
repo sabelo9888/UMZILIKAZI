@@ -502,7 +502,7 @@ function ContactPage({ lang, t }: { lang: 'ENG' | 'ZUL', t: any }) {
                 <Mail className="w-5 h-5 text-primary" />
               </div>
               <h4 className="font-bold text-sm uppercase tracking-widest">Email</h4>
-              <p className="text-secondary text-sm">sabelondlovuuu98@gmail.com</p>
+              <p className="text-secondary text-sm">info@umzilikazi.co.za</p>
             </div>
             <div className="space-y-2">
               <div className="w-12 h-12 bg-primary/5 rounded-full flex items-center justify-center mx-auto mb-4">
@@ -522,7 +522,7 @@ function HamburgerIcon({ isOpen, onClick }: { isOpen: boolean, onClick: () => vo
   return (
     <button 
       onClick={onClick}
-      className="relative w-10 h-10 flex flex-col items-center justify-center z-[100] md:hidden group"
+      className="relative w-12 h-12 flex flex-col items-center justify-center z-[110] md:hidden group focus:outline-none"
       aria-label="Toggle Menu"
     >
       <div className="w-6 h-5 flex flex-col justify-between relative">
@@ -531,7 +531,7 @@ function HamburgerIcon({ isOpen, onClick }: { isOpen: boolean, onClick: () => vo
           className="w-full h-0.5 bg-primary rounded-full origin-center"
         />
         <motion.span 
-          animate={isOpen ? { opacity: 0 } : { opacity: 1 }}
+          animate={isOpen ? { opacity: 0, x: -10 } : { opacity: 1, x: 0 }}
           className="w-full h-0.5 bg-primary rounded-full"
         />
         <motion.span 
@@ -746,7 +746,7 @@ export default function App() {
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
               onClick={() => setIsMenuOpen(false)}
-              className="absolute inset-0 bg-primary/40 backdrop-blur-sm"
+              className="absolute inset-0 bg-primary/40 backdrop-blur-md"
             />
             
             {/* Menu Content */}
@@ -755,9 +755,10 @@ export default function App() {
               animate={{ x: 0 }}
               exit={{ x: '-100%' }}
               transition={{ type: 'spring', damping: 30, stiffness: 300 }}
-              className="absolute top-0 left-0 bottom-0 w-[85%] max-w-sm bg-white shadow-2xl flex flex-col"
+              className="absolute top-0 left-0 bottom-0 w-[min(85vw,380px)] bg-white shadow-2xl flex flex-col"
+              style={{ paddingTop: 'env(safe-area-inset-top)' }}
             >
-              <div className="p-6 border-b border-outline-variant/10 flex items-center justify-between">
+              <div className="p-6 border-b border-outline-variant/10 flex items-center justify-between bg-white sticky top-0 z-10">
                 <div className="flex items-center gap-3">
                   <img 
                     src={LOGO_URL} 
@@ -765,19 +766,24 @@ export default function App() {
                     className="h-10 w-auto"
                     referrerPolicy="no-referrer"
                   />
-                  <span className="text-sm font-bold text-primary font-headline uppercase tracking-wider">
-                    Menu
-                  </span>
+                  <div className="flex flex-col">
+                    <span className="text-xs font-bold text-primary font-headline uppercase tracking-wider">
+                      Menu
+                    </span>
+                    <span className="text-[8px] text-secondary uppercase tracking-widest font-medium">
+                      Umzilikazi School
+                    </span>
+                  </div>
                 </div>
                 <button 
                   onClick={() => setIsMenuOpen(false)}
-                  className="p-2 hover:bg-primary/5 rounded-full transition-colors"
+                  className="w-10 h-10 flex items-center justify-center hover:bg-primary/5 rounded-full transition-colors focus:outline-none"
                 >
                   <X className="w-6 h-6 text-primary" />
                 </button>
               </div>
 
-              <nav className="flex-grow overflow-y-auto p-6 flex flex-col gap-2">
+              <nav className="flex-grow overflow-y-auto p-4 flex flex-col gap-1">
                 {[
                   { name: 'Home', id: 'home' },
                   { name: t[lang].news, id: 'news' },
@@ -796,34 +802,40 @@ export default function App() {
                       setCurrentPage(item.id as any);
                       setIsMenuOpen(false);
                     }}
-                    className={`text-left py-4 px-4 rounded-xl text-lg font-headline transition-all flex items-center justify-between group ${
+                    className={`text-left min-h-[56px] px-5 rounded-2xl text-lg font-headline transition-all flex items-center justify-between group ${
                       currentPage === item.id 
-                        ? 'bg-primary/5 text-primary font-bold' 
-                        : 'text-secondary hover:bg-surface-container-low'
+                        ? 'bg-primary/5 text-primary font-bold shadow-sm' 
+                        : 'text-secondary hover:bg-surface-container-low active:bg-surface-container-high'
                     }`}
                   >
-                    <span>{item.name}</span>
-                    <ChevronRight className={`w-4 h-4 transition-transform ${currentPage === item.id ? 'translate-x-0 opacity-100' : '-translate-x-2 opacity-0 group-hover:translate-x-0 group-hover:opacity-100'}`} />
+                    <span className="tracking-tight">{item.name}</span>
+                    <ChevronRight className={`w-5 h-5 transition-transform duration-300 ${currentPage === item.id ? 'translate-x-0 opacity-100' : '-translate-x-2 opacity-0 group-hover:translate-x-0 group-hover:opacity-100'}`} />
                   </motion.button>
                 ))}
               </nav>
 
-              <div className="p-8 border-t border-outline-variant/10 bg-surface-container-lowest">
-                <div className="flex flex-col gap-4">
-                  <div className="flex items-center gap-3 text-secondary">
-                    <Phone className="w-4 h-4" />
-                    <span className="text-xs font-medium">073 336 3970</span>
+              <div className="p-8 border-t border-outline-variant/10 bg-surface-container-lowest" style={{ paddingBottom: 'calc(2rem + env(safe-area-inset-bottom))' }}>
+                <div className="flex flex-col gap-5">
+                  <div className="space-y-3">
+                    <div className="flex items-center gap-4 text-secondary group cursor-pointer">
+                      <div className="w-8 h-8 rounded-full bg-primary/5 flex items-center justify-center group-hover:bg-primary group-hover:text-white transition-colors">
+                        <Phone className="w-4 h-4" />
+                      </div>
+                      <span className="text-xs font-semibold tracking-tight">073 336 3970</span>
+                    </div>
+                    <div className="flex items-center gap-4 text-secondary group cursor-pointer">
+                      <div className="w-8 h-8 rounded-full bg-primary/5 flex items-center justify-center group-hover:bg-primary group-hover:text-white transition-colors">
+                        <Mail className="w-4 h-4" />
+                      </div>
+                      <span className="text-xs font-semibold tracking-tight break-all">info@umzilikazi.co.za</span>
+                    </div>
                   </div>
-                  <div className="flex items-center gap-3 text-secondary">
-                    <Mail className="w-4 h-4" />
-                    <span className="text-xs font-medium">sabelondlovuuu98@gmail.com</span>
-                  </div>
-                  <div className="flex gap-4 mt-2">
-                    <button className="p-2 bg-primary/5 rounded-full text-primary hover:bg-primary hover:text-white transition-colors">
-                      <Facebook className="w-4 h-4" />
+                  <div className="flex gap-4 pt-2">
+                    <button className="w-10 h-10 bg-primary/5 rounded-full text-primary flex items-center justify-center hover:bg-primary hover:text-white transition-all shadow-sm">
+                      <Facebook className="w-5 h-5" />
                     </button>
-                    <button className="p-2 bg-primary/5 rounded-full text-primary hover:bg-primary hover:text-white transition-colors">
-                      <Twitter className="w-4 h-4" />
+                    <button className="w-10 h-10 bg-primary/5 rounded-full text-primary flex items-center justify-center hover:bg-primary hover:text-white transition-all shadow-sm">
+                      <Twitter className="w-5 h-5" />
                     </button>
                   </div>
                 </div>
@@ -989,7 +1001,7 @@ export default function App() {
                 <span className="text-editorial-label text-primary mb-3 block">Our Heritage</span>
                 <h2 className="text-2xl md:text-5xl editorial-heading mb-6 leading-tight tracking-tight">Named for a King. Built by a Community.</h2>
                 <div className="space-y-4 md:space-y-6 text-on-surface/80 text-sm md:text-lg leading-relaxed">
-                  <p>Named in honour of King Mzilikazi — the great Zulu commander who founded the Matabele nation — our school stands as a pillar of hope in the Emadlangeni Local Municipality. As a dedicated rural high school serving Wards 3 and 5 of Utrecht, we face immense challenges.</p>
+                  <p>Named in honour of King Mzilikazi — the great Zulu commander who founded the Matabele nation — our school stands as a pillar of hope in the Emadlangeni Local Municipality. As a dedicated rural high school serving Wards 3 and 5 of Emadlangeni, we face immense challenges.</p>
                   <p>Yet, under the unwavering leadership of Principal Mr. Zulu and our dedicated School Governing Body, our learners continue to defy every expectation, proving that talent lives everywhere.</p>
                 </div>
               </motion.div>
@@ -1263,7 +1275,7 @@ export default function App() {
                 <span className="text-editorial-label text-white/70 mb-3 block">Enrollment</span>
                 <h2 className="text-2xl md:text-5xl editorial-heading mb-6 leading-tight tracking-tight">Become Part of the Umzilikazi Family</h2>
                 <p className="text-sm md:text-xl font-light leading-relaxed mb-8 text-white/90">
-                  Umzilikazi Senior Secondary School is a public, rural institution. We welcome all learners from the Utrecht and surrounding Emadlangeni communities. Admission is open to Grade 8 through Grade 12 learners. For enquiries, contact our office directly or use the form below.
+                  Umzilikazi Senior Secondary School is a public, rural institution. We welcome learners from all Emadlangeni and surrounding areas. Admission is open to Grade 8 through Grade 12 learners. For enquiries, contact our office directly or use the form below.
                 </p>
                 <div className="grid grid-cols-2 gap-4 md:gap-6">
                   {[
@@ -1424,7 +1436,7 @@ export default function App() {
                   >
                     <h4 className="font-headline font-bold text-lg mb-4">Grade 8 Enrollment</h4>
                     <p className="text-secondary text-sm leading-relaxed">
-                      We prioritize learners from our local feeder primary schools in Utrecht and surrounding areas. Space is limited, so early application is encouraged once the window opens.
+                      We prioritize learners from our local feeder primary schools in Emadlangeni and surrounding areas. Space is limited, so early application is encouraged once the window opens.
                     </p>
                   </motion.div>
                   <motion.div 
