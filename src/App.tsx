@@ -2,6 +2,7 @@ import {
   Menu, 
   Radio, 
   GraduationCap, 
+  BookOpen,
   Landmark, 
   MapPin, 
   Mail, 
@@ -666,6 +667,45 @@ export default function App() {
       schoolTypeValue: 'Public Rural School (Quintile 2)',
       grades: 'Grades',
       gradesValue: 'Grade 8 to Grade 12',
+      curriculumTitle: 'Our Curriculum',
+      curriculumDesc: 'We offer a comprehensive CAPS-aligned curriculum from Grade 8 through Grade 12, designed to prepare learners for higher education and future careers.',
+      getPhaseTitle: 'General Education & Training (Grade 8 - 9)',
+      getPhaseDesc: 'The GET phase focuses on building a strong foundation across a broad range of subjects.',
+      getSubjects: [
+        'isiZulu Home Language',
+        'English First Additional Language',
+        'Mathematics',
+        'Natural Sciences (Physics & Biology)',
+        'Social Sciences (History & Geography)',
+        'Economic & Management Sciences (EMS)',
+        'Technology',
+        'Life Orientation',
+        'Creative Arts'
+      ],
+      fetPhaseTitle: 'Further Education & Training (Grade 10 - 12)',
+      fetPhaseDesc: 'In the FET phase, learners specialize in specific streams to prepare for the National Senior Certificate (NSC).',
+      fetCompulsoryTitle: 'Compulsory Subjects',
+      fetCompulsorySubjects: [
+        'isiZulu Home Language',
+        'English First Additional Language',
+        'Mathematics or Mathematical Literacy',
+        'Life Orientation'
+      ],
+      fetElectiveTitle: 'Elective Streams',
+      fetStreams: [
+        {
+          name: 'Science Stream',
+          subjects: ['Physical Sciences', 'Life Sciences', 'Agricultural Sciences']
+        },
+        {
+          name: 'Commerce Stream',
+          subjects: ['Accounting', 'Business Studies', 'Economics']
+        },
+        {
+          name: 'Humanities Stream',
+          subjects: ['Geography', 'History', 'Tourism']
+        }
+      ],
       enrolmentLabel: 'Ukubhaliswa',
       learners: 'Learners',
       educators: 'Educators',
@@ -852,6 +892,45 @@ export default function App() {
       schoolTypeValue: 'Isikole Somphakathi Sasemakhaya (Quintile 2)',
       grades: 'Amabanga',
       gradesValue: 'IBanga lesi-8 kuya kwele-12',
+      curriculumTitle: 'Uhlelo Lwethu Lokufunda',
+      curriculumDesc: 'Sinikela ngohlelo lokufunda olubanzi oluhambisana ne-CAPS kusukela eBangeni lesi-8 kuya eBangeni le-12, oluklanyelwe ukulungiselela abafundi imfundo ephakeme nemisebenzi yakusasa.',
+      getPhaseTitle: 'Imfundo Nezoqeqesho Olujwayelekile (IBanga 8 - 9)',
+      getPhaseDesc: 'Isigaba se-GET sigxile ekwakheni isisekelo esiqinile ezifundweni eziningi ezahlukene.',
+      getSubjects: [
+        'IsiZulu Home Language',
+        'English First Additional Language',
+        'I-Mathematics',
+        'I-Natural Sciences (Physics & Biology)',
+        'I-Social Sciences (History & Geography)',
+        'I-Economic & Management Sciences (EMS)',
+        'I-Technology',
+        'I-Life Orientation',
+        'I-Creative Arts'
+      ],
+      fetPhaseTitle: 'Imfundo Nezoqeqesho Olunwetshiwe (IBanga 10 - 12)',
+      fetPhaseDesc: 'Esigabeni se-FET, abafundi bagxila emikhakheni ethile ukuze balungiselele i-National Senior Certificate (NSC).',
+      fetCompulsoryTitle: 'Izifundo Eziphoqelekile',
+      fetCompulsorySubjects: [
+        'IsiZulu Home Language',
+        'English First Additional Language',
+        'I-Mathematics noma i-Mathematical Literacy',
+        'I-Life Orientation'
+      ],
+      fetElectiveTitle: 'Imikhakha Ongayikhetha',
+      fetStreams: [
+        {
+          name: 'Umkhakha Wezesayensi',
+          subjects: ['I-Physical Sciences', 'I-Life Sciences', 'I-Agricultural Sciences']
+        },
+        {
+          name: 'Umkhakha Wezohwebo',
+          subjects: ['I-Accounting', 'I-Business Studies', 'I-Economics']
+        },
+        {
+          name: 'Umkhakha Wezobuntu',
+          subjects: ['I-Geography', 'I-History', 'I-Tourism']
+        }
+      ],
       enrolmentLabel: 'Ukubhaliswa',
       learners: 'Abafundi',
       educators: 'Othisha',
@@ -1806,6 +1885,84 @@ export default function App() {
                         ))}
                       </tbody>
                     </table>
+                  </div>
+                </motion.div>
+
+                {/* Detailed Curriculum Section */}
+                <motion.div 
+                  initial={{ opacity: 0, y: 30 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  className="mt-16 md:mt-24"
+                >
+                  <div className="text-center mb-12">
+                    <span className="text-editorial-label text-primary mb-3 inline-block">{t[lang].gradesValue}</span>
+                    <h2 className="text-2xl md:text-4xl editorial-heading mb-6">{t[lang].curriculumTitle}</h2>
+                    <p className="text-sm md:text-lg text-secondary max-w-3xl mx-auto">{t[lang].curriculumDesc}</p>
+                  </div>
+
+                  <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 md:gap-12">
+                    {/* GET Phase */}
+                    <div className="bg-white p-8 md:p-10 shadow-lg border-t-4 border-primary/40">
+                      <div className="flex items-center gap-4 mb-6">
+                        <div className="bg-primary/5 p-3 rounded-full">
+                          <BookOpen className="text-primary w-6 h-6" />
+                        </div>
+                        <h3 className="text-xl md:text-2xl font-headline font-bold tracking-tight">{t[lang].getPhaseTitle}</h3>
+                      </div>
+                      <p className="text-secondary text-sm md:text-base mb-8 leading-relaxed">{t[lang].getPhaseDesc}</p>
+                      <div className="grid grid-cols-1 sm:grid-cols-2 gap-y-3 gap-x-6">
+                        {t[lang].getSubjects.map((subject: string, idx: number) => (
+                          <div key={idx} className="flex items-center gap-3 text-secondary text-sm">
+                            <div className="w-1.5 h-1.5 bg-primary rounded-full" />
+                            <span>{subject}</span>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+
+                    {/* FET Phase */}
+                    <div className="bg-white p-8 md:p-10 shadow-lg border-t-4 border-primary">
+                      <div className="flex items-center gap-4 mb-6">
+                        <div className="bg-primary/5 p-3 rounded-full">
+                          <GraduationCap className="text-primary w-6 h-6" />
+                        </div>
+                        <h3 className="text-xl md:text-2xl font-headline font-bold tracking-tight">{t[lang].fetPhaseTitle}</h3>
+                      </div>
+                      <p className="text-secondary text-sm md:text-base mb-8 leading-relaxed">{t[lang].fetPhaseDesc}</p>
+                      
+                      <div className="space-y-8">
+                        <div>
+                          <h4 className="text-editorial-label text-primary mb-4 uppercase tracking-widest font-bold text-[10px]">{t[lang].fetCompulsoryTitle}</h4>
+                          <div className="grid grid-cols-1 sm:grid-cols-2 gap-y-3 gap-x-6">
+                            {t[lang].fetCompulsorySubjects.map((subject: string, idx: number) => (
+                              <div key={idx} className="flex items-center gap-3 text-secondary text-sm">
+                                <div className="w-1.5 h-1.5 bg-primary rounded-full" />
+                                <span>{subject}</span>
+                              </div>
+                            ))}
+                          </div>
+                        </div>
+
+                        <div>
+                          <h4 className="text-editorial-label text-primary mb-4 uppercase tracking-widest font-bold text-[10px]">{t[lang].fetElectiveTitle}</h4>
+                          <div className="space-y-6">
+                            {t[lang].fetStreams.map((stream: any, idx: number) => (
+                              <div key={idx} className="bg-surface-container-lowest p-4 border-l-2 border-primary/20">
+                                <h5 className="font-bold text-sm mb-3 text-on-surface">{stream.name}</h5>
+                                <div className="flex flex-wrap gap-2">
+                                  {stream.subjects.map((subject: string, sIdx: number) => (
+                                    <span key={sIdx} className="px-2 py-1 bg-primary/5 text-primary text-[10px] font-medium rounded-sm">
+                                      {subject}
+                                    </span>
+                                  ))}
+                                </div>
+                              </div>
+                            ))}
+                          </div>
+                        </div>
+                      </div>
+                    </div>
                   </div>
                 </motion.div>
               </div>
