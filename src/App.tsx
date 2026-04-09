@@ -926,6 +926,10 @@ export default function App() {
   ];
 
   useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [currentPage]);
+
+  useEffect(() => {
     const timer = setInterval(() => {
       setCurrentHero((prev) => (prev + 1) % HERO_IMAGES.length);
     }, 5000);
