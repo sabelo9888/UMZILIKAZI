@@ -198,36 +198,130 @@ function StormAppeal({ onContactClick }: { onContactClick: () => void }) {
   );
 }
 
-function NewsSection() {
-  const [selectedArticle, setSelectedArticle] = useState<boolean>(false);
-  const article = {
-    title: "Learners Relocated to Sgodiphola Primary Following Severe Storm Damage",
-    date: "February 9, 2026",
-    author: "Sthembile Langa",
-    image: "https://i.ibb.co/nqgH8Vkz/jpeg.jpg",
-    excerpt: "Learners from Umzilikazi Secondary School have been temporarily relocated to Sgodiphola Primary School following severe storm damage that destroyed several classrooms...",
-    content: [
-      "Learners from Umzilikazi Secondary School have been temporarily relocated to Sgodiphola Primary School following severe storm damage that destroyed several classrooms at the school earlier this month.",
-      "The KwaZulu-Natal Department of Education confirmed that the move is an interim measure to ensure continuity of teaching and learning. 'This arrangement has been implemented as an interim measure to ensure the continuity of teaching and learning,' the Department said in a statement.",
-      "School Governing Body (SGB) chairperson Mduduzi Madi said the storm worsened a problem that has existed for years. 'From the moment I took over as SGB chairperson, the school already had a serious shortage of classrooms,' Madi said. 'There were not enough proper, permanent buildings. Most of the classrooms were mobile units or temporary structures.'",
-      "Madi explained that the school had previously raised safety and infrastructure concerns with the Department. 'I received a report from the principal at the time, who explained that there were ongoing discussions with the Department about building a permanent school,' he said. 'We were told that the necessary documentation had been submitted to the Department of Public Works.'",
-      "He also recalled that a teacher had been injured as a result of the condition of the mobile classrooms. 'Following that incident, we went to the district office, where we were again informed that there were plans to build.'",
-      "Financial constraints, however, prevented the construction of permanent buildings. 'The challenge has always been funding. We were told that the Department did not have enough money to proceed with the construction,' he said.",
-      "Madi added that during the 2024 exam period, the MEC for Education visited the school. 'We spoke briefly, and we made a pledge that if the school achieved a 100% pass rate, a permanent school would be built,' he said. 'We did achieve a 100% pass rate, but once again the issue of funding was raised.'",
-      "Instead of permanent buildings, the school received additional mobile classrooms, some of which were destroyed in the January storm. 'Unfortunately, during the recent storm in early January, we lost about six mobile classrooms.'",
-      "The storm also affected the administration block. 'Our administration block was affected. The roof was blown off, and we had to act quickly to repair it because important stationery and materials were stored there,' he said.",
-      "Following the damage, consultative meetings were held with the SGBs and School Management Teams of both Umzilikazi Secondary and Sgodiphola Primary School. Sgodiphola Primary School agreed to assist by providing 14 vacant classrooms.",
-      "On January 14, the Circuit Education Specialist (CES) from the Newcastle Circuit Management Centre conducted a site visit and formally secured the agreement to temporarily accommodate the learners.",
-      "The Department said educators from both schools were thanked for their cooperation. Some learners now travel longer distances, but no major challenges have been reported, and the situation is being closely monitored.",
-      "The Department emphasised that the arrangement remains temporary. The Amajuba District has submitted a proposal to Head Office for the provision of mobile classrooms as a short- to medium-term solution."
-    ]
-  };
+const NEWS_ARTICLE = {
+  title: "Our Learners Relocated to Sgodiphola Primary Following Severe Storm Damage",
+  date: "February 9, 2026",
+  author: "School Administration",
+  image: "https://i.ibb.co/nqgH8Vkz/jpeg.jpg",
+  excerpt: "Following the devastating storm damage that destroyed several of our classrooms earlier this month, we have temporarily relocated our learners to Sgodiphola Primary School...",
+  content: [
+    "Following the devastating storm damage that destroyed several of our classrooms earlier this month, we have temporarily relocated our learners to Sgodiphola Primary School to ensure their education continues without further disruption.",
+    "The KwaZulu-Natal Department of Education has confirmed that this move is an interim measure. 'This arrangement has been implemented as an interim measure to ensure the continuity of teaching and learning,' the Department stated.",
+    "Our School Governing Body (SGB) chairperson, Mduduzi Madi, noted that the storm has worsened an infrastructure problem we have faced for years. 'From the moment I took over as SGB chairperson, our school already had a serious shortage of classrooms,' Madi said. 'We did not have enough proper, permanent buildings, and most of our classrooms were mobile units or temporary structures.'",
+    "We have previously raised these safety and infrastructure concerns. Our principal at the time explained that there were ongoing discussions with the Department about building a permanent school, and all necessary documentation had been submitted to the Department of Public Works.",
+    "We still remember the unfortunate incident where one of our teachers was injured due to the poor condition of the mobile classrooms. Following that, we approached the district office again and were informed that plans to build were in place.",
+    "However, funding constraints have consistently delayed the construction of permanent buildings. We were told the Department lacked the necessary budget to proceed.",
+    "During the 2024 exam period, the MEC for Education visited us. We made a pledge that if we achieved a 100% pass rate, a permanent school would be built. We are proud to say we achieved that 100% pass rate, but the issue of funding was raised once again.",
+    "Instead of the permanent buildings we hoped for, we received additional mobile classrooms, six of which were unfortunately destroyed in the early January storm.",
+    "The storm also struck our administration block, blowing off the roof. We had to act immediately to repair it to protect our stationery and vital school materials.",
+    "In response to this crisis, we held consultative meetings between our SGB, our School Management Team, and our counterparts at Sgodiphola Primary School. We are deeply grateful to Sgodiphola for agreeing to assist us by providing 14 vacant classrooms.",
+    "On January 14, the Circuit Education Specialist (CES) formally secured this agreement. We want to thank our educators and the staff at Sgodiphola for their incredible cooperation during this transition.",
+    "While some of our learners now face longer travel distances, we are monitoring the situation closely and have not encountered major challenges so far. This remains a temporary arrangement while the Amajuba District works with the Head Office to provide more mobile classrooms as a medium-term solution."
+  ]
+};
 
+function NewsPage({ lang, t, onBack }: { lang: 'ENG' | 'ZUL', t: any, onBack: () => void }) {
   const shareLink = window.location.href;
 
   const handleShare = (platform: string) => {
     let url = "";
-    const text = encodeURIComponent(article.title);
+    const text = encodeURIComponent(NEWS_ARTICLE.title);
+    const link = encodeURIComponent(shareLink);
+
+    switch (platform) {
+      case "twitter":
+        url = `https://twitter.com/intent/tweet?text=${text}&url=${link}`;
+        break;
+      case "facebook":
+        url = `https://www.facebook.com/sharer/sharer.php?u=${link}`;
+        break;
+      case "whatsapp":
+        url = `https://wa.me/?text=${text}%20${link}`;
+        break;
+      case "copy":
+        navigator.clipboard.writeText(shareLink);
+        alert("Link copied to clipboard!");
+        return;
+    }
+    if (url) window.open(url, "_blank");
+  };
+
+  return (
+    <motion.div 
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      className="bg-surface min-h-screen pb-20"
+    >
+      <section className="bg-primary text-white py-16 md:py-24">
+        <div className="max-w-4xl mx-auto px-6 md:px-8">
+          <button 
+            onClick={onBack}
+            className="flex items-center gap-2 text-[10px] uppercase tracking-widest font-bold mb-8 hover:text-white/70 transition-colors"
+          >
+            <ChevronRight className="w-4 h-4 rotate-180" /> Back to Home
+          </button>
+          <div className="flex items-center gap-4 text-[10px] md:text-xs text-white/70 mb-6 uppercase tracking-widest font-bold">
+            <span className="flex items-center gap-1"><Calendar className="w-3 h-3" /> {NEWS_ARTICLE.date}</span>
+            <span className="flex items-center gap-1"><User className="w-3 h-3" /> {NEWS_ARTICLE.author}</span>
+          </div>
+          <h1 className="text-3xl md:text-6xl editorial-heading leading-tight mb-8">
+            {NEWS_ARTICLE.title}
+          </h1>
+        </div>
+      </section>
+
+      <div className="max-w-4xl mx-auto px-6 md:px-8 -mt-12 md:-mt-20">
+        <motion.div 
+          initial={{ y: 30, opacity: 0 }}
+          animate={{ y: 0, opacity: 1 }}
+          className="bg-white shadow-2xl rounded-sm overflow-hidden"
+        >
+          <div className="aspect-video md:aspect-[21/9] overflow-hidden">
+            <img 
+              src={NEWS_ARTICLE.image} 
+              alt={NEWS_ARTICLE.title} 
+              className="w-full h-full object-cover"
+              referrerPolicy="no-referrer"
+            />
+          </div>
+          
+          <div className="p-8 md:p-16">
+            <div className="space-y-8 text-on-surface/80 text-base md:text-xl leading-relaxed font-body">
+              {NEWS_ARTICLE.content.map((para, i) => (
+                <p key={i}>{para}</p>
+              ))}
+            </div>
+            
+            <div className="mt-16 pt-10 border-t border-outline-variant/20 flex flex-col md:flex-row justify-between items-center gap-8">
+              <div className="flex items-center gap-6">
+                <span className="text-[10px] uppercase font-bold tracking-widest text-secondary">Share this update:</span>
+                <div className="flex items-center gap-3">
+                  <button onClick={() => handleShare('facebook')} className="p-3 bg-primary/5 hover:bg-primary hover:text-white text-primary rounded-full transition-all"><Facebook className="w-5 h-5" /></button>
+                  <button onClick={() => handleShare('twitter')} className="p-3 bg-primary/5 hover:bg-primary hover:text-white text-primary rounded-full transition-all"><Twitter className="w-5 h-5" /></button>
+                  <button onClick={() => handleShare('whatsapp')} className="p-3 bg-primary/5 hover:bg-primary hover:text-white text-primary rounded-full transition-all"><MessageCircle className="w-5 h-5" /></button>
+                  <button onClick={() => handleShare('copy')} className="p-3 bg-primary/5 hover:bg-primary hover:text-white text-primary rounded-full transition-all"><Link className="w-5 h-5" /></button>
+                </div>
+              </div>
+              <button 
+                onClick={onBack}
+                className="px-10 py-4 bg-primary text-white font-bold uppercase tracking-widest text-xs hover:shadow-xl transition-all"
+              >
+                Return to Homepage
+              </button>
+            </div>
+          </div>
+        </motion.div>
+      </div>
+    </motion.div>
+  );
+}
+
+function NewsSection({ onReadMore }: { onReadMore: () => void }) {
+  const shareLink = window.location.href;
+
+  const handleShare = (platform: string) => {
+    let url = "";
+    const text = encodeURIComponent(NEWS_ARTICLE.title);
     const link = encodeURIComponent(shareLink);
 
     switch (platform) {
@@ -270,26 +364,26 @@ function NewsSection() {
           >
             <div className="md:w-1/3 aspect-video md:aspect-auto overflow-hidden">
               <img 
-                src={article.image} 
-                alt={article.title} 
+                src={NEWS_ARTICLE.image} 
+                alt={NEWS_ARTICLE.title} 
                 className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
                 referrerPolicy="no-referrer"
               />
             </div>
             <div className="p-6 md:p-10 md:w-2/3 flex flex-col justify-center">
               <div className="flex items-center gap-4 text-[10px] md:text-xs text-secondary mb-4 uppercase tracking-widest font-bold">
-                <span className="flex items-center gap-1"><Calendar className="w-3 h-3" /> {article.date}</span>
-                <span className="flex items-center gap-1"><User className="w-3 h-3" /> {article.author}</span>
+                <span className="flex items-center gap-1"><Calendar className="w-3 h-3" /> {NEWS_ARTICLE.date}</span>
+                <span className="flex items-center gap-1"><User className="w-3 h-3" /> {NEWS_ARTICLE.author}</span>
               </div>
               <h3 className="text-xl md:text-3xl font-headline font-bold text-primary mb-4 leading-tight">
-                {article.title}
+                {NEWS_ARTICLE.title}
               </h3>
               <p className="text-sm md:text-base text-secondary leading-relaxed mb-6 line-clamp-3">
-                {article.excerpt}
+                {NEWS_ARTICLE.excerpt}
               </p>
               <div className="flex flex-wrap items-center gap-4">
                 <button 
-                  onClick={() => setSelectedArticle(true)}
+                  onClick={onReadMore}
                   className="px-6 py-3 bg-primary text-white font-bold uppercase tracking-widest text-[10px] md:text-xs hover:bg-primary/90 transition-all"
                 >
                   Read Full Notice
@@ -305,77 +399,6 @@ function NewsSection() {
           </motion.div>
         </div>
       </div>
-
-      {/* Article Modal */}
-      <AnimatePresence>
-        {selectedArticle && (
-          <motion.div 
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            className="fixed inset-0 z-[100] flex items-center justify-center p-4 md:p-8 bg-black/60 backdrop-blur-sm"
-          >
-            <motion.div 
-              initial={{ y: 50, opacity: 0 }}
-              animate={{ y: 0, opacity: 1 }}
-              exit={{ y: 50, opacity: 0 }}
-              className="bg-white w-full max-w-4xl max-h-[90vh] overflow-y-auto relative shadow-2xl"
-            >
-              <button 
-                onClick={() => setSelectedArticle(false)}
-                className="absolute top-4 right-4 p-2 bg-white/80 hover:bg-white rounded-full shadow-md z-10 transition-colors"
-              >
-                <X className="w-6 h-6 text-primary" />
-              </button>
-              
-              <div className="aspect-video md:aspect-[21/9] overflow-hidden">
-                <img 
-                  src={article.image} 
-                  alt={article.title} 
-                  className="w-full h-full object-cover"
-                  referrerPolicy="no-referrer"
-                />
-              </div>
-              
-              <div className="p-6 md:p-12">
-                <div className="flex items-center gap-4 text-[10px] md:text-xs text-secondary mb-6 uppercase tracking-widest font-bold">
-                  <span className="flex items-center gap-1"><Calendar className="w-3 h-3" /> {article.date}</span>
-                  <span className="flex items-center gap-1"><User className="w-3 h-3" /> {article.author}</span>
-                  <span className="flex items-center gap-1"><Clock className="w-3 h-3" /> 5 min read</span>
-                </div>
-                
-                <h2 className="text-2xl md:text-5xl editorial-heading text-primary mb-8 leading-tight">
-                  {article.title}
-                </h2>
-                
-                <div className="space-y-6 text-on-surface/80 text-sm md:text-lg leading-relaxed font-body">
-                  {article.content.map((para, i) => (
-                    <p key={i}>{para}</p>
-                  ))}
-                </div>
-                
-                <div className="mt-12 pt-8 border-t border-outline-variant/20 flex flex-col md:flex-row justify-between items-center gap-6">
-                  <div className="flex items-center gap-4">
-                    <span className="text-[10px] uppercase font-bold tracking-widest text-secondary">Share this notice:</span>
-                    <div className="flex items-center gap-2">
-                      <button onClick={() => handleShare('facebook')} className="p-3 bg-primary/5 hover:bg-primary hover:text-white text-primary rounded-full transition-all"><Facebook className="w-5 h-5" /></button>
-                      <button onClick={() => handleShare('twitter')} className="p-3 bg-primary/5 hover:bg-primary hover:text-white text-primary rounded-full transition-all"><Twitter className="w-5 h-5" /></button>
-                      <button onClick={() => handleShare('whatsapp')} className="p-3 bg-primary/5 hover:bg-primary hover:text-white text-primary rounded-full transition-all"><MessageCircle className="w-5 h-5" /></button>
-                      <button onClick={() => handleShare('copy')} className="p-3 bg-primary/5 hover:bg-primary hover:text-white text-primary rounded-full transition-all"><Link className="w-5 h-5" /></button>
-                    </div>
-                  </div>
-                  <button 
-                    onClick={() => setSelectedArticle(false)}
-                    className="px-8 py-4 border-2 border-primary text-primary font-bold uppercase tracking-widest text-sm hover:bg-primary hover:text-white transition-all"
-                  >
-                    Close Article
-                  </button>
-                </div>
-              </div>
-            </motion.div>
-          </motion.div>
-        )}
-      </AnimatePresence>
     </section>
   );
 }
@@ -480,7 +503,7 @@ function ContactPage({ lang, t }: { lang: 'ENG' | 'ZUL', t: any }) {
 export default function App() {
   const [currentHero, setCurrentHero] = useState(0);
   const [lang, setLang] = useState<'ENG' | 'ZUL'>('ENG');
-  const [currentPage, setCurrentPage] = useState<'home' | 'admissions' | 'academics' | 'gallery' | 'uniforms' | 'contact'>('home');
+  const [currentPage, setCurrentPage] = useState<'home' | 'admissions' | 'academics' | 'gallery' | 'uniforms' | 'contact' | 'news'>('home');
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   const t = {
@@ -529,7 +552,8 @@ export default function App() {
       girlsDesc: 'Maroon skirt or tunic, white long/short-sleeved shirt, maroon blazer with school badge, school tie, white socks or black tights, and black school shoes.',
       sportsUniform: 'Sports & Tracksuit',
       sportsDesc: 'Official school tracksuit and sports shirt, worn during physical education and sporting events.',
-      offerAssistance: 'Offer Assistance'
+      offerAssistance: 'Offer Assistance',
+      news: 'News'
     },
     ZUL: {
       academics: 'Ezokufunda',
@@ -576,7 +600,8 @@ export default function App() {
       girlsDesc: 'Isiketi esibomvu (maroon) noma itunic, ihembe elimhlophe elinemikhono emide/emifushane, ibhantshi elibomvu (maroon) elinebheji lesikole, uthayi wesikole, amasokisi amhlophe noma amateyithi amnyama, nezicathulo zesikole ezimnyama.',
       sportsUniform: 'Izemidlalo neTracksuit',
       sportsDesc: 'I-tracksuit yesikole esemthethweni nehembe lezemidlalo, okugqokwa ngesikhathi semfundo yomzimba nemicimbi yezemidlalo.',
-      offerAssistance: 'Nikela Ngosizo'
+      offerAssistance: 'Nikela Ngosizo',
+      news: 'Izindaba'
     }
   };
 
@@ -643,6 +668,12 @@ export default function App() {
               {t[lang].uniforms}
             </button>
             <button 
+              onClick={() => setCurrentPage('news')}
+              className={`${currentPage === 'news' ? 'text-primary border-b-2 border-primary' : 'text-secondary hover:text-primary'} pb-1 text-editorial-label transition-colors duration-300`}
+            >
+              {t[lang].news}
+            </button>
+            <button 
               onClick={() => setCurrentPage('contact')}
               className={`${currentPage === 'contact' ? 'text-primary border-b-2 border-primary' : 'text-secondary hover:text-primary'} pb-1 text-editorial-label transition-colors duration-300`}
             >
@@ -671,6 +702,7 @@ export default function App() {
               <nav className="flex flex-col p-6 gap-4">
                 {[
                   { name: 'Home', id: 'home' },
+                  { name: t[lang].news, id: 'news' },
                   { name: t[lang].academics, id: 'academics' },
                   { name: t[lang].admissions, id: 'admissions' },
                   { name: t[lang].gallery, id: 'gallery' },
@@ -1109,6 +1141,8 @@ export default function App() {
           </div>
         </section>
 
+        <NewsSection onReadMore={() => setCurrentPage('news')} />
+
         {/* JOIN US / ADMISSIONS SECTION */}
         <section className="py-12 md:py-24 bg-primary text-white overflow-hidden">
           <div className="max-w-7xl mx-auto px-6 md:px-8">
@@ -1225,7 +1259,6 @@ export default function App() {
             </div>
           </div>
         </section>
-        <NewsSection />
           </>
         ) : currentPage === 'admissions' ? (
           <motion.div 
@@ -1491,6 +1524,8 @@ export default function App() {
               </div>
             </section>
           </motion.div>
+        ) : currentPage === 'news' ? (
+          <NewsPage lang={lang} t={t} onBack={() => setCurrentPage('home')} />
         ) : (
           <ContactPage lang={lang} t={t} />
         )}
@@ -1517,6 +1552,7 @@ export default function App() {
               <nav className="grid grid-cols-2 gap-x-4 gap-y-3 text-[10px] md:text-xs">
                 {[
                   { name: 'Home', page: 'home' },
+                  { name: 'News', page: 'news' },
                   { name: 'Academics', page: 'academics' },
                   { name: 'Admissions', page: 'admissions' },
                   { name: 'Gallery', page: 'gallery' },
