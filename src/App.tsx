@@ -221,6 +221,7 @@ const NEWS_ARTICLE = {
 };
 
 function NewsPage({ lang, t, onBack }: { lang: 'ENG' | 'ZUL', t: any, onBack: () => void }) {
+  const [isExpanded, setIsExpanded] = useState(false);
   const shareLink = window.location.href;
 
   const handleShare = (platform: string) => {
@@ -245,6 +246,8 @@ function NewsPage({ lang, t, onBack }: { lang: 'ENG' | 'ZUL', t: any, onBack: ()
     }
     if (url) window.open(url, "_blank");
   };
+
+  const visibleContent = isExpanded ? NEWS_ARTICLE.content : NEWS_ARTICLE.content.slice(0, 3);
 
   return (
     <motion.div 
@@ -286,11 +289,26 @@ function NewsPage({ lang, t, onBack }: { lang: 'ENG' | 'ZUL', t: any, onBack: ()
           </div>
           
           <div className="p-8 md:p-16">
-            <div className="space-y-8 text-on-surface/80 text-base md:text-xl leading-relaxed font-body">
-              {NEWS_ARTICLE.content.map((para, i) => (
+            <div className={`space-y-8 text-on-surface/80 text-base md:text-xl leading-relaxed font-body relative ${!isExpanded ? 'max-h-[500px] overflow-hidden' : ''}`}>
+              {visibleContent.map((para, i) => (
                 <p key={i}>{para}</p>
               ))}
+              
+              {!isExpanded && (
+                <div className="absolute bottom-0 left-0 right-0 h-32 bg-gradient-to-t from-white to-transparent pointer-events-none" />
+              )}
             </div>
+
+            {!isExpanded && (
+              <div className="mt-8 text-center">
+                <button 
+                  onClick={() => setIsExpanded(true)}
+                  className="px-10 py-4 bg-primary text-white font-bold uppercase tracking-widest text-xs hover:shadow-xl transition-all flex items-center gap-2 mx-auto"
+                >
+                  Read Full Article <ChevronRight className="w-4 h-4 rotate-90" />
+                </button>
+              </div>
+            )}
             
             <div className="mt-16 pt-10 border-t border-outline-variant/20 flex flex-col md:flex-row justify-between items-center gap-8">
               <div className="flex items-center gap-6">
@@ -553,7 +571,8 @@ export default function App() {
       sportsUniform: 'Sports & Tracksuit',
       sportsDesc: 'Official school tracksuit and sports shirt, worn during physical education and sporting events.',
       offerAssistance: 'Offer Assistance',
-      news: 'News'
+      news: 'News',
+      schoolLife: 'School Life'
     },
     ZUL: {
       academics: 'Ezokufunda',
@@ -601,7 +620,8 @@ export default function App() {
       sportsUniform: 'Izemidlalo neTracksuit',
       sportsDesc: 'I-tracksuit yesikole esemthethweni nehembe lezemidlalo, okugqokwa ngesikhathi semfundo yomzimba nemicimbi yezemidlalo.',
       offerAssistance: 'Nikela Ngosizo',
-      news: 'Izindaba'
+      news: 'Izindaba',
+      schoolLife: 'Impilo Yasesikoleni'
     }
   };
 
@@ -1063,7 +1083,7 @@ export default function App() {
               viewport={{ once: true }}
               className="mb-10"
             >
-              <span className="text-editorial-label text-primary mb-3 block">Campus Experience</span>
+              <span className="text-editorial-label text-primary mb-3 block">{t[lang].schoolLife}</span>
               <h2 className="text-2xl md:text-5xl editorial-heading mb-4 md:mb-6 leading-tight tracking-tight">Moments That Matter</h2>
               <p className="text-sm md:text-lg text-secondary">Explore the vibrant life at Umzilikazi Senior Secondary School through our gallery of achievements, events, and community moments.</p>
             </motion.div>
