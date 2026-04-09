@@ -267,7 +267,6 @@ export default function App() {
               />
             </AnimatePresence>
             <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/40 to-transparent"></div>
-            <div className="absolute inset-0 bg-gradient-to-r from-black/60 via-transparent to-transparent"></div>
           </div>
           
           {/* Slider Indicators */}
@@ -601,7 +600,6 @@ export default function App() {
                     className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
                     referrerPolicy="no-referrer"
                   />
-                  <div className="absolute inset-0 bg-primary/20 group-hover:bg-transparent transition-colors"></div>
                   <div className="absolute bottom-3 left-3 text-white text-[8px] md:text-xs font-bold uppercase z-10">{item.label}</div>
                 </motion.div>
               ))}
