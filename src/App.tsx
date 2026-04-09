@@ -16,7 +16,16 @@ import {
   Link,
   MessageCircle,
   Calendar,
-  Clock
+  Clock,
+  CheckCircle,
+  ExternalLink,
+  Calculator,
+  FileText,
+  Check,
+  Trophy,
+  AlertCircle,
+  ChevronLeft,
+  Calendar as CalendarIcon
 } from 'lucide-react';
 import { motion, AnimatePresence, animate, useMotionValue, useTransform, useInView } from 'motion/react';
 import { useState, useEffect, useRef, FormEvent } from 'react';
@@ -538,17 +547,24 @@ function HamburgerIcon({ isOpen, onClick }: { isOpen: boolean, onClick: () => vo
 
 export default function App() {
   const [currentHero, setCurrentHero] = useState(0);
+  const [currentCalendarMonth, setCurrentCalendarMonth] = useState(new Date().getMonth());
   const [lang, setLang] = useState<'ENG' | 'ZUL'>('ENG');
-  const [currentPage, setCurrentPage] = useState<'home' | 'admissions' | 'academics' | 'gallery' | 'uniforms' | 'contact' | 'news'>('home');
+  const [currentPage, setCurrentPage] = useState<'home' | 'admissions' | 'academics' | 'gallery' | 'uniforms' | 'contact' | 'news' | 'about' | 'success-portal'>('home');
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [apsSubjects, setApsSubjects] = useState(
+    Array(7).fill(0).map(() => ({ name: '', percentage: 0 }))
+  );
+  const [checklist, setChecklist] = useState<Record<string, boolean>>({});
 
   const t = {
     ENG: {
       home: 'Home',
+      about: 'About Us',
       academics: 'Academics',
       admissions: 'Admissions',
       gallery: 'Gallery',
       uniforms: 'Uniforms',
+      successPortal: 'Success Portal',
       schoolName: 'Umzilikazi Senior Secondary',
       motto: '“Hlonipha Ze Uhlonishwe” — Respect so that you may be respected',
       rank: '#10 National Rank 2024',
@@ -706,6 +722,29 @@ export default function App() {
           subjects: ['Geography', 'History', 'Tourism']
         }
       ],
+      calendarTitle: 'School Calendar 2026',
+      calendarSubtitle: 'Important dates, holidays, and examination periods.',
+      monthNames: ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'],
+      calendarEvents: [
+        { month: 0, events: [{ date: '14 Jan', title: 'Term 1 Begins', type: 'academic' }, { date: '21 Jan', title: 'Grade 8 Orientation', type: 'event' }] },
+        { month: 1, events: [{ date: '12 Feb', title: 'Athletics Day', type: 'event' }, { date: '26 Feb', title: 'Parents Meeting', type: 'event' }] },
+        { month: 2, events: [{ date: '21 Mar', title: 'Human Rights Day', type: 'holiday' }, { date: '28 Mar', title: 'Term 1 Ends', type: 'academic' }] },
+        { month: 3, events: [{ date: '08 Apr', title: 'Term 2 Begins', type: 'academic' }, { date: '18 Apr', title: 'Good Friday', type: 'holiday' }, { date: '21 Apr', title: 'Family Day', type: 'holiday' }, { date: '27 Apr', title: 'Freedom Day', type: 'holiday' }] },
+        { month: 4, events: [{ date: '01 May', title: 'Workers Day', type: 'holiday' }, { date: '15 May', title: 'Mid-Year Exams Begin', type: 'exam' }] },
+        { month: 5, events: [{ date: '16 Jun', title: 'Youth Day', type: 'holiday' }, { date: '27 Jun', title: 'Term 2 Ends', type: 'academic' }] },
+        { month: 6, events: [{ date: '21 Jul', title: 'Term 3 Begins', type: 'academic' }, { date: '30 Jul', title: 'Science Fair', type: 'event' }] },
+        { month: 7, events: [{ date: '09 Aug', title: 'Womens Day', type: 'holiday' }, { date: '25 Aug', title: 'Trial Exams Begin (Gr 12)', type: 'exam' }] },
+        { month: 8, events: [{ date: '24 Sep', title: 'Heritage Day', type: 'holiday' }, { date: '30 Sep', title: 'Term 3 Ends', type: 'academic' }] },
+        { month: 9, events: [{ date: '13 Oct', title: 'Term 4 Begins', type: 'academic' }, { date: '27 Oct', title: 'Final Exams Begin', type: 'exam' }] },
+        { month: 10, events: [{ date: '15 Nov', title: 'Prize Giving Ceremony', type: 'event' }] },
+        { month: 11, events: [{ date: '10 Dec', title: 'Term 4 Ends', type: 'academic' }, { date: '16 Dec', title: 'Day of Reconciliation', type: 'holiday' }] }
+      ],
+      eventTypes: {
+        academic: 'Academic',
+        holiday: 'Holiday',
+        event: 'Event',
+        exam: 'Examination'
+      },
       enrolmentLabel: 'Ukubhaliswa',
       learners: 'Learners',
       educators: 'Educators',
@@ -725,7 +764,66 @@ export default function App() {
       districtDesc: 'Amajuba District, KwaZulu-Natal Department of Education.',
       specialRecognition: 'Special Recognition',
       gagasiRecognition: 'Proudly adopted by Gagasi FM — Geleza Ne Gagasi 2025',
+      visionTitle: 'Our Vision',
+      visionDesc: 'To be a center of excellence that produces holistic, responsible, and globally competitive citizens who are grounded in strong moral values.',
+      missionTitle: 'Our Mission',
+      missionDesc: 'To provide quality teaching and learning through dedication, discipline, and community involvement, ensuring every learner reaches their full potential in a safe and supportive environment.',
+      aboutStoryTitle: 'Our Journey of Excellence',
+      aboutStoryDesc: 'Founded on the principles of resilience and academic rigor, Umzilikazi Senior Secondary School has grown from a humble rural institution into a nationally recognized beacon of success. Named after the legendary King Mzilikazi, we embody the spirit of leadership and determination.',
+      sloganTitle: 'Our Slogan',
+      sloganDesc: '“Hlonipha ukuze nawe uhlonishwe” — Respect so that you may be respected. This is more than just words; it is the foundation of our school culture, teaching our learners that mutual respect is the key to a harmonious and successful society.',
       allRightsReserved: 'All Rights Reserved.',
+      successPortalTitle: 'Your Future Starts Here',
+      successPortalSubtitle: 'Calculate your points, find funding, and apply to university all in one place.',
+      apsCalculatorTitle: 'APS Score Calculator 🎓',
+      apsCalculatorDesc: 'Enter your percentages for 7 subjects. Life Orientation is automatically excluded from the total.',
+      subjectLabel: 'Subject',
+      percentageLabel: 'Percentage (%)',
+      totalApsScore: 'TOTAL APS SCORE',
+      documentChecklistTitle: 'Document Readiness Checklist ✅',
+      documentChecklistNote: 'Check these off once you have scanned them to your phone!',
+      checklistItems: [
+        'Certified ID Copy',
+        'Parent/Guardian ID',
+        'Latest School Report',
+        'Proof of Residence',
+        'Affidavit of Income'
+      ],
+      resourceHubTitle: 'External Resource Hub 💰',
+      applyNsfas: 'Apply for NSFAS Funding',
+      caoKzn: 'CAO KZN Applications',
+      saYouth: 'SA Youth Career Portal',
+      tvetCareers: 'TVET College Careers',
+      importantDatesTitle: 'Important Dates 📅',
+      dateEvent: 'Event',
+      dateDeadline: 'Deadline',
+      eventCao: 'CAO/University Closures',
+      eventNsfas: 'NSFAS Applications',
+      eventResults: 'Matric Results Release',
+      deadlineCao: '30 September',
+      deadlineNsfas: 'Ends late November',
+      deadlineResults: 'January',
+      congratsMessage: 'Congratulations! You qualify for most university degrees. Keep it up! 🎉',
+      workHarderMessage: 'Keep pushing! Aim for 23+ points to unlock more university options. You can do it! 💪',
+      subjectsList: [
+        'isiZulu Home Language',
+        'English First Additional Language',
+        'Mathematics',
+        'Mathematical Literacy',
+        'Life Orientation',
+        'Physical Sciences',
+        'Life Sciences',
+        'Agricultural Sciences',
+        'Accounting',
+        'Business Studies',
+        'Economics',
+        'Geography',
+        'History',
+        'Tourism'
+      ],
+      enterSuccessPortal: 'Enter Success Portal 🎓',
+      successPortalCtaTitle: 'Your Journey Beyond Matric Starts Here',
+      successPortalCtaDesc: 'Calculate your APS score, find university funding, and access important application dates in our dedicated Success Portal.',
       privacyPolicy: 'Privacy Policy',
       termsOfUse: 'Terms of Use',
       cookiePolicy: 'Cookie Policy',
@@ -770,10 +868,12 @@ export default function App() {
     },
     ZUL: {
       home: 'Ekhaya',
+      about: 'Mayelana Nathi',
       academics: 'Ezokufunda',
       admissions: 'Ukungena',
       gallery: 'Imifanekiso',
       uniforms: 'Iyunifomu',
+      successPortal: 'Ingosi Yempumelelo',
       schoolName: 'Umzilikazi Senior Secondary',
       motto: '“Hlonipha ukuze nawe uhlonishwe”',
       rank: 'Inombolo 10 Ezweni 2024',
@@ -931,6 +1031,29 @@ export default function App() {
           subjects: ['I-Geography', 'I-History', 'I-Tourism']
         }
       ],
+      calendarTitle: 'Ikhalenda Lesikole 2026',
+      calendarSubtitle: 'Izinsuku ezibalulekile, amaholide, nezikhathi zezivivinyo.',
+      monthNames: ['uMasingana', 'uNhlolanja', 'uNdasa', 'uMbasa', 'uNhlaba', 'uNhlangulana', 'uNtulikazi', 'uNcwaba', 'uMandulo', 'uMfumfu', 'uLwezi', 'uZibandlela'],
+      calendarEvents: [
+        { month: 0, events: [{ date: '14 Jan', title: 'Ithemu 1 Iyaqala', type: 'academic' }, { date: '21 Jan', title: 'Ukujwayezwa kweBanga lesi-8', type: 'event' }] },
+        { month: 1, events: [{ date: '12 Feb', title: 'Usuku Lwezemidlalo', type: 'event' }, { date: '26 Feb', title: 'Umhlangano Wabazali', type: 'event' }] },
+        { month: 2, events: [{ date: '21 Mar', title: 'Usuku Lwamalungelo Abantu', type: 'holiday' }, { date: '28 Mar', title: 'Ithemu 1 Iyaphothulwa', type: 'academic' }] },
+        { month: 3, events: [{ date: '08 Apr', title: 'Ithemu 2 Iyaqala', type: 'academic' }, { date: '18 Apr', title: 'uLwesihlanu Oluhle', type: 'holiday' }, { date: '21 Apr', title: 'Usuku Lomndeni', type: 'holiday' }, { date: '27 Apr', title: 'Usuku Lwenkululeko', type: 'holiday' }] },
+        { month: 4, events: [{ date: '01 May', title: 'Usuku Lwabasebenzi', type: 'holiday' }, { date: '15 May', title: 'Izivivinyo Zaphakathi Nonyaka', type: 'exam' }] },
+        { month: 5, events: [{ date: '16 Jun', title: 'Usuku Lwentsha', type: 'holiday' }, { date: '27 Jun', title: 'Ithemu 2 Iyaphothulwa', type: 'academic' }] },
+        { month: 6, events: [{ date: '21 Jul', title: 'Ithemu 3 Iyaqala', type: 'academic' }, { date: '30 Jul', title: 'Umbukiso Wezesayensi', type: 'event' }] },
+        { month: 7, events: [{ date: '09 Aug', title: 'Usuku Lwabesifazane', type: 'holiday' }, { date: '25 Aug', title: 'Izivivinyo Zokuzilungiselela (Gr 12)', type: 'exam' }] },
+        { month: 8, events: [{ date: '24 Sep', title: 'Usuku Lwamagugu', type: 'holiday' }, { date: '30 Sep', title: 'Ithemu 3 Iyaphothulwa', type: 'academic' }] },
+        { month: 9, events: [{ date: '13 Oct', title: 'Ithemu 4 Iyaqala', type: 'academic' }, { date: '27 Oct', title: 'Izivivinyo Zokugcina', type: 'exam' }] },
+        { month: 10, events: [{ date: '15 Nov', title: 'Umcimbi Wokunikezwa Kwemiklomelo', type: 'event' }] },
+        { month: 11, events: [{ date: '10 Dec', title: 'Ithemu 4 Iyaphothulwa', type: 'academic' }, { date: '16 Dec', title: 'Usuku Lokubuyisana', type: 'holiday' }] }
+      ],
+      eventTypes: {
+        academic: 'Okwezemfundo',
+        holiday: 'Iholide',
+        event: 'Umcimbi',
+        exam: 'Izivivinyo'
+      },
       enrolmentLabel: 'Ukubhaliswa',
       learners: 'Abafundi',
       educators: 'Othisha',
@@ -950,7 +1073,66 @@ export default function App() {
       districtDesc: 'Isifunda sase-Amajuba, uMnyango Wezemfundo KwaZulu-Natal.',
       specialRecognition: 'Ukuqashelwa Okukhethekile',
       gagasiRecognition: 'Samukelwe ngokuziqhenya yiGagasi FM — Geleza Ne Gagasi 2025',
+      visionTitle: 'Umbono Wethu',
+      visionDesc: 'Ukuba yisizinda sokusebenza kahle esikhiqiza izakhamuzi eziphelele, ezibophezelekile, nezincintisana emhlabeni jikelele ezisekelwe emagugwini aqinile okuziphatha.',
+      missionTitle: 'Inhloso Yethu',
+      missionDesc: 'Ukuhlinzeka ngokufundisa nokufunda okusezingeni eliphezulu ngokuzinikela, ukuqondiswa kwezigwegwe, nokubandakanyeka komphakathi, siqinisekisa ukuthi wonke umfundi ufinyelela amandla akhe aphelele endaweni ephephile nesekelayo.',
+      aboutStoryTitle: 'Uhambo Lwethu Lokusebenza Kahle',
+      aboutStoryDesc: 'Isungulwe phezu kwemigomo yokuqina nokuqiniseka kwezemfundo, iMzilikazi Senior Secondary School isikhule isuka ekubeni yisikole sasemakhaya esithobekile yaba yisibani sempumelelo esaziwayo ezweni lonke. Eqanjwe ngenkosi edumile uMzilikazi, simele umoya wobuholi nokuzimisela.',
+      sloganTitle: 'Isiqubulo Sethu',
+      sloganDesc: '“Hlonipha ukuze nawe uhlonishwe”. Lokhu kungaphezu nje kwamazwi; kuyisisekelo sesiko lesikole sethu, sifundisa abafundi bethu ukuthi ukuhloniphana kuyisihluthulelo somphakathi onokuthula nophumelelayo.',
       allRightsReserved: 'Wonke Amalungelo Agodliwe.',
+      successPortalTitle: 'Ikusasa Lakho Liqala Lapha',
+      successPortalSubtitle: 'Bala amaphuzu akho, thola uxhaso, futhi ufake isicelo enyuvesi konke endaweni eyodwa.',
+      apsCalculatorTitle: 'Isibali Samaphuzu e-APS 🎓',
+      apsCalculatorDesc: 'Faka amaphesenti akho ezifundo eziyisikhombisa. I-Life Orientation ikhishwa ngokuzenzakalelayo kwinani eliphelele.',
+      subjectLabel: 'Isifundo',
+      percentageLabel: 'Iphesenti (%)',
+      totalApsScore: 'INANI ELIPHELELE LE-APS',
+      documentChecklistTitle: 'Uhlu Lokuhlola Amadokhumenti ✅',
+      documentChecklistNote: 'Maka lokhu uma usukuphathile ocingweni lwakho!',
+      checklistItems: [
+        'Ikhophi ye-ID eqinisekisiwe',
+        'I-ID yoMzali/uMgadi',
+        'Umbiko Wesikole Wakamuva',
+        'Ubufakazi Bendawo Yokuhlala',
+        'I-Affidavit Yemali Engenayo'
+      ],
+      resourceHubTitle: 'Isizinda Sezinsiza Zangaphandle 💰',
+      applyNsfas: 'Faka isicelo soxhaso lwe-NSFAS',
+      caoKzn: 'Izicelo ze-CAO KZN',
+      saYouth: 'Ingosi Yemisebenzi ye-SA Youth',
+      tvetCareers: 'Imisebenzi yama-TVET College',
+      importantDatesTitle: 'Izinsuku Ezibalulekile 📅',
+      dateEvent: 'Umcimbi',
+      dateDeadline: 'Usuku Lokugcina',
+      eventCao: 'Ukuvalwa kwe-CAO/Inyuvesi',
+      eventNsfas: 'Izicelo ze-NSFAS',
+      eventResults: 'Ukukhishwa Kwemiphumela Kamatric',
+      deadlineCao: '30 kuMandulo',
+      deadlineNsfas: 'Kuphela ngasekupheleni kukaLwezi',
+      deadlineResults: 'uMasingana',
+      congratsMessage: 'Siyakuhalalisela! Uyakufanelekela ukufunda iziqu eziningi zasenyuvesi. Qhubeka njalo! 🎉',
+      workHarderMessage: 'Qhubeka nokuzikhandla! Hlose amaphuzu angama-23+ ukuze uvule amathuba amaningi asenyuvesi. Ungakwenza! 💪',
+      subjectsList: [
+        'IsiZulu Home Language',
+        'English First Additional Language',
+        'I-Mathematics',
+        'I-Mathematical Literacy',
+        'I-Life Orientation',
+        'I-Physical Sciences',
+        'I-Life Sciences',
+        'I-Agricultural Sciences',
+        'I-Accounting',
+        'I-Business Studies',
+        'I-Economics',
+        'I-Geography',
+        'I-History',
+        'I-Tourism'
+      ],
+      enterSuccessPortal: 'Ngena Kwingosi Yempumelelo 🎓',
+      successPortalCtaTitle: 'Uhambo Lwakho Ngale Kwamatric Luqala Lapha',
+      successPortalCtaDesc: 'Bala amaphuzu akho e-APS, thola uxhaso lwenyuvesi, futhi ufinyelele izinsuku ezibalulekile zokufaka izicelo kwingosi yethu yempumelelo.',
       privacyPolicy: 'Inqubomgomo Yobumfihlo',
       termsOfUse: 'Imigomo Yokusebenzisa',
       cookiePolicy: 'Inqubomgomo Yama-Cookie',
@@ -1047,6 +1229,12 @@ export default function App() {
               {t[lang].home}
             </button>
             <button 
+              onClick={() => setCurrentPage('about')}
+              className={`${currentPage === 'about' ? 'text-primary border-b-2 border-primary' : 'text-secondary hover:text-primary'} pb-1 text-editorial-label transition-colors duration-300`}
+            >
+              {t[lang].about}
+            </button>
+            <button 
               onClick={() => setCurrentPage('academics')}
               className={`${currentPage === 'academics' ? 'text-primary border-b-2 border-primary' : 'text-secondary hover:text-primary'} pb-1 text-editorial-label transition-colors duration-300`}
             >
@@ -1075,6 +1263,12 @@ export default function App() {
               className={`${currentPage === 'news' ? 'text-primary border-b-2 border-primary' : 'text-secondary hover:text-primary'} pb-1 text-editorial-label transition-colors duration-300`}
             >
               {t[lang].news}
+            </button>
+            <button 
+              onClick={() => setCurrentPage('success-portal')}
+              className={`${currentPage === 'success-portal' ? 'text-primary border-b-2 border-primary' : 'text-secondary hover:text-primary'} pb-1 text-editorial-label transition-colors duration-300`}
+            >
+              {t[lang].successPortal}
             </button>
             <button 
               onClick={() => setCurrentPage('contact')}
@@ -1144,11 +1338,13 @@ export default function App() {
               <nav className="flex-grow overflow-y-auto p-4 flex flex-col gap-1">
                 {[
                   { name: t[lang].home, id: 'home' },
+                  { name: t[lang].about, id: 'about' },
                   { name: t[lang].news, id: 'news' },
                   { name: t[lang].academics, id: 'academics' },
                   { name: t[lang].admissions, id: 'admissions' },
                   { name: t[lang].gallery, id: 'gallery' },
                   { name: t[lang].uniforms, id: 'uniforms' },
+                  { name: t[lang].successPortal, id: 'success-portal' },
                   { name: t[lang].contact, id: 'contact' }
                 ].map((item, idx) => (
                   <motion.button
@@ -1261,9 +1457,12 @@ export default function App() {
                 {t[lang].heroDesc}
               </p>
               <div className="flex flex-wrap gap-3 md:gap-4">
-                <a className="inline-block px-5 py-3 md:px-8 md:py-4 bg-white text-primary font-bold hover:bg-white/90 transition-all duration-300 tracking-widest text-[10px] md:text-sm uppercase" href="#">
+                <button 
+                  onClick={() => setCurrentPage('about')}
+                  className="inline-block px-5 py-3 md:px-8 md:py-4 bg-white text-primary font-bold hover:bg-white/90 transition-all duration-300 tracking-widest text-[10px] md:text-sm uppercase text-center"
+                >
                   {t[lang].discover}
-                </a>
+                </button>
                 <a className="inline-block px-5 py-3 md:px-8 md:py-4 border-2 border-white text-white font-bold hover:bg-white hover:text-primary transition-all duration-300 tracking-widest text-[10px] md:text-sm uppercase" 
                   href="#urgent-appeal"
                   onClick={(e) => { 
@@ -1615,6 +1814,50 @@ export default function App() {
 
         <NewsSection onReadMore={() => setCurrentPage('news')} />
 
+        {/* SUCCESS PORTAL CTA */}
+        <section className="py-16 md:py-24 bg-primary text-white overflow-hidden relative border-t border-white/10">
+          <div className="absolute inset-0 opacity-10">
+            <div className="absolute top-0 right-0 w-96 h-96 bg-white rounded-full translate-x-1/2 -translate-y-1/2 blur-3xl"></div>
+            <div className="absolute bottom-0 left-0 w-64 h-64 bg-white rounded-full -translate-x-1/2 translate-y-1/2 blur-3xl"></div>
+          </div>
+          <div className="max-w-7xl mx-auto px-6 md:px-8 relative z-10">
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+              <motion.div
+                initial={{ opacity: 0, x: -30 }}
+                whileInView={{ opacity: 1, x: 0 }}
+                viewport={{ once: true }}
+              >
+                <span className="text-editorial-label text-white/70 mb-4 block uppercase tracking-widest">Grade 12 Resources</span>
+                <h2 className="text-3xl md:text-6xl editorial-heading mb-6 leading-tight">{t[lang].successPortalCtaTitle}</h2>
+                <p className="text-lg md:text-xl font-light opacity-90 mb-8 max-w-xl">
+                  {t[lang].successPortalCtaDesc}
+                </p>
+                <button 
+                  onClick={() => setCurrentPage('success-portal')}
+                  className="inline-block px-8 py-4 bg-[#FFD700] text-primary font-bold hover:bg-[#FFD700]/90 transition-all duration-300 tracking-widest text-sm uppercase shadow-xl"
+                >
+                  {t[lang].enterSuccessPortal}
+                </button>
+              </motion.div>
+              <motion.div
+                initial={{ opacity: 0, scale: 0.9 }}
+                whileInView={{ opacity: 1, scale: 1 }}
+                viewport={{ once: true }}
+                className="relative hidden lg:block"
+              >
+                <div className="aspect-video bg-white/10 backdrop-blur-md border border-white/20 rounded-sm p-8 flex flex-col justify-center items-center text-center">
+                  <Calculator className="w-20 h-20 text-[#FFD700] mb-6" />
+                  <h3 className="text-2xl font-headline font-bold mb-2">APS Calculator</h3>
+                  <p className="text-white/70">Instant results for your university applications</p>
+                </div>
+                <div className="absolute -bottom-6 -right-6 w-32 h-32 bg-[#FFD700] rounded-full flex items-center justify-center shadow-2xl animate-bounce">
+                  <span className="text-primary font-black text-2xl">GO!</span>
+                </div>
+              </motion.div>
+            </div>
+          </div>
+        </section>
+
         {/* JOIN US / ADMISSIONS SECTION */}
         <section className="py-12 md:py-24 bg-primary text-white overflow-hidden">
           <div className="max-w-7xl mx-auto px-6 md:px-8">
@@ -1732,6 +1975,383 @@ export default function App() {
           </div>
         </section>
           </>
+        ) : currentPage === 'about' ? (
+          <motion.div 
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            className="bg-surface min-h-screen"
+          >
+            {/* About Hero */}
+            <section className="bg-primary text-white py-20 md:py-32 relative overflow-hidden">
+              <div className="absolute inset-0 opacity-10">
+                <div className="absolute top-0 left-0 w-64 h-64 bg-white rounded-full -translate-x-1/2 -translate-y-1/2 blur-3xl"></div>
+                <div className="absolute bottom-0 right-0 w-96 h-96 bg-white rounded-full translate-x-1/2 translate-y-1/2 blur-3xl"></div>
+              </div>
+              <div className="max-w-7xl mx-auto px-6 md:px-8 text-center relative z-10">
+                <motion.span 
+                  initial={{ opacity: 0, y: 10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  className="text-editorial-label text-white/70 mb-4 block uppercase tracking-widest"
+                >
+                  {t[lang].ourHeritage}
+                </motion.span>
+                <h1 className="text-4xl md:text-7xl editorial-heading mb-6 leading-tight">{t[lang].about}</h1>
+                <div className="w-24 h-1 bg-white mx-auto mb-8"></div>
+                <p className="text-xl md:text-3xl font-light italic opacity-90 max-w-3xl mx-auto">
+                  {t[lang].motto}
+                </p>
+              </div>
+            </section>
+
+            {/* Principal's Message */}
+            <section className="py-16 md:py-24 bg-white overflow-hidden">
+              <div className="max-w-7xl mx-auto px-6 md:px-8 grid grid-cols-1 md:grid-cols-12 gap-8 md:gap-16 items-center">
+                <motion.div 
+                  initial={{ opacity: 0, x: -50 }}
+                  whileInView={{ opacity: 1, x: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ duration: 0.8 }}
+                  className="md:col-span-5 relative"
+                >
+                  <div className="aspect-[4/5] overflow-hidden rounded-sm shadow-xl">
+                    <img 
+                      alt="Principal Mr. Zulu" 
+                      className="w-full h-full object-cover" 
+                      src="https://lh3.googleusercontent.com/aida/ADBb0ujj4B6RplTco8dfBgZez80ql-TggZJmeuvYwDOZOtVpUnq3VWG2eyiQCE260KoOb2rRRGurXVqJF9LlJVGrKgR3D1pUFgr3jR5ldiwQ6FDEfApNQKi2Endd0MORi60EJzxGaxruJKD_rngfRvBMTNDguOr5Bkv85Wv-Q8ziqRelcsGnOOlIdRfqV3mrWtFi0S28AvRSBHa8tOBWk-GjDUeYVUdO_Aw45QOKcB0ZeseTloMHCNbVHSIwceayTDgjoy72w6iP5VJN8Jk"
+                      referrerPolicy="no-referrer"
+                    />
+                  </div>
+                </motion.div>
+                <div className="md:col-span-7">
+                  <motion.div
+                    initial={{ opacity: 0, x: 50 }}
+                    whileInView={{ opacity: 1, x: 0 }}
+                    viewport={{ once: true }}
+                    transition={{ duration: 0.8 }}
+                  >
+                    <span className="text-editorial-label text-primary mb-3 md:mb-6 block">{t[lang].leadershipVoice}</span>
+                    <h2 className="text-2xl md:text-5xl editorial-heading mb-4 md:mb-8 leading-tight tracking-tight">{t[lang].welcomeTitle}</h2>
+                    <p className="text-base md:text-2xl font-light text-on-surface leading-relaxed mb-6 md:mb-10">
+                      {t[lang].welcomeDesc}
+                    </p>
+                    <div className="mt-6 md:mt-8">
+                      <p className="text-lg md:text-2xl font-bold font-headline text-primary tracking-tight">Mr. Zulu</p>
+                      <p className="text-editorial-label text-secondary mt-1">{t[lang].principalTitle}</p>
+                    </div>
+                  </motion.div>
+                </div>
+              </div>
+            </section>
+
+            {/* Vision & Mission */}
+            <section className="py-16 md:py-24 bg-surface-container-lowest">
+              <div className="max-w-7xl mx-auto px-6 md:px-8">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-16">
+                  <motion.div 
+                    initial={{ opacity: 0, x: -30 }}
+                    whileInView={{ opacity: 1, x: 0 }}
+                    viewport={{ once: true }}
+                    className="bg-white p-8 md:p-12 shadow-xl border-l-8 border-primary rounded-sm"
+                  >
+                    <div className="w-12 h-12 bg-primary/10 flex items-center justify-center mb-6 rounded-full">
+                      <Landmark className="text-primary w-6 h-6" />
+                    </div>
+                    <h2 className="text-2xl md:text-4xl editorial-heading mb-6 text-primary">{t[lang].visionTitle}</h2>
+                    <p className="text-secondary text-lg leading-relaxed">
+                      {t[lang].visionDesc}
+                    </p>
+                  </motion.div>
+
+                  <motion.div 
+                    initial={{ opacity: 0, x: 30 }}
+                    whileInView={{ opacity: 1, x: 0 }}
+                    viewport={{ once: true }}
+                    className="bg-white p-8 md:p-12 shadow-xl border-l-8 border-primary/40 rounded-sm"
+                  >
+                    <div className="w-12 h-12 bg-primary/10 flex items-center justify-center mb-6 rounded-full">
+                      <GraduationCap className="text-primary w-6 h-6" />
+                    </div>
+                    <h2 className="text-2xl md:text-4xl editorial-heading mb-6 text-primary">{t[lang].missionTitle}</h2>
+                    <p className="text-secondary text-lg leading-relaxed">
+                      {t[lang].missionDesc}
+                    </p>
+                  </motion.div>
+                </div>
+              </div>
+            </section>
+
+            {/* Our Story */}
+            <section className="py-16 md:py-24 bg-surface-container-low">
+              <div className="max-w-7xl mx-auto px-6 md:px-8">
+                <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+                  <motion.div 
+                    initial={{ opacity: 0, y: 20 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true }}
+                  >
+                    <span className="text-editorial-label text-primary mb-3 block">{t[lang].ourHeritage}</span>
+                    <h2 className="text-3xl md:text-5xl editorial-heading mb-8 leading-tight">{t[lang].aboutStoryTitle}</h2>
+                    <div className="space-y-6 text-secondary text-lg leading-relaxed">
+                      <p>{t[lang].aboutStoryDesc}</p>
+                      <p>{t[lang].heritageDesc1}</p>
+                      <p>{t[lang].heritageDesc2}</p>
+                    </div>
+                  </motion.div>
+                  <motion.div 
+                    initial={{ opacity: 0, scale: 0.9 }}
+                    whileInView={{ opacity: 1, scale: 1 }}
+                    viewport={{ once: true }}
+                    className="relative"
+                  >
+                    <div className="aspect-[4/5] bg-surface-dim rounded-sm overflow-hidden shadow-2xl">
+                      <img 
+                        src="https://i.ibb.co/JjQQNNnN/93011.jpg" 
+                        alt="School Building" 
+                        className="w-full h-full object-cover"
+                        referrerPolicy="no-referrer"
+                      />
+                    </div>
+                    <div className="absolute -bottom-6 -right-6 bg-primary text-white p-8 shadow-xl hidden md:block">
+                      <p className="text-4xl font-headline font-bold mb-1">100%</p>
+                      <p className="text-xs uppercase tracking-widest opacity-80">{t[lang].passRate}</p>
+                    </div>
+                  </motion.div>
+                </div>
+              </div>
+            </section>
+          </motion.div>
+        ) : currentPage === 'success-portal' ? (
+          <motion.div 
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            className="bg-surface min-h-screen"
+          >
+            {/* Hero */}
+            <section className="bg-primary text-white py-20 relative overflow-hidden">
+              <div className="absolute inset-0 opacity-20">
+                <img 
+                  src="https://images.unsplash.com/photo-1523050853064-80d83904895d?auto=format&fit=crop&q=80" 
+                  alt="Graduation" 
+                  className="w-full h-full object-cover"
+                  referrerPolicy="no-referrer"
+                />
+                <div className="absolute inset-0 bg-primary/60"></div>
+              </div>
+              <div className="max-w-7xl mx-auto px-6 md:px-8 text-center relative z-10">
+                <h1 className="text-4xl md:text-6xl editorial-heading mb-6">{t[lang].successPortalTitle}</h1>
+                <p className="text-xl md:text-2xl font-light opacity-90 max-w-2xl mx-auto">{t[lang].successPortalSubtitle}</p>
+              </div>
+            </section>
+
+            {/* APS Calculator */}
+            <section className="py-16 md:py-24">
+              <div className="max-w-4xl mx-auto px-6 md:px-8">
+                <div className="bg-white p-8 md:p-12 shadow-2xl rounded-sm border-t-8 border-[#FFD700]">
+                  <div className="flex items-center gap-4 mb-8">
+                    <Calculator className="text-[#FFD700] w-10 h-10" />
+                    <div>
+                      <h2 className="text-2xl md:text-3xl editorial-heading">{t[lang].apsCalculatorTitle}</h2>
+                      <p className="text-secondary text-sm mt-1">{t[lang].apsCalculatorDesc}</p>
+                    </div>
+                  </div>
+
+                  <div className="space-y-4">
+                    {apsSubjects.map((subject, idx) => (
+                      <div key={idx} className="grid grid-cols-1 md:grid-cols-2 gap-4 items-end">
+                        <div className="relative pt-4">
+                          <label className="text-[9px] uppercase tracking-widest text-secondary absolute top-0 left-0">{t[lang].subjectLabel} {idx + 1}</label>
+                          <select 
+                            value={subject.name}
+                            onChange={(e) => {
+                              const newSubjects = [...apsSubjects];
+                              newSubjects[idx].name = e.target.value;
+                              setApsSubjects(newSubjects);
+                            }}
+                            className="w-full bg-transparent border-b-2 border-outline-variant py-2 focus:outline-none focus:border-primary transition-colors text-on-surface text-sm appearance-none"
+                          >
+                            <option value="">Select Subject</option>
+                            {t[lang].subjectsList.map((sub: string) => (
+                              <option key={sub} value={sub}>{sub}</option>
+                            ))}
+                          </select>
+                        </div>
+                        <div className="relative pt-4">
+                          <label className="text-[9px] uppercase tracking-widest text-secondary absolute top-0 left-0">{t[lang].percentageLabel}</label>
+                          <input 
+                            type="number"
+                            min="0"
+                            max="100"
+                            value={subject.percentage || ''}
+                            onChange={(e) => {
+                              const newSubjects = [...apsSubjects];
+                              newSubjects[idx].percentage = parseInt(e.target.value) || 0;
+                              setApsSubjects(newSubjects);
+                            }}
+                            className="w-full bg-transparent border-b-2 border-outline-variant py-2 focus:outline-none focus:border-primary transition-colors text-on-surface text-sm"
+                            placeholder="0"
+                          />
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+
+                  <div className="mt-12 p-8 bg-primary text-white text-center rounded-sm relative overflow-hidden">
+                    {(() => {
+                      const totalScore = apsSubjects.reduce((total, sub) => {
+                        if (sub.name === 'Life Orientation' || sub.name === 'I-Life Orientation' || sub.name === 'isiZulu Home Language' && sub.name === 'Life Orientation') {
+                          // Double check for both languages
+                        }
+                        // Actually the check should be more robust
+                        const isLO = sub.name.toLowerCase().includes('life orientation');
+                        if (isLO) return total;
+                        
+                        const p = sub.percentage;
+                        let points = 0;
+                        if (p >= 80) points = 7;
+                        else if (p >= 70) points = 6;
+                        else if (p >= 60) points = 5;
+                        else if (p >= 50) points = 4;
+                        else if (p >= 40) points = 3;
+                        else if (p >= 30) points = 2;
+                        else if (p >= 0) points = 0;
+                        return total + points;
+                      }, 0);
+
+                      const isSuccess = totalScore >= 23;
+
+                      return (
+                        <>
+                          <AnimatePresence mode="wait">
+                            {isSuccess && (
+                              <motion.div 
+                                initial={{ scale: 0, opacity: 0 }}
+                                animate={{ scale: 1.5, opacity: 0.1 }}
+                                className="absolute inset-0 flex items-center justify-center pointer-events-none"
+                              >
+                                <Trophy className="w-64 h-64 text-[#FFD700]" />
+                              </motion.div>
+                            )}
+                          </AnimatePresence>
+                          
+                          <span className="text-editorial-label text-white/60 mb-2 block uppercase tracking-widest relative z-10">{t[lang].totalApsScore}</span>
+                          <motion.div 
+                            key={totalScore}
+                            initial={{ scale: 0.8, opacity: 0 }}
+                            animate={{ scale: 1, opacity: 1 }}
+                            className="text-6xl md:text-8xl font-headline font-black text-[#FFD700] relative z-10 mb-4"
+                          >
+                            {totalScore}
+                          </motion.div>
+
+                          <motion.div
+                            key={isSuccess ? 'success' : 'work'}
+                            initial={{ y: 20, opacity: 0 }}
+                            animate={{ y: 0, opacity: 1 }}
+                            className={`p-4 rounded-lg flex items-center gap-3 justify-center relative z-10 ${isSuccess ? 'bg-[#FFD700]/20 border border-[#FFD700]/30' : 'bg-white/10'}`}
+                          >
+                            {isSuccess ? (
+                              <Trophy className="w-6 h-6 text-[#FFD700]" />
+                            ) : (
+                              <AlertCircle className="w-6 h-6 text-white/60" />
+                            )}
+                            <p className="text-sm md:text-base font-medium">
+                              {isSuccess ? t[lang].congratsMessage : t[lang].workHarderMessage}
+                            </p>
+                          </motion.div>
+                        </>
+                      );
+                    })()}
+                  </div>
+                </div>
+              </div>
+            </section>
+
+            {/* Checklist & Resources */}
+            <section className="py-16 md:py-24 bg-surface-container-low">
+              <div className="max-w-7xl mx-auto px-6 md:px-8">
+                <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
+                  {/* Checklist */}
+                  <div className="bg-white p-8 md:p-10 shadow-xl rounded-sm">
+                    <h2 className="text-2xl md:text-3xl editorial-heading mb-6 flex items-center gap-3">
+                      {t[lang].documentChecklistTitle}
+                    </h2>
+                    <div className="space-y-4">
+                      {t[lang].checklistItems.map((item: string) => (
+                        <label key={item} className="flex items-center gap-4 p-4 border border-outline-variant/10 hover:bg-primary/5 transition-colors cursor-pointer group">
+                          <div className={`w-6 h-6 border-2 rounded flex items-center justify-center transition-colors ${checklist[item] ? 'bg-primary border-primary' : 'border-outline-variant group-hover:border-primary'}`}>
+                            {checklist[item] && <Check className="text-white w-4 h-4" />}
+                          </div>
+                          <input 
+                            type="checkbox" 
+                            className="hidden" 
+                            checked={!!checklist[item]}
+                            onChange={() => setChecklist(prev => ({ ...prev, [item]: !prev[item] }))}
+                          />
+                          <span className={`text-sm md:text-base ${checklist[item] ? 'text-primary font-bold line-through opacity-50' : 'text-secondary'}`}>{item}</span>
+                        </label>
+                      ))}
+                    </div>
+                    <p className="mt-6 text-xs text-primary font-bold italic">
+                      {t[lang].documentChecklistNote}
+                    </p>
+                  </div>
+
+                  {/* Resources */}
+                  <div className="space-y-8">
+                    <h2 className="text-2xl md:text-3xl editorial-heading flex items-center gap-3">
+                      {t[lang].resourceHubTitle}
+                    </h2>
+                    <div className="grid grid-cols-1 gap-4">
+                      {[
+                        { label: t[lang].applyNsfas, link: 'https://www.nsfas.org.za', color: '#FFD700' },
+                        { label: t[lang].caoKzn, link: 'https://www.cao.ac.za', color: '#FFD700' },
+                        { label: t[lang].saYouth, link: 'https://sayouth.mobi', color: '#FFD700' },
+                        { label: t[lang].tvetCareers, link: '#', color: '#FFD700' }
+                      ].map((resource, idx) => (
+                        <a 
+                          key={idx}
+                          href={resource.link}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="flex items-center justify-between p-6 bg-white border-l-8 border-[#FFD700] shadow-md hover:shadow-xl hover:-translate-y-1 transition-all group"
+                        >
+                          <span className="font-headline font-bold text-primary group-hover:text-[#FFD700] transition-colors">{resource.label}</span>
+                          <ExternalLink className="w-5 h-5 text-secondary group-hover:text-[#FFD700] transition-colors" />
+                        </a>
+                      ))}
+                    </div>
+
+                    {/* Important Dates */}
+                    <div className="mt-12 bg-white p-8 shadow-xl rounded-sm">
+                      <h3 className="text-xl md:text-2xl editorial-heading mb-6">{t[lang].importantDatesTitle}</h3>
+                      <table className="w-full text-left border-collapse">
+                        <thead>
+                          <tr className="border-b-2 border-primary/10">
+                            <th className="py-3 text-editorial-label text-primary">{t[lang].dateEvent}</th>
+                            <th className="py-3 text-editorial-label text-primary">{t[lang].dateDeadline}</th>
+                          </tr>
+                        </thead>
+                        <tbody className="divide-y divide-outline-variant/10">
+                          <tr>
+                            <td className="py-4 text-sm font-bold text-on-surface">{t[lang].eventCao}</td>
+                            <td className="py-4 text-sm text-secondary">{t[lang].deadlineCao}</td>
+                          </tr>
+                          <tr>
+                            <td className="py-4 text-sm font-bold text-on-surface">{t[lang].eventNsfas}</td>
+                            <td className="py-4 text-sm text-secondary">{t[lang].deadlineNsfas}</td>
+                          </tr>
+                          <tr>
+                            <td className="py-4 text-sm font-bold text-on-surface">{t[lang].eventResults}</td>
+                            <td className="py-4 text-sm text-secondary">{t[lang].deadlineResults}</td>
+                          </tr>
+                        </tbody>
+                      </table>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </section>
+          </motion.div>
         ) : currentPage === 'admissions' ? (
           <motion.div 
             initial={{ opacity: 0 }}
@@ -1962,6 +2582,103 @@ export default function App() {
                           </div>
                         </div>
                       </div>
+                    </div>
+                  </div>
+                </motion.div>
+                
+                {/* School Calendar Section */}
+                <motion.div 
+                  initial={{ opacity: 0, y: 30 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  className="mt-16 md:mt-24"
+                >
+                  <div className="text-center mb-12">
+                    <span className="text-editorial-label text-primary mb-3 inline-block uppercase tracking-widest">{t[lang].calendarTitle}</span>
+                    <h2 className="text-2xl md:text-4xl editorial-heading mb-6">{t[lang].calendarTitle}</h2>
+                    <p className="text-sm md:text-lg text-secondary max-w-3xl mx-auto">{t[lang].calendarSubtitle}</p>
+                  </div>
+
+                  <div className="bg-white shadow-xl rounded-sm overflow-hidden border border-outline-variant/10">
+                    {/* Calendar Navigation */}
+                    <div className="bg-primary text-white p-6 md:p-8 flex items-center justify-between">
+                      <button 
+                        onClick={() => setCurrentCalendarMonth(prev => (prev === 0 ? 11 : prev - 1))}
+                        className="p-2 hover:bg-white/10 rounded-full transition-colors"
+                      >
+                        <ChevronLeft className="w-6 h-6" />
+                      </button>
+                      <div className="text-center">
+                        <h3 className="text-xl md:text-3xl font-headline font-bold tracking-tight">
+                          {t[lang].monthNames[currentCalendarMonth]} 2026
+                        </h3>
+                      </div>
+                      <button 
+                        onClick={() => setCurrentCalendarMonth(prev => (prev === 11 ? 0 : prev + 1))}
+                        className="p-2 hover:bg-white/10 rounded-full transition-colors"
+                      >
+                        <ChevronRight className="w-6 h-6" />
+                      </button>
+                    </div>
+
+                    {/* Events List */}
+                    <div className="p-6 md:p-10">
+                      <AnimatePresence mode="wait">
+                        <motion.div
+                          key={currentCalendarMonth}
+                          initial={{ opacity: 0, x: 20 }}
+                          animate={{ opacity: 1, x: 0 }}
+                          exit={{ opacity: 0, x: -20 }}
+                          className="space-y-4"
+                        >
+                          {t[lang].calendarEvents.find((m: any) => m.month === currentCalendarMonth)?.events.length > 0 ? (
+                            t[lang].calendarEvents.find((m: any) => m.month === currentCalendarMonth).events.map((event: any, idx: number) => (
+                              <div key={idx} className="flex items-start gap-6 p-4 md:p-6 hover:bg-surface-container-lowest transition-colors border-b border-outline-variant/10 last:border-0">
+                                <div className="flex-shrink-0 w-16 md:w-20 text-center">
+                                  <span className="block text-2xl md:text-3xl font-headline font-black text-primary leading-none">{event.date.split(' ')[0]}</span>
+                                  <span className="block text-[10px] uppercase tracking-widest text-secondary mt-1">{event.date.split(' ')[1]}</span>
+                                </div>
+                                <div className="flex-grow">
+                                  <div className="flex flex-wrap items-center gap-3 mb-2">
+                                    <span className={`px-2 py-0.5 rounded-full text-[9px] font-bold uppercase tracking-widest ${
+                                      event.type === 'academic' ? 'bg-primary/10 text-primary' :
+                                      event.type === 'holiday' ? 'bg-green-100 text-green-700' :
+                                      event.type === 'exam' ? 'bg-red-100 text-red-700' :
+                                      'bg-blue-100 text-blue-700'
+                                    }`}>
+                                      {t[lang].eventTypes[event.type]}
+                                    </span>
+                                  </div>
+                                  <h4 className="text-lg md:text-xl font-bold text-on-surface tracking-tight">{event.title}</h4>
+                                </div>
+                                <div className="hidden md:block">
+                                  <CalendarIcon className="text-outline-variant w-6 h-6" />
+                                </div>
+                              </div>
+                            ))
+                          ) : (
+                            <div className="py-12 text-center">
+                              <CalendarIcon className="w-12 h-12 text-outline-variant mx-auto mb-4 opacity-20" />
+                              <p className="text-secondary italic">No major events scheduled for this month.</p>
+                            </div>
+                          )}
+                        </motion.div>
+                      </AnimatePresence>
+                    </div>
+
+                    {/* Legend */}
+                    <div className="bg-surface-container-lowest p-6 border-t border-outline-variant/10 flex flex-wrap justify-center gap-6">
+                      {Object.entries(t[lang].eventTypes).map(([key, label]: [string, any]) => (
+                        <div key={key} className="flex items-center gap-2">
+                          <div className={`w-3 h-3 rounded-full ${
+                            key === 'academic' ? 'bg-primary' :
+                            key === 'holiday' ? 'bg-green-500' :
+                            key === 'exam' ? 'bg-red-500' :
+                            'bg-blue-500'
+                          }`} />
+                          <span className="text-[10px] uppercase tracking-widest font-bold text-secondary">{label}</span>
+                        </div>
+                      ))}
                     </div>
                   </div>
                 </motion.div>
