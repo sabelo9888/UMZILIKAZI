@@ -200,7 +200,7 @@ function StormAppeal({ onContactClick }: { onContactClick: () => void }) {
 
 const NEWS_ARTICLE = {
   title: "Our Learners Relocated to Sgodiphola Primary Following Severe Storm Damage",
-  date: "February 9, 2026",
+  date: "2 months ago",
   author: "School Administration",
   image: "https://i.ibb.co/nqgH8Vkz/jpeg.jpg",
   excerpt: "Following the devastating storm damage that destroyed several of our classrooms earlier this month, we have temporarily relocated our learners to Sgodiphola Primary School...",
