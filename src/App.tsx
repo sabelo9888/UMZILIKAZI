@@ -1002,17 +1002,17 @@ export default function App() {
                     { 
                       title: t[lang].boysUniform, 
                       desc: t[lang].boysDesc, 
-                      img: 'https://picsum.photos/seed/uniform-boys/800/1000' 
+                      img: 'https://i.ibb.co/hRGcfThW/95079.jpg' 
                     },
                     { 
                       title: t[lang].girlsUniform, 
                       desc: t[lang].girlsDesc, 
-                      img: 'https://picsum.photos/seed/uniform-girls/800/1000' 
+                      img: 'https://i.ibb.co/tpn0w3JZ/95077.jpg' 
                     },
                     { 
                       title: t[lang].sportsUniform, 
                       desc: t[lang].sportsDesc, 
-                      img: 'https://picsum.photos/seed/uniform-sports/800/1000' 
+                      img: 'https://i.ibb.co/HTW5mW5H/95078.jpg' 
                     }
                   ].map((item, idx) => (
                     <motion.div 
