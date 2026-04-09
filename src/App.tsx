@@ -131,7 +131,7 @@ function StormAppeal({ onContactClick }: { onContactClick: () => void }) {
   }, [images.length]);
 
   return (
-    <section className="py-12 md:py-24 bg-tertiary text-white overflow-hidden">
+    <section id="urgent-appeal" className="py-12 md:py-24 bg-tertiary text-white overflow-hidden">
       <div className="max-w-7xl mx-auto px-6 md:px-8">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
           <motion.div
@@ -528,7 +528,8 @@ export default function App() {
       girlsUniform: 'Girls Uniform',
       girlsDesc: 'Maroon skirt or tunic, white long/short-sleeved shirt, maroon blazer with school badge, school tie, white socks or black tights, and black school shoes.',
       sportsUniform: 'Sports & Tracksuit',
-      sportsDesc: 'Official school tracksuit and sports shirt, worn during physical education and sporting events.'
+      sportsDesc: 'Official school tracksuit and sports shirt, worn during physical education and sporting events.',
+      offerAssistance: 'Offer Assistance'
     },
     ZUL: {
       academics: 'Ezokufunda',
@@ -574,7 +575,8 @@ export default function App() {
       girlsUniform: 'Iyunifomu Yamantombazane',
       girlsDesc: 'Isiketi esibomvu (maroon) noma itunic, ihembe elimhlophe elinemikhono emide/emifushane, ibhantshi elibomvu (maroon) elinebheji lesikole, uthayi wesikole, amasokisi amhlophe noma amateyithi amnyama, nezicathulo zesikole ezimnyama.',
       sportsUniform: 'Izemidlalo neTracksuit',
-      sportsDesc: 'I-tracksuit yesikole esemthethweni nehembe lezemidlalo, okugqokwa ngesikhathi semfundo yomzimba nemicimbi yezemidlalo.'
+      sportsDesc: 'I-tracksuit yesikole esemthethweni nehembe lezemidlalo, okugqokwa ngesikhathi semfundo yomzimba nemicimbi yezemidlalo.',
+      offerAssistance: 'Nikela Ngosizo'
     }
   };
 
@@ -754,10 +756,13 @@ export default function App() {
                   {t[lang].discover}
                 </a>
                 <a className="inline-block px-5 py-3 md:px-8 md:py-4 border-2 border-white text-white font-bold hover:bg-white hover:text-primary transition-all duration-300 tracking-widest text-[10px] md:text-sm uppercase" 
-                  href="#"
-                  onClick={(e) => { e.preventDefault(); setCurrentPage('admissions'); }}
+                  href="#urgent-appeal"
+                  onClick={(e) => { 
+                    e.preventDefault(); 
+                    document.getElementById('urgent-appeal')?.scrollIntoView({ behavior: 'smooth' });
+                  }}
                 >
-                  {t[lang].apply}
+                  {t[lang].offerAssistance}
                 </a>
               </div>
             </motion.div>
