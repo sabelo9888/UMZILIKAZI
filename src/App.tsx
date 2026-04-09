@@ -522,21 +522,23 @@ function HamburgerIcon({ isOpen, onClick }: { isOpen: boolean, onClick: () => vo
   return (
     <button 
       onClick={onClick}
-      className="relative w-10 h-10 flex flex-col items-center justify-center gap-1.5 z-[60] md:hidden group"
+      className="relative w-10 h-10 flex flex-col items-center justify-center z-[100] md:hidden group"
       aria-label="Toggle Menu"
     >
-      <motion.span 
-        animate={isOpen ? { rotate: 45, y: 8 } : { rotate: 0, y: 0 }}
-        className="w-6 h-0.5 bg-primary rounded-full origin-center transition-colors group-hover:bg-primary/70"
-      />
-      <motion.span 
-        animate={isOpen ? { opacity: 0, x: -10 } : { opacity: 1, x: 0 }}
-        className="w-6 h-0.5 bg-primary rounded-full transition-colors group-hover:bg-primary/70"
-      />
-      <motion.span 
-        animate={isOpen ? { rotate: -45, y: -8 } : { rotate: 0, y: 0 }}
-        className="w-6 h-0.5 bg-primary rounded-full origin-center transition-colors group-hover:bg-primary/70"
-      />
+      <div className="w-6 h-5 flex flex-col justify-between relative">
+        <motion.span 
+          animate={isOpen ? { rotate: 45, y: 9 } : { rotate: 0, y: 0 }}
+          className="w-full h-0.5 bg-primary rounded-full origin-center"
+        />
+        <motion.span 
+          animate={isOpen ? { opacity: 0 } : { opacity: 1 }}
+          className="w-full h-0.5 bg-primary rounded-full"
+        />
+        <motion.span 
+          animate={isOpen ? { rotate: -45, y: -9 } : { rotate: 0, y: 0 }}
+          className="w-full h-0.5 bg-primary rounded-full origin-center"
+        />
+      </div>
     </button>
   );
 }
@@ -732,34 +734,31 @@ export default function App() {
             </button>
           </div>
         </div>
+      </header>
 
-        {/* Mobile Menu Overlay */}
-        <AnimatePresence>
-          {isMenuOpen && (
-            <motion.div
+      {/* Mobile Menu Overlay - Moved outside header for better stacking context */}
+      <AnimatePresence>
+        {isMenuOpen && (
+          <div className="fixed inset-0 z-[100] md:hidden">
+            {/* Backdrop */}
+            <motion.div 
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
-              className="fixed inset-0 z-[55] md:hidden"
+              onClick={() => setIsMenuOpen(false)}
+              className="absolute inset-0 bg-primary/40 backdrop-blur-sm"
+            />
+            
+            {/* Menu Content */}
+            <motion.div
+              initial={{ x: '-100%' }}
+              animate={{ x: 0 }}
+              exit={{ x: '-100%' }}
+              transition={{ type: 'spring', damping: 30, stiffness: 300 }}
+              className="absolute top-0 left-0 bottom-0 w-[85%] max-w-sm bg-white shadow-2xl flex flex-col"
             >
-              {/* Backdrop */}
-              <motion.div 
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                exit={{ opacity: 0 }}
-                onClick={() => setIsMenuOpen(false)}
-                className="absolute inset-0 bg-primary/20 backdrop-blur-sm"
-              />
-              
-              {/* Menu Content */}
-              <motion.div
-                initial={{ x: '-100%' }}
-                animate={{ x: 0 }}
-                exit={{ x: '-100%' }}
-                transition={{ type: 'spring', damping: 25, stiffness: 200 }}
-                className="absolute top-0 left-0 bottom-0 w-[85%] max-w-sm bg-white shadow-2xl flex flex-col"
-              >
-                <div className="p-6 border-b border-outline-variant/10 flex items-center gap-3">
+              <div className="p-6 border-b border-outline-variant/10 flex items-center justify-between">
+                <div className="flex items-center gap-3">
                   <img 
                     src={LOGO_URL} 
                     alt="Logo" 
@@ -770,63 +769,69 @@ export default function App() {
                     Menu
                   </span>
                 </div>
+                <button 
+                  onClick={() => setIsMenuOpen(false)}
+                  className="p-2 hover:bg-primary/5 rounded-full transition-colors"
+                >
+                  <X className="w-6 h-6 text-primary" />
+                </button>
+              </div>
 
-                <nav className="flex-grow overflow-y-auto p-6 flex flex-col gap-2">
-                  {[
-                    { name: 'Home', id: 'home' },
-                    { name: t[lang].news, id: 'news' },
-                    { name: t[lang].academics, id: 'academics' },
-                    { name: t[lang].admissions, id: 'admissions' },
-                    { name: t[lang].gallery, id: 'gallery' },
-                    { name: t[lang].uniforms, id: 'uniforms' },
-                    { name: t[lang].contact, id: 'contact' }
-                  ].map((item, idx) => (
-                    <motion.button
-                      key={item.id}
-                      initial={{ opacity: 0, x: -20 }}
-                      animate={{ opacity: 1, x: 0 }}
-                      transition={{ delay: 0.1 + idx * 0.05 }}
-                      onClick={() => {
-                        setCurrentPage(item.id as any);
-                        setIsMenuOpen(false);
-                      }}
-                      className={`text-left py-4 px-4 rounded-xl text-lg font-headline transition-all flex items-center justify-between group ${
-                        currentPage === item.id 
-                          ? 'bg-primary/5 text-primary font-bold' 
-                          : 'text-secondary hover:bg-surface-container-low'
-                      }`}
-                    >
-                      <span>{item.name}</span>
-                      <ChevronRight className={`w-4 h-4 transition-transform ${currentPage === item.id ? 'translate-x-0 opacity-100' : '-translate-x-2 opacity-0 group-hover:translate-x-0 group-hover:opacity-100'}`} />
-                    </motion.button>
-                  ))}
-                </nav>
+              <nav className="flex-grow overflow-y-auto p-6 flex flex-col gap-2">
+                {[
+                  { name: 'Home', id: 'home' },
+                  { name: t[lang].news, id: 'news' },
+                  { name: t[lang].academics, id: 'academics' },
+                  { name: t[lang].admissions, id: 'admissions' },
+                  { name: t[lang].gallery, id: 'gallery' },
+                  { name: t[lang].uniforms, id: 'uniforms' },
+                  { name: t[lang].contact, id: 'contact' }
+                ].map((item, idx) => (
+                  <motion.button
+                    key={item.id}
+                    initial={{ opacity: 0, x: -20 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    transition={{ delay: idx * 0.05 }}
+                    onClick={() => {
+                      setCurrentPage(item.id as any);
+                      setIsMenuOpen(false);
+                    }}
+                    className={`text-left py-4 px-4 rounded-xl text-lg font-headline transition-all flex items-center justify-between group ${
+                      currentPage === item.id 
+                        ? 'bg-primary/5 text-primary font-bold' 
+                        : 'text-secondary hover:bg-surface-container-low'
+                    }`}
+                  >
+                    <span>{item.name}</span>
+                    <ChevronRight className={`w-4 h-4 transition-transform ${currentPage === item.id ? 'translate-x-0 opacity-100' : '-translate-x-2 opacity-0 group-hover:translate-x-0 group-hover:opacity-100'}`} />
+                  </motion.button>
+                ))}
+              </nav>
 
-                <div className="p-8 border-t border-outline-variant/10 bg-surface-container-lowest">
-                  <div className="flex flex-col gap-4">
-                    <div className="flex items-center gap-3 text-secondary">
-                      <Phone className="w-4 h-4" />
-                      <span className="text-xs font-medium">073 336 3970</span>
-                    </div>
-                    <div className="flex items-center gap-3 text-secondary">
-                      <Mail className="w-4 h-4" />
-                      <span className="text-xs font-medium">sabelondlovuuu98@gmail.com</span>
-                    </div>
-                    <div className="flex gap-4 mt-2">
-                      <button className="p-2 bg-primary/5 rounded-full text-primary hover:bg-primary hover:text-white transition-colors">
-                        <Facebook className="w-4 h-4" />
-                      </button>
-                      <button className="p-2 bg-primary/5 rounded-full text-primary hover:bg-primary hover:text-white transition-colors">
-                        <Twitter className="w-4 h-4" />
-                      </button>
-                    </div>
+              <div className="p-8 border-t border-outline-variant/10 bg-surface-container-lowest">
+                <div className="flex flex-col gap-4">
+                  <div className="flex items-center gap-3 text-secondary">
+                    <Phone className="w-4 h-4" />
+                    <span className="text-xs font-medium">073 336 3970</span>
+                  </div>
+                  <div className="flex items-center gap-3 text-secondary">
+                    <Mail className="w-4 h-4" />
+                    <span className="text-xs font-medium">sabelondlovuuu98@gmail.com</span>
+                  </div>
+                  <div className="flex gap-4 mt-2">
+                    <button className="p-2 bg-primary/5 rounded-full text-primary hover:bg-primary hover:text-white transition-colors">
+                      <Facebook className="w-4 h-4" />
+                    </button>
+                    <button className="p-2 bg-primary/5 rounded-full text-primary hover:bg-primary hover:text-white transition-colors">
+                      <Twitter className="w-4 h-4" />
+                    </button>
                   </div>
                 </div>
-              </motion.div>
+              </div>
             </motion.div>
-          )}
-        </AnimatePresence>
-      </header>
+          </div>
+        )}
+      </AnimatePresence>
 
       <main className="flex-grow">
         {currentPage === 'home' ? (
