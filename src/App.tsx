@@ -26,6 +26,7 @@ import {
   AlertCircle,
   ChevronLeft,
   ArrowRight,
+  Smartphone,
   Calendar as CalendarIcon
 } from 'lucide-react';
 import { motion, AnimatePresence, animate, useMotionValue, useTransform, useInView } from 'motion/react';
@@ -556,6 +557,7 @@ export default function App() {
     Array(7).fill(0).map(() => ({ name: '', percentage: 0 }))
   );
   const [checklist, setChecklist] = useState<Record<string, boolean>>({});
+  const [activeGuide, setActiveGuide] = useState<string | null>(null);
 
   const t = {
     ENG: {
@@ -827,6 +829,33 @@ export default function App() {
       successPortalCtaDesc: 'Calculate your APS score, find university funding, and access important application dates in our dedicated Success Portal.',
       successPortalPreviewTitle: 'Success Portal',
       successPortalPreviewDesc: 'Our dedicated Success Portal is designed to guide you through your post-matric journey. Calculate your APS score, check document readiness, and access vital resources for university and funding applications.',
+      excludedLabel: '(Excluded)',
+      nsfasGuideTitle: 'How to Apply for NSFAS',
+      nsfasSteps: [
+        'Create a myNSFAS account on their website',
+        'Click on the "Apply" tab and fill in your details',
+        'Upload certified copies of your ID and parents\' IDs',
+        'Provide proof of household income (payslips/affidavits)',
+        'Submit and keep your reference number'
+      ],
+      caoGuideTitle: 'How to Apply via CAO',
+      caoSteps: [
+        'Visit www.cao.ac.za and click on "Apply"',
+        'Enter your details and choose your preferred courses',
+        'Pay the application fee (approx. R250)',
+        'Upload your supporting documents',
+        'Check your status regularly using your CAO number'
+      ],
+      viewGuide: 'View Application Guide',
+      closeGuide: 'Close Guide',
+      scanningTipsTitle: 'Tips for Scanning Documents with Your Phone',
+      scanningTips: [
+        'Use a well-lit area (natural light is best).',
+        'Place the document on a flat, dark surface for contrast.',
+        'Hold your phone directly above the document, not at an angle.',
+        'Ensure all four corners of the document are visible in the frame.',
+        'Avoid using flash to prevent glare on glossy documents.'
+      ],
       privacyPolicy: 'Privacy Policy',
       termsOfUse: 'Terms of Use',
       cookiePolicy: 'Cookie Policy',
@@ -1138,6 +1167,33 @@ export default function App() {
       successPortalCtaDesc: 'Bala amaphuzu akho e-APS, thola uxhaso lwenyuvesi, futhi ufinyelele izinsuku ezibalulekile zokufaka izicelo kwingosi yethu yempumelelo.',
       successPortalPreviewTitle: 'Ingosi Yempumelelo',
       successPortalPreviewDesc: 'Ingosi yethu yempumelelo ezinikele iklanyelwe ukukuqondisa ohambweni lwakho lwangemva kukamatikuletsheni. Bala amaphuzu akho e-APS, hlola ukulungela kwamadokhumenti, futhi ufinyelele izinsiza ezibalulekile zenyuvesi nezicelo zoxhaso.',
+      excludedLabel: '(Kukhishiwe)',
+      nsfasGuideTitle: 'Ungasifaka Kanjani Isicelo se-NSFAS',
+      nsfasSteps: [
+        'Dala i-akhawunti ye-myNSFAS kuwebhusayithi yabo',
+        'Chofoza ithebhu ethi "Apply" bese ugcwalisa imininingwane yakho',
+        'Layisha amakhophi aqinisekisiwe kamazisi wakho nawabazali bakho',
+        'Nikeza ubufakazi bemali engenayo yasekhaya',
+        'Thumela bese ugcina inombolo yakho yereferensi'
+      ],
+      caoGuideTitle: 'Ungasifaka Kanjani Isicelo nge-CAO',
+      caoSteps: [
+        'Vakashela ku-www.cao.ac.za bese uchofoza okuthi "Apply"',
+        'Faka imininingwane yakho bese ukhetha izifundo ozithandayo',
+        'Khokha imali yesicelo (cishe u-R250)',
+        'Layisha amadokhumenti akho asekelayo',
+        'Hlola isimo sakho njalo usebenzisa inombolo yakho ye-CAO'
+      ],
+      viewGuide: 'Buka Umhlahlandlela Wesicelo',
+      closeGuide: 'Vala Umhlahlandlela',
+      scanningTipsTitle: 'Amathiphu Okuskena Amadokhumenti Ngocingo Lwakho',
+      scanningTips: [
+        'Sebenzisa indawo enokukhanya okwanele (ukukhanya kwemvelo kungcono kakhulu).',
+        'Beka idokhumenti endaweni eyisicaba, emnyama ukuze kube nomehluko.',
+        'Bamba ucingo lwakho ngqo ngenhla kwedokhumenti, hhayi ngendlela egobile.',
+        'Qinisekisa ukuthi wonke amakhona amane edokhumenti ayabonakala ohlakeni.',
+        'Gwema ukusebenzisa i-flash ukuze uvimbele ukukhanya okukhulu kumadokhumenti acwebezelayo.'
+      ],
       privacyPolicy: 'Inqubomgomo Yobumfihlo',
       termsOfUse: 'Imigomo Yokusebenzisa',
       cookiePolicy: 'Inqubomgomo Yama-Cookie',
@@ -2230,7 +2286,12 @@ export default function App() {
                     {apsSubjects.map((subject, idx) => (
                       <div key={idx} className="grid grid-cols-1 md:grid-cols-2 gap-4 items-end">
                         <div className="relative pt-4">
-                          <label className="text-[9px] uppercase tracking-widest text-secondary absolute top-0 left-0">{t[lang].subjectLabel} {idx + 1}</label>
+                          <label className="text-[9px] uppercase tracking-widest text-secondary absolute top-0 left-0">
+                            {t[lang].subjectLabel} {idx + 1}
+                            {subject.name.toLowerCase().includes('life orientation') && (
+                              <span className="ml-2 text-primary font-bold">{t[lang].excludedLabel}</span>
+                            )}
+                          </label>
                           <select 
                             value={subject.name}
                             onChange={(e) => {
@@ -2241,9 +2302,11 @@ export default function App() {
                             className="w-full bg-transparent border-b-2 border-outline-variant py-2 focus:outline-none focus:border-primary transition-colors text-on-surface text-sm appearance-none"
                           >
                             <option value="">Select Subject</option>
-                            {t[lang].subjectsList.map((sub: string) => (
-                              <option key={sub} value={sub}>{sub}</option>
-                            ))}
+                            {t[lang].subjectsList
+                              .filter((sub: string) => !apsSubjects.some((s, i) => i !== idx && s.name === sub))
+                              .map((sub: string) => (
+                                <option key={sub} value={sub}>{sub}</option>
+                              ))}
                           </select>
                         </div>
                         <div className="relative pt-4">
@@ -2268,25 +2331,21 @@ export default function App() {
 
                   <div className="mt-12 p-8 bg-primary text-white text-center rounded-sm relative overflow-hidden">
                     {(() => {
-                      const totalScore = apsSubjects.reduce((total, sub) => {
-                        if (sub.name === 'Life Orientation' || sub.name === 'I-Life Orientation' || sub.name === 'isiZulu Home Language' && sub.name === 'Life Orientation') {
-                          // Double check for both languages
-                        }
-                        // Actually the check should be more robust
-                        const isLO = sub.name.toLowerCase().includes('life orientation');
-                        if (isLO) return total;
-                        
-                        const p = sub.percentage;
-                        let points = 0;
-                        if (p >= 80) points = 7;
-                        else if (p >= 70) points = 6;
-                        else if (p >= 60) points = 5;
-                        else if (p >= 50) points = 4;
-                        else if (p >= 40) points = 3;
-                        else if (p >= 30) points = 2;
-                        else if (p >= 0) points = 0;
-                        return total + points;
-                      }, 0);
+                      const totalScore = apsSubjects
+                        .filter(sub => sub.name && !sub.name.toLowerCase().includes('life orientation'))
+                        .map(sub => {
+                          const p = sub.percentage;
+                          if (p >= 80) return 7;
+                          if (p >= 70) return 6;
+                          if (p >= 60) return 5;
+                          if (p >= 50) return 4;
+                          if (p >= 40) return 3;
+                          if (p >= 30) return 2;
+                          return 0;
+                        })
+                        .sort((a, b) => b - a)
+                        .slice(0, 6)
+                        .reduce((sum, p) => sum + p, 0);
 
                       const isSuccess = totalScore >= 23;
 
@@ -2365,6 +2424,22 @@ export default function App() {
                     <p className="mt-6 text-xs text-primary font-bold italic">
                       {t[lang].documentChecklistNote}
                     </p>
+
+                    {/* Scanning Tips Section */}
+                    <div className="mt-10 pt-8 border-t border-outline-variant/20">
+                      <h3 className="text-lg font-headline font-bold text-primary mb-4 flex items-center gap-2">
+                        <Smartphone className="w-5 h-5" />
+                        {t[lang].scanningTipsTitle}
+                      </h3>
+                      <ul className="space-y-3">
+                        {t[lang].scanningTips.map((tip: string, idx: number) => (
+                          <li key={idx} className="flex gap-3 text-sm text-secondary leading-relaxed">
+                            <span className="flex-shrink-0 w-1.5 h-1.5 bg-[#FFD700] rounded-full mt-2"></span>
+                            {tip}
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
                   </div>
 
                   {/* Resources */}
@@ -2374,21 +2449,58 @@ export default function App() {
                     </h2>
                     <div className="grid grid-cols-1 gap-4">
                       {[
-                        { label: t[lang].applyNsfas, link: 'https://www.nsfas.org.za', color: '#FFD700' },
-                        { label: t[lang].caoKzn, link: 'https://www.cao.ac.za', color: '#FFD700' },
-                        { label: t[lang].saYouth, link: 'https://sayouth.mobi', color: '#FFD700' },
-                        { label: t[lang].tvetCareers, link: '#', color: '#FFD700' }
+                        { id: 'nsfas', label: t[lang].applyNsfas, link: 'https://www.nsfas.org.za', color: '#FFD700', guideTitle: t[lang].nsfasGuideTitle, steps: t[lang].nsfasSteps },
+                        { id: 'cao', label: t[lang].caoKzn, link: 'https://www.cao.ac.za', color: '#FFD700', guideTitle: t[lang].caoGuideTitle, steps: t[lang].caoSteps },
+                        { id: 'sa-youth', label: t[lang].saYouth, link: 'https://sayouth.mobi', color: '#FFD700' },
+                        { id: 'tvet', label: t[lang].tvetCareers, link: '#', color: '#FFD700' }
                       ].map((resource, idx) => (
-                        <a 
-                          key={idx}
-                          href={resource.link}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="flex items-center justify-between p-6 bg-white border-l-8 border-[#FFD700] shadow-md hover:shadow-xl hover:-translate-y-1 transition-all group"
-                        >
-                          <span className="font-headline font-bold text-primary group-hover:text-[#FFD700] transition-colors">{resource.label}</span>
-                          <ExternalLink className="w-5 h-5 text-secondary group-hover:text-[#FFD700] transition-colors" />
-                        </a>
+                        <div key={idx} className="space-y-2">
+                          <div className="flex flex-col md:flex-row gap-2">
+                            <a 
+                              href={resource.link}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              className="flex-grow flex items-center justify-between p-6 bg-white border-l-8 border-[#FFD700] shadow-md hover:shadow-xl hover:-translate-y-1 transition-all group"
+                            >
+                              <span className="font-headline font-bold text-primary group-hover:text-[#FFD700] transition-colors">{resource.label}</span>
+                              <ExternalLink className="w-5 h-5 text-secondary group-hover:text-[#FFD700] transition-colors" />
+                            </a>
+                            {resource.steps && (
+                              <button 
+                                onClick={() => setActiveGuide(activeGuide === resource.id ? null : resource.id)}
+                                className="px-4 py-2 bg-primary/5 text-primary text-xs font-bold uppercase tracking-widest hover:bg-primary hover:text-white transition-all flex items-center justify-center gap-2"
+                              >
+                                <BookOpen className="w-4 h-4" />
+                                {activeGuide === resource.id ? t[lang].closeGuide : t[lang].viewGuide}
+                              </button>
+                            )}
+                          </div>
+                          
+                          <AnimatePresence>
+                            {activeGuide === resource.id && resource.steps && (
+                              <motion.div
+                                initial={{ height: 0, opacity: 0 }}
+                                animate={{ height: 'auto', opacity: 1 }}
+                                exit={{ height: 0, opacity: 0 }}
+                                className="overflow-hidden"
+                              >
+                                <div className="bg-primary/5 p-6 border-l-8 border-primary/20 rounded-sm">
+                                  <h4 className="font-headline font-bold text-primary mb-4">{resource.guideTitle}</h4>
+                                  <ul className="space-y-3">
+                                    {resource.steps.map((step: string, sIdx: number) => (
+                                      <li key={sIdx} className="flex gap-3 text-sm text-secondary">
+                                        <span className="flex-shrink-0 w-6 h-6 bg-primary text-white rounded-full flex items-center justify-center text-[10px] font-bold">
+                                          {sIdx + 1}
+                                        </span>
+                                        <span className="pt-0.5">{step}</span>
+                                      </li>
+                                    ))}
+                                  </ul>
+                                </div>
+                              </motion.div>
+                            )}
+                          </AnimatePresence>
+                        </div>
                       ))}
                     </div>
 
