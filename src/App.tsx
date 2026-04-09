@@ -110,6 +110,88 @@ function CookieConsent() {
   );
 }
 
+function StormAppeal() {
+  const [currentImage, setCurrentImage] = useState(0);
+  const images = [
+    'https://i.ibb.co/nqgH8Vkz/jpeg.jpg',
+    'https://i.ibb.co/Df1bhcC0/kzn-school-damaged-by-storm-2-5-Lee-Ffc.jpg'
+  ];
+
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setCurrentImage((prev) => (prev + 1) % images.length);
+    }, 5000);
+    return () => clearInterval(timer);
+  }, [images.length]);
+
+  return (
+    <section className="py-12 md:py-24 bg-tertiary text-white overflow-hidden">
+      <div className="max-w-7xl mx-auto px-6 md:px-8">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+          <motion.div
+            initial={{ opacity: 0, x: -30 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            viewport={{ once: true }}
+            className="relative"
+          >
+            <span className="text-editorial-label text-white/70 mb-4 block">Urgent Appeal</span>
+            <h2 className="text-3xl md:text-5xl editorial-heading mb-6 leading-tight tracking-tight">
+              Rebuilding After the Storm: A Call for Support
+            </h2>
+            <div className="space-y-6 text-white/90 text-sm md:text-lg leading-relaxed">
+              <p>
+                On the 26th and 27th of December, our school was struck by devastating thunderstorms that leveled six classrooms and severely damaged ten others. This catastrophe has left over 1,600 learners with only six safe classrooms to share.
+              </p>
+              <p>
+                Currently, over 600 of our matric and Grade 11 learners are forced to commute to a neighboring primary school, where they face extreme overcrowding with 60 to 70 students packed into single classrooms.
+              </p>
+              <p className="font-bold text-white">
+                Despite achieving a 100% pass rate and proving our commitment to excellence, we are now fighting for our survival. We are making an urgent call to businesses and the private sector for assistance in rebuilding our facilities.
+              </p>
+              <div className="pt-4">
+                <a 
+                  href="mailto:sabelondlovuuu98@gmail.com" 
+                  className="inline-block px-8 py-4 bg-white text-tertiary font-bold uppercase tracking-widest text-sm hover:bg-white/90 transition-all"
+                >
+                  Offer Assistance
+                </a>
+              </div>
+            </div>
+          </motion.div>
+
+          <motion.div
+            initial={{ opacity: 0, x: 30 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            viewport={{ once: true }}
+            className="relative aspect-video lg:aspect-square overflow-hidden rounded-sm shadow-2xl border-4 border-white/10"
+          >
+            <AnimatePresence mode="wait">
+              <motion.img
+                key={currentImage}
+                src={images[currentImage]}
+                initial={{ opacity: 0, scale: 1.1 }}
+                animate={{ opacity: 1, scale: 1 }}
+                exit={{ opacity: 0, scale: 0.95 }}
+                transition={{ duration: 1 }}
+                className="absolute inset-0 w-full h-full object-cover"
+                referrerPolicy="no-referrer"
+              />
+            </AnimatePresence>
+            <div className="absolute bottom-4 right-4 flex gap-2 z-10">
+              {images.map((_, idx) => (
+                <div 
+                  key={idx} 
+                  className={`w-2 h-2 rounded-full transition-all ${idx === currentImage ? 'bg-white w-6' : 'bg-white/40'}`}
+                />
+              ))}
+            </div>
+          </motion.div>
+        </div>
+      </div>
+    </section>
+  );
+}
+
 export default function App() {
   const [currentHero, setCurrentHero] = useState(0);
   const [lang, setLang] = useState<'ENG' | 'ZUL'>('ENG');
@@ -622,6 +704,8 @@ export default function App() {
             </motion.div>
           </div>
         </section>
+
+        <StormAppeal />
 
         {/* SCHOOL LIFE SECTION */}
         <section className="py-12 md:py-24 bg-surface-container-low">
