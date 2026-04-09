@@ -124,7 +124,7 @@ export default function App() {
       uniforms: 'Uniforms',
       schoolName: 'Umzilikazi Senior Secondary',
       motto: '“Hlonipha Ze Uhlonishwe” — Respect so that you may be respected',
-      rank: '#1 National Rank 2024',
+      rank: '#10 National Rank 2024',
       passRate: '100% Pass Rate',
       heroTitle: 'Umzilikazi Senior Secondary',
       heroDesc: 'As a leading rural high school in our district, we are dedicated to providing world-class education to every learner, proving that excellence is a choice, not a privilege.',
@@ -161,7 +161,7 @@ export default function App() {
       uniforms: 'Iyunifomu',
       schoolName: 'Umzilikazi Senior Secondary',
       motto: '“Hlonipha ukuze nawe uhlonishwe”',
-      rank: 'Inombolo 1 Ezweni 2024',
+      rank: 'Inombolo 10 Ezweni 2024',
       passRate: '100% Okuphasa',
       heroTitle: 'Isikole saseMzilikazi',
       heroDesc: 'Njengoba siyisikole samabanga aphakeme esihamba phambili emakhaya esifundeni sethu, sizibophezele ekunikezeni imfundo esezingeni lomhlaba kuwo wonke umfundi, sikhombisa ukuthi ukusebenza kahle kuwukuzikhethela, hhayi ilungelo.',
@@ -345,7 +345,7 @@ export default function App() {
               </span>
               <div className="flex flex-wrap gap-2 md:gap-4 mb-3 md:mb-4">
                 <span className="text-white text-[10px] md:text-sm font-bold bg-white/10 backdrop-blur px-2 py-1 border border-white/20">
-                  <Counter value={1} prefix="#" /> {lang === 'ENG' ? 'National Rank 2024' : 'Ezweni 2024'}
+                  <Counter value={10} prefix="#" /> {lang === 'ENG' ? 'National Rank 2024' : 'Ezweni 2024'}
                 </span>
                 <span className="text-white text-[10px] md:text-sm font-bold bg-white/10 backdrop-blur px-2 py-1 border border-white/20">
                   <Counter value={100} suffix="%" /> {lang === 'ENG' ? 'Pass Rate' : 'Okuphasa'}
@@ -379,7 +379,7 @@ export default function App() {
               {[
                 { label: 'Enrolled Learners', value: 1657, suffix: '+' },
                 { label: '10-Year Average Pass Rate', value: 97.8, suffix: '%' },
-                { label: 'National Rank in 2024', value: 1, prefix: '#' },
+                { label: 'National Rank in 2024', value: 10, prefix: '#' },
                 { label: 'Dedicated Educators', value: 23 }
               ].map((stat, idx) => (
                 <motion.div 
@@ -563,7 +563,7 @@ export default function App() {
             </motion.div>
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 md:gap-8 mb-10 md:mb-16">
               {[
-                { title: '100% Pass Rate', desc: 'Achieved in 2024, 2019, and 2017. Ranked #1 nationally in 2024 out of 6,949 South African schools.' },
+                { title: '100% Pass Rate', desc: 'Achieved in 2024, 2019, and 2017. Ranked #10 nationally in 2024 out of 6,949 South African schools.' },
                 { title: 'Top 0.2% Nationally', desc: 'Consistently ranked in the top 0.2% of all schools nationally, and top 0.6% of all Quintile 2 schools in KwaZulu-Natal.' },
                 { title: 'Amajuba District Leader', desc: 'Ranked #1 in the Amajuba District in 2024 and #3 in 2025, out of 72 district schools.' }
               ].map((card, idx) => (
@@ -921,7 +921,7 @@ export default function App() {
               <div className="max-w-7xl mx-auto px-6 md:px-8">
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-16">
                   {[
-                    { val: '#1', label: 'National Rank 2024' },
+                    { val: '#10', label: 'National Rank 2024' },
                     { val: '100%', label: 'Pass Rate (Multiple Years)' },
                     { val: 'Top 0.2%', label: 'Nationally Ranked Schools' }
                   ].map((item, idx) => (
