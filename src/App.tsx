@@ -1575,7 +1575,7 @@ export default function App() {
                 <img 
                   alt="Principal Mr. Zulu" 
                   className="w-full h-full object-cover" 
-                  src="https://lh3.googleusercontent.com/aida/ADBb0ujj4B6RplTco8dfBgZez80ql-TggZJmeuvYwDOZOtVpUnq3VWG2eyiQCE260KoOb2rRRGurXVqJF9LlJVGrKgR3D1pUFgr3jR5ldiwQ6FDEfApNQKi2Endd0MORi60EJzxGaxruJKD_rngfRvBMTNDguOr5Bkv85Wv-Q8ziqRelcsGnOOlIdRfqV3mrWtFi0S28AvRSBHa8tOBWk-GjDUeYVUdO_Aw45QOKcB0ZeseTloMHCNbVHSIwceayTDgjoy72w6iP5VJN8Jk"
+                  src="https://ibb.co/27kyd893"
                   referrerPolicy="no-referrer"
                 />
               </div>
