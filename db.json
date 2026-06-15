@@ -1,0 +1,166 @@
+{
+  "textResources": {
+    "juneExamBannerText_ENG": "🔥 IMPORTANT: June Mid-Year Examinations are underway! View Timetable & Schedule.",
+    "juneExamBannerText_ZUL": "🔥 ISAZISO: Izivivinyo Zaphakathi Nonyaka ZikaNhlangulana (June) Seziqalile! Buka Ikhalenda.",
+    "juneExamModalTitle_ENG": "Mid-Year June Exams",
+    "juneExamModalTitle_ZUL": "Izivivinyo Nomhlahlandlela KaNhlangulana (June)",
+    "juneExamModalMessage_ENG": "Dear Students, Learners & Parents, the June Mid-Year Examinations are currently in progress. Attendance is absolutely compulsory for all scheduled papers. Please ensure you are in full school uniform, arrive 45 minutes prior to the paper starting time, and bring your required stationery. Let's work hard and maintain our 100% pass rate legacy!",
+    "juneExamModalMessage_ZUL": "Kuthisha, kubazali nakubafundi bethu: Izivivinyo zaphakathi nonyaka zikaNhlangulana ziyaqhubeka njengamanje. Ukuba khona kuyisibopho esikhulu kuwo wonke amaphepha ahleliwe. Sicela uqiniseke ukuthi ugqoke umfaniswano wesikole ophelele obomvu nomhlophe, ufike emizuzwini engama-45 ngaphambi kwesikhathi sokuqala, futhi ulethe zonke izinto zokubhala ezidingekayo.",
+    "newsArticle_ENG": {
+      "title": "Our Learners Relocated to Sgodiphola Primary Following Severe Storm Damage",
+      "date": "2 months ago",
+      "author": "School Administration",
+      "excerpt": "Following the devastating storm damage that destroyed several of our classrooms earlier this month, we have temporarily relocated our learners to Sgodiphola Primary School...",
+      "content": [
+        "Following the devastating storm damage that destroyed several of our classrooms earlier this month, we have temporarily relocated our learners to Sgodiphola Primary School to ensure their education continues without further disruption.",
+        "The KwaZulu-Natal Department of Education has confirmed that this move is an interim measure. 'This arrangement has been implemented as an interim measure to ensure the continuity of teaching and learning,' the Department stated.",
+        "Our School Governing Body (SGB) chairperson, Mduduzi Madi, noted that the storm has worsened an infrastructure problem we have faced for years. 'From the moment I took over as SGB chairperson, our school already had a serious shortage of classrooms,' Madi said. 'We did not have enough proper, permanent buildings, and most of our classrooms were mobile units or temporary structures.'",
+        "We have previously raised these safety and infrastructure concerns. Our principal at the time explained that there were ongoing discussions with the Department about building a permanent school, and all necessary documentation had been submitted to the Department of Public Works.",
+        "We still remember the unfortunate incident where one of our teachers was injured due to the poor condition of the mobile classrooms. Following that, we approached the district office again and were informed that plans to build were in place.",
+        "However, funding constraints have consistently delayed the construction of permanent buildings. We were told the Department lacked the necessary budget to proceed.",
+        "During the 2024 exam period, the MEC for Education visited us. We made a pledge that if we achieved a 100% pass rate, a permanent school would be built. We are proud to say we achieved that 100% pass rate, but the issue of funding was raised once again.",
+        "Instead of the permanent buildings we hoped for, we received additional mobile classrooms, six of which were unfortunately destroyed in the early January storm.",
+        "The storm also struck our administration block, blowing off the roof. We had to act immediately to repair it to protect our stationery and vital school materials.",
+        "In response to this crisis, we held consultative meetings between our SGB, our School Management Team, and our counterparts at Sgodiphola Primary School. We are deeply grateful to Sgodiphola for agreeing to assist us by providing 14 vacant classrooms.",
+        "On January 14, the Circuit Education Specialist (CES) formally secured this agreement. We want to thank our educators and the staff at Sgodiphola for their incredible cooperation during this transition.",
+        "While some of our learners now face longer travel distances, we are monitoring the situation closely and have not encountered major challenges so far. This remains a temporary arrangement while the Amajuba District works with the Head Office to provide more mobile classrooms as a medium-term solution."
+      ]
+    },
+    "newsArticle_ZUL": {
+      "title": "Abafundi Bethu Bathuthelwe eSgodiphola Primary Ngemuva Komonakalo Omkhulu Wesiphepho",
+      "date": "ezinyangeni ezi-2 ezedlule",
+      "author": "Abaphathi Besikole",
+      "excerpt": "Ngemuva komonakalo owesabekayo wesiphepho ocekele phansi amagumbi ethu okufundela amaningi ekuqaleni kwale nyanga, sibathuthele okwesikhashana abafundi bethu eSgodiphola Primary School...",
+      "content": [
+        "Ngemuva komonakalo owesabekayo wesiphepho ocekele phansi amagumbi ethu okufundela amaningi ekuqaleni kwale nyanga, sibathuthele okwesikhashana abafundi bethu eSgodiphola Primary School ukuze siqinisekise ukuthi imfundo yabo iyaqhubeka ngaphandle kokuphazamiseka okwengeziwe.",
+        "UMnyango Wezemfundo KwaZulu-Natal ukuqinisekisile ukuthi lokhu kuthutha kuyisinyathelo sesikhashana. 'Lolu hlelo lwenziwe njengesinyathelo sesikhashana sokuqinisekisa ukuqhubeka kokufundisa nokufunda,' kusho uMnyango.",
+        "Usihlalo weBhodi elilawula isikole (SGB), uMduduzi Madi, uthe isiphepho sibhebhethekise inkinga yengqalasizinda esibhekane nayo iminyaka. 'Kusukela ngesikhathi ngithatha izintambo njengosihlalo we-SGB, isikole sethu besivele sinenkinga enkulu yokushoda kwamagumbi okufundela,' kusho uMadi. 'Besingenazo izakhiwo ezifanele nezingunaphakade, futhi amaningi amagumbi ethu okufundela bekungamobile units noma izakhiwo zesikhashana.'",
+        "Sike saziveza lezi zinkinga zokuphepha nengqalasizinda ngaphambilini. Uthishanhloko wethu ngaleso sikhathi wachaza ukuthi kunezingxoxo eziqhubekayo noMnyango mayelana nokwakhiwa kwesikole esingunaphakade, futhi yonke imibhalo edingekayo yayihanjisiwe eMnyangweni Wezemisebenzi Yomphakathi.",
+        "Sisakhumbula isigameko esibi lapho omunye wothisha bethu alimala khona ngenxa yesimo esibi samagumbi okufundela angomahamba-nendlwana. Ngemuva kwalokho, saphinde sathinta ihhovisi lesifunda sazikwa ukuthi izinhlelo zokwakha zikhona.",
+        "Nokho, ukushoda kwezimali kuye kwabambezela njalo ukwakhiwa kwezakhiwo ezingunaphakade. Satshelwa ukuthi uMnyango awunayo isabelomali esidingekayo ukuze uqhubeke.",
+        "Ngesikhathi sokuhlolwa kuka-2024, u-MEC Wezemfundo wasivakashela. Senza isithembiso sokuthi uma sithola izinga lokuphasa elingama-100%, kuzokwakhiwa isikole esingunaphakade. Siyaziqhenya ngokuthi sasilithola lelo zinga lokuphasa elingama-100%, kodwa inkinga yezimali yaphakanyiswa futhi.",
+        "Esikhundleni sezakhiwo ezingunaphakade ebesizithembe, sathola amanye amagumbi okufundela angomahamba-nendlwana, ayisithupha kuwo adliwa yisiphepho sasekuqaleni kukaZibandlela.",
+        "Isiphepho siphinde sahlasela ibhulokhi yethu yokuphatha, saphephetha uphahla. Kwadingeka sithathe isinyathelo ngokushesha ukuze silulungise ukuze sivikele izinto zethu zokubhala nezinto zesikole ezibalulekile.",
+        "Ekuphenduleni le nkinga, saba nemihlangano yokubonisana phakathi kwe-SGB yethu, Ithimba Labaphathi Besikole, nabalingani bethu eSgodiphola Primary School. Sibonga kakhulu eSgodiphola ngokuvuma ukusisiza ngokusinika amagumbi okufundela ayi-14 ayengasetshenziswa.",
+        "Ngomhla ziyi-14 kuMasingana, uCircuit Education Specialist (CES) wasiqinisekisa ngokusemthethweni lesi sivumelwano. Sifuna ukubonga othisha bethu nabasebenzi baseSgodiphola ngokubambisana kwabo okumangalisayo phakathi nalolu shintsho.",
+        "Nakuba abanye babafundi bethu manje bebhekene namabanga amade okuhamba, siyasigada isimo eduze futhi asikaze sihlangabezane nezinselelo ezinkulu kuze kube manje. Lokhu kuhlala kuyilungiselelo lesikhashana ngenkathi isifunda sase-Amajuba sisebenzisana neHhovisi Elikhulu ukuhlinzeka ngamagumbi okufundela angomahamba-nendlwana amaningi njengesixazululo sesikhathi esiphakathi."
+      ]
+    }
+  },
+  "calendarEvents_ENG": [
+    { "month": 0, "events": [{ "date": "14 Jan", "title": "Term 1 Begins", "type": "academic" }, { "date": "21 Jan", "title": "Grade 8 Orientation", "type": "event" }] },
+    { "month": 1, "events": [{ "date": "12 Feb", "title": "Athletics & Sports Day", "type": "event" }, { "date": "26 Feb", "title": "Parents Meeting", "type": "event" }] },
+    { "month": 2, "events": [{ "date": "21 Mar", "title": "Human Rights Day", "type": "holiday" }, { "date": "28 Mar", "title": "Term 1 Ends", "type": "academic" }] },
+    { "month": 3, "events": [{ "date": "08 Apr", "title": "Term 2 Begins", "type": "academic" }, { "date": "18 Apr", "title": "Good Friday", "type": "holiday" }, { "date": "21 Apr", "title": "Family Day", "type": "holiday" }, { "date": "27 Apr", "title": "Freedom Day", "type": "holiday" }] },
+    { "month": 4, "events": [{ "date": "01 May", "title": "Workers Day", "type": "holiday" }, { "date": "15 May", "title": "June Exam Prep Starts", "type": "exam" }] },
+    { "month": 5, "events": [{ "date": "16 Jun", "title": "Youth Day", "type": "holiday" }, { "date": "27 Jun", "title": "Term 2 Ends", "type": "academic" }] },
+    { "month": 6, "events": [{ "date": "21 Jul", "title": "Term 3 Begins", "type": "academic" }, { "date": "30 Jul", "title": "Science Fair", "type": "event" }] },
+    { "month": 7, "events": [{ "date": "09 Aug", "title": "Womens Day", "type": "holiday" }, { "date": "25 Aug", "title": "Trial Exams Begin (Gr 12)", "type": "exam" }] },
+    { "month": 8, "events": [{ "date": "24 Sep", "title": "Heritage Day", "type": "holiday" }, { "date": "30 Sep", "title": "Term 3 Ends", "type": "academic" }] },
+    { "month": 9, "events": [{ "date": "13 Oct", "title": "Term 4 Begins", "type": "academic" }, { "date": "27 Oct", "title": "Final Exams Begin", "type": "exam" }] },
+    { "month": 10, "events": [{ "date": "15 Nov", "title": "Prize Giving Ceremony", "type": "event" }] },
+    { "month": 11, "events": [{ "date": "10 Dec", "title": "Term 4 Ends", "type": "academic" }, { "date": "16 Dec", "title": "Day of Reconciliation", "type": "holiday" }] }
+  ],
+  "calendarEvents_ZUL": [
+    { "month": 0, "events": [{ "date": "14 Jan", "title": "Ithemu 1 Iyaqala", "type": "academic" }, { "date": "21 Jan", "title": "Ukujwayezwa kweBanga lesi-8", "type": "event" }] },
+    { "month": 1, "events": [{ "date": "12 Feb", "title": "Usuku Lwezemidlalo", "type": "event" }, { "date": "26 Feb", "title": "Umhlangano Wabazali", "type": "event" }] },
+    { "month": 2, "events": [{ "date": "21 Mar", "title": "Usuku Lwamalungelo Abantu", "type": "holiday" }, { "date": "28 Mar", "title": "Ithemu 1 Iyaphothulwa", "type": "academic" }] },
+    { "month": 3, "events": [{ "date": "08 Apr", "title": "Ithemu 2 Iyaqala", "type": "academic" }, { "date": "18 Apr", "title": "uLwesihlanu Oluhle", "type": "holiday" }, { "date": "21 Apr", "title": "Usuku Lomndeni", "type": "holiday" }, { "date": "27 Apr", "title": "Usuku Lwenkululeko", "type": "holiday" }] },
+    { "month": 4, "events": [{ "date": "01 May", "title": "Usuku Lwabasebenzi", "type": "holiday" }, { "date": "15 May", "title": "Izivivinyo Zaphakathi Nonyaka", "type": "exam" }] },
+    { "month": 5, "events": [{ "date": "16 Jun", "title": "Usuku Lwentsha", "type": "holiday" }, { "date": "27 Jun", "title": "Ithemu 2 Iyaphothulwa", "type": "academic" }] },
+    { "month": 6, "events": [{ "date": "21 Jul", "title": "Ithemu 3 Iyaqala", "type": "academic" }, { "date": "30 Jul", "title": "Umbukiso Wezesayensi", "type": "event" }] },
+    { "month": 7, "events": [{ "date": "09 Aug", "title": "Usuku Lwabesifazane", "type": "holiday" }, { "date": "25 Aug", "title": "Izivivinyo Zokuzilungiselela (Gr 12)", "type": "exam" }] },
+    { "month": 8, "events": [{ "date": "24 Sep", "title": "Usuku Lwamagugu", "type": "holiday" }, { "date": "30 Sep", "title": "Ithemu 3 Iyaphothulwa", "type": "academic" }] },
+    { "month": 9, "events": [{ "date": "13 Oct", "title": "Ithemu 4 Iyaqala", "type": "academic" }, { "date": "27 Oct", "title": "Izivivinyo Zokugcina", "type": "exam" }] },
+    { "month": 10, "events": [{ "date": "15 Nov", "title": "Umcimbi Wokunikezwa Kwemiklomelo", "type": "event" }] },
+    { "month": 11, "events": [{ "date": "10 Dec", "title": "Ithemu 4 Iyaphothulwa", "type": "academic" }, { "date": "16 Dec", "title": "Usuku Lokubuyisana", "type": "holiday" }] }
+  ],
+  "suggestions": [
+    {
+      "id": "s1",
+      "title": "After-School Peer-Led Matric Study Groups in Classrooms",
+      "description": "We should organize Grade 12 peer-led study groups immediately after school in the classrooms. Having dedicated study groups for Mathematics, Physical Sciences, and Accounting where we work through past papers together would help those who are struggling. Teachers or senior pupils can supervise.",
+      "category": "academic",
+      "author": "Sipho Khumalo",
+      "role": "learner",
+      "upvotes": 48,
+      "createdAt": "2026-06-12T14:30:00Z",
+      "comments": [
+        {
+          "id": "c1_1",
+          "author": "Melokuhle Ziyanda",
+          "role": "learner",
+          "text": "This would be so helpful, especially for math paper 2 geometry prep!",
+          "timestamp": "1 hour ago"
+        },
+        {
+          "id": "c1_2",
+          "author": "Mrs. Hlengiwe Buthelezi",
+          "role": "parent",
+          "text": "As parents, we support this 100%. We can help arrange healthy afternoon snacks for the learners who stay behind.",
+          "timestamp": "30 mins ago"
+        }
+      ],
+      "schoolResponse": "Excellent initiative, Sipho! The school management team has approved the use of classrooms 10A and 10B until 17:00. Mr. S. Nkosi has kindly volunteered to supervise and assist with resources on Tuesdays and Thursdays."
+    },
+    {
+      "id": "s2",
+      "title": "Establish a School Organic Vegetable Garden",
+      "description": "I propose that we start a community organic vegetable garden behind the Life Sciences laboratory. It will provide hands-on agricultural and environmental education for pupils, and the harvest can supplement our school daily nutrition program and feed needy families.",
+      "category": "environment",
+      "author": "Mrs. Gertrude Khumalo",
+      "role": "parent",
+      "upvotes": 39,
+      "createdAt": "2026-06-10T09:15:00Z",
+      "comments": [
+        {
+          "id": "c2_1",
+          "author": "Mr. S. Nkosi",
+          "role": "educator",
+          "text": "Superb proposal! It perfectly aligns with our Life Sciences curriculum. I am happy to help allocate tools.",
+          "timestamp": "2 days ago"
+        }
+      ],
+      "schoolResponse": "Wonderful ideas! The School Governing Body (SGB) has agreed to fund the initial fencing and purchase of seedlings. Parents who would like to assist with preparing the soil on Saturday, June 20th, please register at the main office."
+    },
+    {
+      "id": "s3",
+      "title": "Cell Phone Coding and Typing Club on Friday Afternoons",
+      "description": "Since we have limited desktop computers, we can start a Friday Coding & Typing Club where we learn basic terminal typing, scratch programming, and web development using our mobile phones and free apps. It does not require premium laptops, just enthusiasm!",
+      "category": "extracurricular",
+      "author": "Melokuhle Ziyanda",
+      "role": "learner",
+      "upvotes": 31,
+      "createdAt": "2026-06-14T11:00:00Z",
+      "comments": [
+        {
+          "id": "c3_1",
+          "author": "Bandile Zulu",
+          "role": "learner",
+          "text": "Keen to join! Can we also learn basic mobile UI design?",
+          "timestamp": "5 hours ago"
+        }
+      ]
+    },
+    {
+      "id": "s4",
+      "title": "Parent-Teacher Homework Support WhatsApp Channel",
+      "description": "We can create a structured Grade 8 and 9 homework helpline on WhatsApp. Volunteer educators and parent reps can monitor the channel in the evenings to help junior learners understand complex homework problems, keeping them focused and out of trouble.",
+      "category": "parental",
+      "author": "Mr. S. Nkosi",
+      "role": "educator",
+      "upvotes": 27,
+      "createdAt": "2026-06-08T08:00:00Z",
+      "comments": [
+        {
+          "id": "c4_1",
+          "author": "Mrs. Gertrude Khumalo",
+          "role": "parent",
+          "text": "I can help coordinate the Grade 8 group. Excellent idea to bridge home and school.",
+          "timestamp": "4 days ago"
+        }
+      ],
+      "schoolResponse": "This is brilliant, Mr. Nkosi. We will send a circular to all Grade 8/9 parents containing the joining links next week."
+    }
+  ]
+}

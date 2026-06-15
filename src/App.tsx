@@ -15,6 +15,8 @@ import {
   Twitter,
   Link,
   MessageCircle,
+  MessageSquare,
+  ThumbsUp,
   Calendar,
   Clock,
   CheckCircle,
@@ -27,10 +29,16 @@ import {
   ChevronLeft,
   ArrowRight,
   Smartphone,
+  ArrowUp,
   Calendar as CalendarIcon
 } from 'lucide-react';
 import { motion, AnimatePresence, animate, useMotionValue, useTransform, useInView } from 'motion/react';
 import { useState, useEffect, useRef, FormEvent } from 'react';
+import SuggestionBoard from './components/SuggestionBoard';
+import StaffDirectory from './components/StaffDirectory';
+import AlumniSpotlight from './components/AlumniSpotlight';
+import AdminDashboard from './components/AdminDashboard';
+import { generateJuneExamPDF } from './utils/pdfGenerator';
 
 function Counter({ value, duration = 2, decimals = 0, prefix = '', suffix = '' }: { value: number, duration?: number, decimals?: number, prefix?: string, suffix?: string }) {
   const count = useMotionValue(0);
@@ -551,16 +559,40 @@ export default function App() {
   const [currentHero, setCurrentHero] = useState(0);
   const [currentCalendarMonth, setCurrentCalendarMonth] = useState(new Date().getMonth());
   const [lang, setLang] = useState<'ENG' | 'ZUL'>('ENG');
-  const [currentPage, setCurrentPage] = useState<'home' | 'admissions' | 'academics' | 'gallery' | 'uniforms' | 'contact' | 'news' | 'about' | 'success-portal'>('home');
+  const [currentPage, setCurrentPage] = useState<'home' | 'admissions' | 'academics' | 'gallery' | 'uniforms' | 'contact' | 'news' | 'about' | 'success-portal' | 'suggestions' | 'alumni' | 'admin'>('home');
+  const [cmsData, setCmsData] = useState<any>(null);
+
+  const fetchCMSData = () => {
+    fetch('/api/content')
+      .then((res) => res.json())
+      .then((data) => {
+        setCmsData(data);
+      })
+      .catch((err) => {
+        console.error("Error fetching CMS content:", err);
+      });
+  };
+
+  useEffect(() => {
+    fetchCMSData();
+  }, []);
+  const [selectedAlumniIdx, setSelectedAlumniIdx] = useState<number>(0);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [apsSubjects, setApsSubjects] = useState(
     Array(7).fill(0).map(() => ({ name: '', percentage: 0 }))
   );
   const [checklist, setChecklist] = useState<Record<string, boolean>>({});
   const [activeGuide, setActiveGuide] = useState<string | null>(null);
+  const [showJuneExamModal, setShowJuneExamModal] = useState(false);
+  const [showScrollTop, setShowScrollTop] = useState(false);
 
   const t = {
     ENG: {
+      juneExamBannerText: cmsData?.textResources?.juneExamBannerText_ENG || "🔥 IMPORTANT: June Mid-Year Examinations are underway! View Timetable & Schedule.",
+      juneExamModalTitle: cmsData?.textResources?.juneExamModalTitle_ENG || "Mid-Year June Exams",
+      juneExamModalMessage: cmsData?.textResources?.juneExamModalMessage_ENG || "Dear Students, Learners & Parents, the June Mid-Year Examinations are currently in progress. Attendance is absolutely compulsory for all scheduled papers. Please ensure you are in full school uniform, arrive 45 minutes prior to the paper starting time, and bring your required stationery. Let's work hard and maintain our 100% pass rate legacy!",
+      juneExamModalButton: "View Exam Timetable & Calendar",
+      juneExamModalClose: "Dismiss",
       home: 'Home',
       about: 'About Us',
       academics: 'Academics',
@@ -568,19 +600,20 @@ export default function App() {
       gallery: 'Gallery',
       uniforms: 'Uniforms',
       successPortal: 'Success Portal',
+      suggestions: 'Suggestions',
       schoolName: 'Umzilikazi Senior Secondary',
-      motto: '“Hlonipha Ze Uhlonishwe” — Respect so that you may be respected',
+      motto: cmsData?.textResources?.motto_ENG || '“Hlonipha Ze Uhlonishwe” — Respect so that you may be respected',
       rank: '#10 National Rank 2024',
       passRate: '100% Pass Rate',
-      heroTitle: 'Umzilikazi Senior Secondary',
-      heroDesc: 'As a leading rural high school in our district, we are dedicated to providing world-class education to every learner, proving that excellence is a choice, not a privilege.',
+      heroTitle: cmsData?.textResources?.heroTitle_ENG || 'Umzilikazi Senior Secondary',
+      heroDesc: cmsData?.textResources?.heroDesc_ENG || 'As a leading rural high school in our district, we are dedicated to providing world-class education to every learner, proving that excellence is a choice, not a privilege.',
       discover: 'Discover Our Story',
       apply: 'Apply Now',
-      admissionTitle: 'Admissions & Enrollment',
-      admissionSubtitle: 'Join a tradition of excellence and community pride.',
-      admissionNotice: 'Important Notice: Applications for the 2027 academic year will be officially announced in mid-2026. Please check back for updates.',
-      requirementsTitle: 'Admission Requirements',
-      requirements: [
+      admissionTitle: cmsData?.textResources?.admissionTitle_ENG || 'Admissions & Enrollment',
+      admissionSubtitle: cmsData?.textResources?.admissionSubtitle_ENG || 'Join a tradition of excellence and community pride.',
+      admissionNotice: cmsData?.textResources?.admissionNotice_ENG || 'Important Notice: Applications for the 2027 academic year will be officially announced in mid-2026. Please check back for updates.',
+      requirementsTitle: cmsData?.textResources?.requirementsTitle_ENG || 'Admission Requirements',
+      requirements: cmsData?.textResources?.requirements_ENG || [
         'Certified copy of Learner\'s Birth Certificate',
         'Latest School Report',
         'Transfer Letter from previous school',
@@ -603,9 +636,9 @@ export default function App() {
       contactSubmit: 'Send Message',
       contactSuccess: 'Thank you! Your message has been sent. We will get back to you soon.',
       boysUniform: 'Boys Uniform',
-      boysDesc: 'Grey trousers, white long/short-sleeved shirt, maroon blazer with school badge, school tie, and black school shoes.',
+      boysDesc: 'Grey trousers, white long/short-sleeved shirt, red blazer with school badge, red and white school tie, and black school shoes.',
       girlsUniform: 'Girls Uniform',
-      girlsDesc: 'Maroon skirt or tunic, white long/short-sleeved shirt, maroon blazer with school badge, school tie, white socks or black tights, and black school shoes.',
+      girlsDesc: 'Red skirt or tunic, white long/short-sleeved shirt, red blazer with school badge, red and white school tie, white socks or black tights, and black school shoes.',
       sportsUniform: 'Sports & Tracksuit',
       sportsDesc: 'Official school tracksuit and sports shirt, worn during physical education and sporting events.',
       offerAssistance: 'Offer Assistance',
@@ -624,14 +657,14 @@ export default function App() {
       stormDesc2: 'Currently, over 600 of our matric and Grade 11 learners are forced to commute to a neighboring primary school, where they face extreme overcrowding with 60 to 70 students packed into single classrooms.',
       stormDesc3: 'Despite achieving a 100% pass rate and proving our commitment to excellence, we are now fighting for our survival. We are making an urgent call to businesses and the private sector for assistance in rebuilding our facilities.',
       leadershipVoice: 'Leadership Voice',
-      welcomeTitle: 'Welcome to Umzilikazi',
-      welcomeDesc: 'Where excellence is not just a goal, but a way of life. We believe every child deserves the opportunity to succeed, regardless of their circumstances.',
+      welcomeTitle: cmsData?.textResources?.welcomeTitle_ENG || 'Welcome to Umzilikazi',
+      welcomeDesc: cmsData?.textResources?.welcomeDesc_ENG || 'Where excellence is not just a goal, but a way of life. We believe every child deserves the opportunity to succeed, regardless of their circumstances.',
       principalTitle: 'School Principal',
       ourHeritage: 'Our Heritage',
       heritageTitle: 'Named for a King. Built by a Community.',
       heritageDesc1: 'Named in honour of King Mzilikazi — the great Zulu commander who founded the Matabele nation — our school stands as a pillar of hope in the Emadlangeni Local Municipality. As a dedicated rural high school serving Wards 3 and 5 of Emadlangeni, we face immense challenges.',
       heritageDesc2: 'Yet, under the unwavering leadership of Principal Mr. Zulu and our dedicated School Governing Body, our learners continue to defy every expectation, proving that talent lives everywhere.',
-      principalQuote: '“Our teachers are the backbone of our success. Their dedication, sacrifice, and belief in every learner have transformed our school into a beacon of excellence.”',
+      principalQuote: cmsData?.textResources?.principalQuote_ENG || '“Our teachers are the backbone of our success. Their dedication, sacrifice, and belief in every learner have transformed our school into a beacon of excellence.”',
       pillar1Title: '1. Community First',
       pillar1Desc: 'We serve our community with pride, ensuring every learner has access to quality education.',
       pillar2Title: '2. Excellence Always',
@@ -728,7 +761,7 @@ export default function App() {
       calendarTitle: 'School Calendar 2026',
       calendarSubtitle: 'Important dates, holidays, and examination periods.',
       monthNames: ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'],
-      calendarEvents: [
+      calendarEvents: cmsData?.calendarEvents_ENG || [
         { month: 0, events: [{ date: '14 Jan', title: 'Term 1 Begins', type: 'academic' }, { date: '21 Jan', title: 'Grade 8 Orientation', type: 'event' }] },
         { month: 1, events: [{ date: '12 Feb', title: 'Athletics Day', type: 'event' }, { date: '26 Feb', title: 'Parents Meeting', type: 'event' }] },
         { month: 2, events: [{ date: '21 Mar', title: 'Human Rights Day', type: 'holiday' }, { date: '28 Mar', title: 'Term 1 Ends', type: 'academic' }] },
@@ -757,10 +790,10 @@ export default function App() {
       location: 'Location',
       postalAddress: 'Postal Address',
       principal: 'Principal',
-      grade8Enroll: 'Grade 8 Enrollment',
-      grade8Desc: 'We prioritize learners from our local feeder primary schools in Emadlangeni and surrounding areas. Space is limited, so early application is encouraged once the window opens.',
-      transferStudents: 'Transfer Students',
-      transferDesc: 'Learners wishing to transfer into Grades 9-11 must provide a valid transfer letter and their most recent academic records for review by the School Governing Body.',
+      grade8Enroll: cmsData?.textResources?.grade8Enroll_ENG || 'Grade 8 Enrollment',
+      grade8Desc: cmsData?.textResources?.grade8Desc_ENG || 'We prioritize learners from our local feeder primary schools in Emadlangeni and surrounding areas. Space is limited, so early application is encouraged once the window opens.',
+      transferStudents: cmsData?.textResources?.transferStudents_ENG || 'Transfer Students',
+      transferDesc: cmsData?.textResources?.transferDesc_ENG || 'Learners wishing to transfer into Grades 9-11 must provide a valid transfer letter and their most recent academic records for review by the School Governing Body.',
       matricHistory: 'Matric Results History',
       quickLinks: 'Quick Links',
       districtAffiliation: 'District Affiliation',
@@ -871,7 +904,7 @@ export default function App() {
       nationalRank2024: 'National Rank 2024',
       passRateMultipleYears: 'Pass Rate (Multiple Years)',
       nationallyRankedSchools: 'Nationally Ranked Schools',
-      newsArticle: {
+      newsArticle: cmsData?.textResources?.newsArticle_ENG || {
         title: "Our Learners Relocated to Sgodiphola Primary Following Severe Storm Damage",
         date: "2 months ago",
         author: "School Administration",
@@ -899,6 +932,11 @@ export default function App() {
       ]
     },
     ZUL: {
+      juneExamBannerText: cmsData?.textResources?.juneExamBannerText_ZUL || "🔥 ISAZISO: Izivivinyo Zaphakathi Nonyaka ZikaNhlangulana (June) Seziqalile! Buka Ikhalenda.",
+      juneExamModalTitle: cmsData?.textResources?.juneExamModalTitle_ZUL || "Izivivinyo zikaNhlangulana (June)",
+      juneExamModalMessage: cmsData?.textResources?.juneExamModalMessage_ZUL || "Bafundi kanye Nabazali abathandekayo, izivivinyo ze-June Mid-Year seziqalile. Ukuba khona kunesibopho kuwo wonke amaphepha ahleliwe. Sicela uqinisekise ukuthi ugqoke iyunifomu yesikole ephelele, ufika emizuzwini engama-45 ngaphambi kokuba kuqale iphepha, futhi uza nazo zonke izinto zokubhala ezidingekayo. Masisebenze kanzima ukuze silondoloze umlando wethu wokubalelwa kwabaphase ngo-100%!",
+      juneExamModalButton: "Buka Ikhalenda leShejuli",
+      juneExamModalClose: "Vala",
       home: 'Ekhaya',
       about: 'Mayelana Nathi',
       academics: 'Ezokufunda',
@@ -906,19 +944,20 @@ export default function App() {
       gallery: 'Imifanekiso',
       uniforms: 'Iyunifomu',
       successPortal: 'Ingosi Yempumelelo',
+      suggestions: 'Iziphakamiso',
       schoolName: 'Umzilikazi Senior Secondary',
-      motto: '“Hlonipha ukuze nawe uhlonishwe”',
+      motto: cmsData?.textResources?.motto_ZUL || '“Hlonipha ukuze nawe uhlonishwe”',
       rank: 'Inombolo 10 Ezweni 2024',
       passRate: '100% Okuphasa',
-      heroTitle: 'Isikole saseMzilikazi',
-      heroDesc: 'Njengoba siyisikole samabanga aphakeme esihamba phambili emakhaya esifundeni sethu, sizibophezele ekunikezeni imfundo esezingeni lomhlaba kuwo wonke umfundi, sikhombisa ukuthi ukusebenza kahle kuwukuzikhethela, hhayi ilungelo.',
+      heroTitle: cmsData?.textResources?.heroTitle_ZUL || 'Isikole saseMzilikazi',
+      heroDesc: cmsData?.textResources?.heroDesc_ZUL || 'Njengoba siyisikole samabanga aphakeme esihamba phambili emakhaya esifundeni sethu, sizibophezele ekunikezeni imfundo esezingeni lomhlaba kuwo wonke umfundi, sikhombisa ukuthi ukusebenza kahle kuwukuzikhethela, hhayi ilungelo.',
       discover: 'Thola Indaba Yethu',
       apply: 'Faka Isicelo Manje',
-      admissionTitle: 'Ukungeniswa Nokubhaliswa',
-      admissionSubtitle: 'Joyina isiko lokusebenza kahle nokuziqhenya komphakathi.',
-      admissionNotice: 'Isaziso Esibalulekile: Izicelo zonyaka wokufunda ka-2027 zizomenyezelwa ngokusemthethweni maphakathi no-2026. Sicela uphinde uhlole ukuze uthole imininingwane.',
-      requirementsTitle: 'Izidingo Zokungeniswa',
-      requirements: [
+      admissionTitle: cmsData?.textResources?.admissionTitle_ZUL || 'Ukungeniswa Nokubhaliswa',
+      admissionSubtitle: cmsData?.textResources?.admissionSubtitle_ZUL || 'Joyina isiko lokusebenza kahle nokuziqhenya komphakathi.',
+      admissionNotice: cmsData?.textResources?.admissionNotice_ZUL || 'Isaziso Esibalulekile: Izicelo zonyaka wokufunda ka-2027 zizomenyezelwa ngokusemthethweni maphakathi no-2026. Sicela uphinde uhlole ukuze uthole imininingwane.',
+      requirementsTitle: cmsData?.textResources?.requirementsTitle_ZUL || 'Izidingo Zokungeniswa',
+      requirements: cmsData?.textResources?.requirements_ZUL || [
         'Ikhophi eqinisekisiwe yesitifiketi sokuzalwa somfundi',
         'Umbiko wesikole wakamuva',
         'Incwadi yokudlulisa evela esikoleni sangaphambilini',
@@ -941,9 +980,9 @@ export default function App() {
       contactSubmit: 'Thumela Umlayezo',
       contactSuccess: 'Ngiyabonga! Umlayezo wakho uthunyelwe. Sizobuyela kuwe maduze.',
       boysUniform: 'Iyunifomu Yabafana',
-      boysDesc: 'Ibhulukwe elimpunga, ihembe elimhlophe elinemikhono emide/emifushane, ibhantshi elibomvu (maroon) elinebheji lesikole, uthayi wesikole, nezicathulo zesikole ezimnyama.',
+      boysDesc: 'Ibhulukwe elimpunga, ihembe elimhlophe elinemikhono emide/emifushane, ibhantshi elibomvu nelimhlophe elinebheji lesikole, uthayi wesikole obomvu nomhlophe, nezicathulo zesikole ezimnyama.',
       girlsUniform: 'Iyunifomu Yamantombazane',
-      girlsDesc: 'Isiketi esibomvu (maroon) noma itunic, ihembe elimhlophe elinemikhono emide/emifushane, ibhantshi elibomvu (maroon) elinebheji lesikole, uthayi wesikole, amasokisi amhlophe noma amateyithi amnyama, nezicathulo zesikole ezimnyama.',
+      girlsDesc: 'Isiketi esibomvu nelimhlophe noma itunic, ihembe elimhlophe elinemikhono emide/emifushane, ibhantshi elibomvu nelimhlophe elinebheji lesikole, uthayi wesikole obomvu nomhlophe, amasokisi amhlophe noma amateyithi amnyama, nezicathulo zesikole ezimnyama.',
       sportsUniform: 'Izemidlalo neTracksuit',
       sportsDesc: 'I-tracksuit yesikole esemthethweni nehembe lezemidlalo, okugqokwa ngesikhathi semfundo yomzimba nemicimbi yezemidlalo.',
       offerAssistance: 'Nikela Ngosizo',
@@ -962,14 +1001,14 @@ export default function App() {
       stormDesc2: 'Njengamanje, abafundi bethu bakamatikuletsheni nabasebangeni le-11 abangaphezu kwama-600 baphoqeleka ukuba baye esikoleni samabanga aphansi esingumakhelwane, lapho bebhekana nokuminyana okwedlulele lapho abafundi abangama-60 kuya kwama-70 beminyene egumbini elilodwa.',
       stormDesc3: 'Naphezu kokuthola izinga lokuphasa elingama-100% nokukhombisa ukuzibophezela kwethu ekusebenzeni kahle, manje silwela ukuphila kwethu. Senza isicelo esiphuthumayo emabhizinisini nasezinkampanini ezizimele ukuba basisize ekuvuseleleni izakhiwo zethu.',
       leadershipVoice: 'Izwi Lobuholi',
-      welcomeTitle: 'Siyakwamukela eMzilikazi',
-      welcomeDesc: 'Lapho ukusebenza kahle kungeyona nje inhloso, kodwa kuyindlela yokuphila. Sikholelwa ukuthi wonke umntwana ufanelwe yithuba lokuphumelela, kungakhathaliseki izimo zakhe.',
+      welcomeTitle: cmsData?.textResources?.welcomeTitle_ZUL || 'Siyakwamukela eMzilikazi',
+      welcomeDesc: cmsData?.textResources?.welcomeDesc_ZUL || 'Lapho ukusebenza kahle kungeyona nje inhloso, kodwa kuyindlela yokuphila. Sikholelwa ukuthi wonke umntwana ufanelwe yithuba lokuphumelela, kungakhathaliseki izimo zakhe.',
       principalTitle: 'Uthishanhloko Wesikole',
       ourHeritage: 'Amagugu Ethu',
       heritageTitle: 'Eqanjwe Ngenkosi. Yakhiwe Ngumphakathi.',
       heritageDesc1: 'Eqanjwe ngokuhlonipha iNkosi uMzilikazi — umkhuzi omkhulu wamaZulu owasungula isizwe samaNdebele — isikole sethu simi njengensika yethemba kuMasipala waseMadlangeni. Njengesikole samabanga aphakeme sasemakhaya esikhonza amaWadi 3 no-5 waseMadlangeni, sibhekene nezinselelo ezinkulu.',
       heritageDesc2: 'Nokho, ngaphansi kobuholi obungantengantengi bukaThishanhloko uMnu. Zulu kanye neBhodi elilawula isikole (SGB), abafundi bethu bayaqhubeka nokunqoba zonke izithiyo, bakhombisa ukuthi ithalente likhona yonke indawo.',
-      principalQuote: '“Othisha bethu bayinsika yempumelelo yethu. Ukuzinikela kwabo, ukuzidela kwabo, nokukholelwa kwabo kuwo wonke umfundi kuguqule isikole sethu saba yisibani sokusebenza kahle.”',
+      principalQuote: cmsData?.textResources?.principalQuote_ZUL || '“Othisha bethu bayinsika yempumelelo yethu. Ukuzinikela kwabo, ukuzidela kwabo, nokukholelwa kwabo kuwo wonke umfundi kuguqule isikole sethu saba yisibani sokusebenza kahle.”',
       pillar1Title: '1. Umphakathi Kuqala',
       pillar1Desc: 'Sikhonza umphakathi wethu ngokuziqhenya, siqinisekisa ukuthi wonke umfundi uthola imfundo esezingeni eliphezulu.',
       pillar2Title: '2. Ukusebenza Kahle Njalo',
@@ -1066,7 +1105,7 @@ export default function App() {
       calendarTitle: 'Ikhalenda Lesikole 2026',
       calendarSubtitle: 'Izinsuku ezibalulekile, amaholide, nezikhathi zezivivinyo.',
       monthNames: ['uMasingana', 'uNhlolanja', 'uNdasa', 'uMbasa', 'uNhlaba', 'uNhlangulana', 'uNtulikazi', 'uNcwaba', 'uMandulo', 'uMfumfu', 'uLwezi', 'uZibandlela'],
-      calendarEvents: [
+      calendarEvents: cmsData?.calendarEvents_ZUL || [
         { month: 0, events: [{ date: '14 Jan', title: 'Ithemu 1 Iyaqala', type: 'academic' }, { date: '21 Jan', title: 'Ukujwayezwa kweBanga lesi-8', type: 'event' }] },
         { month: 1, events: [{ date: '12 Feb', title: 'Usuku Lwezemidlalo', type: 'event' }, { date: '26 Feb', title: 'Umhlangano Wabazali', type: 'event' }] },
         { month: 2, events: [{ date: '21 Mar', title: 'Usuku Lwamalungelo Abantu', type: 'holiday' }, { date: '28 Mar', title: 'Ithemu 1 Iyaphothulwa', type: 'academic' }] },
@@ -1095,10 +1134,10 @@ export default function App() {
       location: 'Indawo',
       postalAddress: 'Ikheli Leposi',
       principal: 'Uthishanhloko',
-      grade8Enroll: 'Ukubhaliswa kweBanga lesi-8',
-      grade8Desc: 'Sibeka eqhulwini abafundi abavela ezikoleni zethu zamabanga aphansi zaseMadlangeni nezindawo ezizungezile. Isikhala silinganiselwe, ngakho-ke ukufaka isicelo kusenesikhathi kuyakhuthazwa uma iwindi livulwa.',
-      transferStudents: 'Abafundi Abadluliswayo',
-      transferDesc: 'Abafundi abafuna ukudluliselwa emabangeni 9-11 kumele balethe incwadi yokudlulisa esemthethweni nemibiko yabo yakamuva yezemfundo ukuze ibuyekezwe yiBhodi elilawula isikole.',
+      grade8Enroll: cmsData?.textResources?.grade8Enroll_ZUL || 'Ukubhaliswa kweBanga lesi-8',
+      grade8Desc: cmsData?.textResources?.grade8Desc_ZUL || 'Sibeka eqhulwini abafundi abavela ezikoleni zethu zamabanga aphansi zaseMadlangeni nezindawo ezizungezile. Isikhala silinganiselwe, ngakho-ke ukufaka isicelo kusenesikhathi kuyakhuthazwa uma iwindi livulwa.',
+      transferStudents: cmsData?.textResources?.transferStudents_ZUL || 'Abafundi Abadluliswayo',
+      transferDesc: cmsData?.textResources?.transferDesc_ZUL || 'Abafundi abafuna ukudluliselwa emabangeni 9-11 kumele balethe incwadi yokudlulisa esemthethweni nemibiko yabo yakamuva yezemfundo ukuze ibuyekezwe yiBhodi elilawula isikole.',
       matricHistory: 'Umlando Wemiphumela Kamatikuletsheni',
       quickLinks: 'Izixhumanisi Ezisheshayo',
       districtAffiliation: 'Ukuxhumana Nesifunda',
@@ -1205,11 +1244,10 @@ export default function App() {
       menu: 'Imenyu',
       excellenceInEducation: 'Ukusebenza Kahle Kwezemfundo',
       academicExcellence: 'Ukusebenza Kahle Kwezemfundo',
-      gagasiFmGelezaNathi: 'IGagasi FM Geleza Nathi',
-      nationalRank2024: 'Izinga Ezweni ngo-2024',
+          nationalRank2024: 'Izinga Ezweni ngo-2024',
       passRateMultipleYears: 'Izinga Lokuphasa (Iminyaka Eminingi)',
       nationallyRankedSchools: 'Izikole Ezibalwa Phakathi Kweziphezulu Ezweni',
-      newsArticle: {
+      newsArticle: cmsData?.textResources?.newsArticle_ZUL || {
         title: "Abafundi Bethu Bathuthelwe eSgodiphola Primary Ngemuva Komonakalo Omkhulu Wesiphepho",
         date: "ezinyangeni ezi-2 ezedlule",
         author: "Abaphathi Besikole",
@@ -1258,8 +1296,55 @@ export default function App() {
     return () => clearInterval(timer);
   }, []);
 
+  useEffect(() => {
+    const handleScroll = () => {
+      if (window.scrollY > 400) {
+        setShowScrollTop(true);
+      } else {
+        setShowScrollTop(false);
+      }
+    };
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
+
+  if (currentPage === 'admin') {
+    return (
+      <AdminDashboard
+        lang={lang}
+        cmsData={cmsData}
+        onRefreshCMS={fetchCMSData}
+        onBack={() => {
+          setCurrentPage('home');
+          window.scrollTo({ top: 0 });
+        }}
+      />
+    );
+  }
+
   return (
     <div className="min-h-screen flex flex-col">
+      {/* Global Glowing June Exams Announcement Banner */}
+      <div className="bg-primary text-white border-b border-primary-container relative overflow-hidden bg-gradient-to-r from-primary via-[#b3000d] to-primary z-50">
+        <div className="absolute inset-0 bg-[linear-gradient(to_right,rgba(255,215,0,0.1)_0%,rgba(255,215,0,0.3)_50%,rgba(255,180,0,0.1)_100%)] animate-pulse pointer-events-none" />
+        <div className="max-w-screen-2xl mx-auto py-2 px-4 md:px-8 text-center text-[10px] sm:text-xs md:text-sm font-medium relative flex items-center justify-center gap-2 md:gap-3 flex-wrap">
+          <motion.div 
+            animate={{ scale: [1, 1.15, 1] }}
+            transition={{ repeat: Infinity, duration: 2 }}
+            className="w-2.5 h-2.5 rounded-full bg-[#FFD700] shadow-[0_0_8px_#FFD700] flex-shrink-0"
+          />
+          <span className="tracking-wide text-white/95 text-left sm:text-center">
+            {t[lang].juneExamBannerText}
+          </span>
+          <button
+            onClick={() => setShowJuneExamModal(true)}
+            className="underline decoration-wavy decoration-[#FFD700] hover:text-[#FFD700] transition-colors font-bold tracking-wider ml-1 whitespace-nowrap text-xs md:text-sm"
+          >
+            {lang === 'ENG' ? 'Open Notice' : 'Vula Isaziso'} →
+          </button>
+        </div>
+      </div>
+
       {/* TopAppBar */}
       <header className="bg-white/90 backdrop-blur-md sticky top-0 shadow-sm z-50 border-b border-outline-variant/10">
         <div className="flex justify-between items-center w-full px-4 md:px-8 py-3 md:py-4 max-w-screen-2xl mx-auto">
@@ -1318,12 +1403,6 @@ export default function App() {
               className={`${currentPage === 'uniforms' ? 'text-primary border-b-2 border-primary' : 'text-secondary hover:text-primary'} pb-1 text-editorial-label transition-colors duration-300`}
             >
               {t[lang].uniforms}
-            </button>
-            <button 
-              onClick={() => setCurrentPage('news')}
-              className={`${currentPage === 'news' ? 'text-primary border-b-2 border-primary' : 'text-secondary hover:text-primary'} pb-1 text-editorial-label transition-colors duration-300`}
-            >
-              {t[lang].news}
             </button>
             <button 
               onClick={() => setCurrentPage('success-portal')}
@@ -1400,12 +1479,12 @@ export default function App() {
                 {[
                   { name: t[lang].home, id: 'home' },
                   { name: t[lang].about, id: 'about' },
-                  { name: t[lang].news, id: 'news' },
                   { name: t[lang].academics, id: 'academics' },
                   { name: t[lang].admissions, id: 'admissions' },
                   { name: t[lang].gallery, id: 'gallery' },
                   { name: t[lang].uniforms, id: 'uniforms' },
                   { name: t[lang].successPortal, id: 'success-portal' },
+                  { name: lang === 'ENG' ? 'Alumni Spotlight' : 'Abafundi Bethu (Alumni)', id: 'alumni' },
                   { name: t[lang].contact, id: 'contact' }
                 ].map((item, idx) => (
                   <motion.button
@@ -1416,6 +1495,7 @@ export default function App() {
                     onClick={() => {
                       setCurrentPage(item.id as any);
                       setIsMenuOpen(false);
+                      window.scrollTo({ top: 0, behavior: 'smooth' });
                     }}
                     className={`text-left min-h-[56px] px-5 rounded-2xl text-lg font-headline transition-all flex items-center justify-between group ${
                       currentPage === item.id 
@@ -1533,6 +1613,47 @@ export default function App() {
                 >
                   {t[lang].offerAssistance}
                 </a>
+              </div>
+            </motion.div>
+          </div>
+        </section>
+
+        {/* INTERACTIVE JUNE EXAMS NOTIFICATION CARD */}
+        <section className="bg-surface py-6 border-b border-outline-variant/10">
+          <div className="max-w-7xl mx-auto px-6 md:px-8">
+            <motion.div
+              initial={{ opacity: 0, y: 15 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              onClick={() => setShowJuneExamModal(true)}
+              className="bg-gradient-to-r from-red-50 to-amber-50 dark:from-red-950/10 dark:to-amber-950/10 border-l-4 border-primary rounded-lg p-5 md:p-6 shadow-sm hover:shadow-md transition-all duration-300 cursor-pointer group flex flex-col md:flex-row md:items-center justify-between gap-4"
+            >
+              <div className="flex items-start gap-4">
+                <div className="bg-primary/10 p-3 rounded-full text-primary group-hover:scale-110 transition-transform duration-300">
+                  <AlertCircle className="w-6 h-6 md:w-8 md:h-8 animate-pulse" />
+                </div>
+                <div>
+                  <div className="flex items-center gap-2">
+                    <span className="bg-primary text-white text-[9px] md:text-xs font-bold uppercase tracking-wider px-2 py-0.5 rounded-sm">
+                      {lang === 'ENG' ? 'Academic Notice' : 'Isaziso Sasekilasini'}
+                    </span>
+                    <span className="text-secondary text-xs font-semibold">2026</span>
+                  </div>
+                  <h3 className="text-lg md:text-xl font-headline font-black text-primary mt-1 group-hover:text-primary transition-colors">
+                    {lang === 'ENG' ? 'June Mid-Year Examinations & Timetable' : 'Izivivinyo Nomhlahlandlela KaNhlangulana (June)'}
+                  </h3>
+                  <p className="text-xs md:text-sm text-secondary font-light mt-1 max-w-2xl leading-relaxed">
+                    {lang === 'ENG' 
+                      ? 'The June exam timetable has been updated. Attendance is compulsory. Tap to view exam rules, schedule details and full venue procedures.' 
+                      : 'Uhlelo lwezivivinyo zikaNhlangulana selubuyekeziwe. Ukuba khona kunesibopho. Thinta lapha ukuze ubone imithetho yesikhathi sayo ephelele.'}
+                  </p>
+                </div>
+              </div>
+              <div className="flex-shrink-0 self-end md:self-center">
+                <span className="inline-flex items-center gap-1.5 px-4 py-2 bg-primary group-hover:bg-primary-hover text-white text-xs font-bold uppercase tracking-widest transition-all duration-300 rounded-sm">
+                  {lang === 'ENG' ? 'See Timetable' : 'Buka Uhlelo'}
+                  <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-1 transition-transform" />
+                </span>
               </div>
             </motion.div>
           </div>
@@ -1941,49 +2062,81 @@ export default function App() {
 
         <NewsSection onReadMore={() => setCurrentPage('news')} />
 
-        {/* SUCCESS PORTAL CTA */}
-        <section className="py-16 md:py-24 bg-primary text-white overflow-hidden relative border-t border-white/10">
-          <div className="absolute inset-0 opacity-10">
-            <div className="absolute top-0 right-0 w-96 h-96 bg-white rounded-full translate-x-1/2 -translate-y-1/2 blur-3xl"></div>
-            <div className="absolute bottom-0 left-0 w-64 h-64 bg-white rounded-full -translate-x-1/2 translate-y-1/2 blur-3xl"></div>
-          </div>
-          <div className="max-w-7xl mx-auto px-6 md:px-8 relative z-10">
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+        {/* COMMUNITY SUGGESTION BOARD CTA */}
+        <section className="py-16 md:py-24 bg-gradient-to-r from-surface-container-low via-white to-surface-container-low border-y border-outline-variant/10">
+          <div className="max-w-7xl mx-auto px-6 md:px-8">
+            <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
               <motion.div
                 initial={{ opacity: 0, x: -30 }}
                 whileInView={{ opacity: 1, x: 0 }}
                 viewport={{ once: true }}
+                className="lg:col-span-7"
               >
-                <span className="text-editorial-label text-white/70 mb-4 block uppercase tracking-widest">Grade 12 Resources</span>
-                <h2 className="text-3xl md:text-6xl editorial-heading mb-6 leading-tight">{t[lang].successPortalCtaTitle}</h2>
-                <p className="text-lg md:text-xl font-light opacity-90 mb-8 max-w-xl">
-                  {t[lang].successPortalCtaDesc}
+                <span className="text-editorial-label text-primary mb-3 block uppercase tracking-widest font-semibold flex items-center gap-2">
+                  <span className="w-2 h-2 rounded-full bg-red-600 animate-pulse" />
+                  {lang === 'ENG' ? 'Interactive Community Dialogue' : 'Inkhulumisano Yomphakathi'}
+                </span>
+                <h2 className="text-3xl md:text-5xl editorial-heading mb-6 leading-tight tracking-tight text-primary">
+                  {lang === 'ENG' ? 'School Suggestion & Collaborative Board' : 'Ibhodi Leziphakamiso Lesikole Nabazali'}
+                </h2>
+                <p className="text-base md:text-lg font-light text-secondary mb-8 leading-relaxed max-w-2xl">
+                  {lang === 'ENG' 
+                    ? 'At Umzilikazi, we believe our learners, parents, and community are the foundation of academic excellence. Read positive suggestions, upvote beautiful initiatives (like peer studies or organic gardens), and collaborate to make our school even stronger!' 
+                    : 'Esikoleni saseMzilikazi, sikholelwa ukuthi abafundi bethu, abazali kanti nomphakathi bangunsika yempumelelo yethu. Funda iziphakamiso, usekele imizamo emihle (fana nokuqhutshwa kokufunda namaqembu noma ukulinywa kwezingadi), futhi ubambisene nathi!'}
                 </p>
-                <button 
-                  onClick={() => setCurrentPage('success-portal')}
-                  className="inline-block px-8 py-4 bg-[#FFD700] text-primary font-bold hover:bg-[#FFD700]/90 transition-all duration-300 tracking-widest text-sm uppercase shadow-xl"
+                <button
+                  onClick={() => {
+                    setCurrentPage('suggestions');
+                    window.scrollTo({ top: 0, behavior: 'smooth' });
+                  }}
+                  className="px-8 py-4 bg-primary hover:bg-primary-hover text-white font-bold tracking-widest text-xs uppercase flex items-center gap-2.5 shadow-md hover:shadow-xl transition-all duration-300 rounded-sm"
                 >
-                  {t[lang].enterSuccessPortal}
+                  <MessageSquare className="w-4 h-4 text-[#FFD700]" />
+                  {lang === 'ENG' ? 'Enter Suggestion Board' : 'Ngena Ebhodini Leziphakamiso'} &rarr;
                 </button>
               </motion.div>
+
               <motion.div
-                initial={{ opacity: 0, scale: 0.9 }}
+                initial={{ opacity: 0, scale: 0.95 }}
                 whileInView={{ opacity: 1, scale: 1 }}
                 viewport={{ once: true }}
-                className="relative hidden lg:block"
+                className="lg:col-span-5 bg-gradient-to-br from-primary to-primary-hover text-white p-8 rounded-sm shadow-xl relative overflow-hidden"
               >
-                <div className="aspect-video bg-white/10 backdrop-blur-md border border-white/20 rounded-sm p-8 flex flex-col justify-center items-center text-center">
-                  <Calculator className="w-20 h-20 text-[#FFD700] mb-6" />
-                  <h3 className="text-2xl font-headline font-bold mb-2">APS Calculator</h3>
-                  <p className="text-white/70">Instant results for your university applications</p>
-                </div>
-                <div className="absolute -bottom-6 -right-6 w-32 h-32 bg-[#FFD700] rounded-full flex items-center justify-center shadow-2xl animate-bounce">
-                  <span className="text-primary font-black text-2xl">GO!</span>
+                <div className="absolute top-0 right-0 w-32 h-32 bg-white/5 rounded-full translate-x-8 -translate-y-8" />
+                <h3 className="text-sm font-headline font-black mb-4 uppercase tracking-wider text-[#FFD700]">
+                  {lang === 'ENG' ? 'Recent Active Ideas' : 'Imibono Esanda Kufakwa'}
+                </h3>
+                <div className="space-y-4">
+                  {[
+                    { title: lang === 'ENG' ? 'After-School Peer Prep' : 'Amaqembu Wokulungiselela Matric', role: lang === 'ENG' ? 'Learner Idea' : 'Umbono Womfundi', likes: 48 },
+                    { title: lang === 'ENG' ? 'Organic Vegetable Garden' : 'Ingadi Yemifino Yesikole', role: lang === 'ENG' ? 'Parent Idea' : 'Umbono Womzali', likes: 39 },
+                    { title: lang === 'ENG' ? 'Mobile Coding & Web Club' : 'Iqembu Lokubhala Amakhodi', role: lang === 'ENG' ? 'Learner Idea' : 'Umbono Womfundi', likes: 31 }
+                  ].map((idea, i) => (
+                    <div key={i} className="flex justify-between items-center bg-white/10 p-3 rounded border border-white/5">
+                      <div>
+                        <p className="text-xs font-bold text-white tracking-tight">{idea.title}</p>
+                        <p className="text-[10px] text-white/60 font-semibold uppercase">{idea.role}</p>
+                      </div>
+                      <span className="text-xs bg-white/15 px-2.5 py-1 rounded font-bold text-[#FFD700] flex items-center gap-1">
+                        <ThumbsUp className="w-3" /> {idea.likes}
+                      </span>
+                    </div>
+                  ))}
                 </div>
               </motion.div>
             </div>
           </div>
         </section>
+
+        {/* ALUMNI SPOTLIGHT SECTION */}
+        <AlumniSpotlight 
+          lang={lang} 
+          onViewFull={(idx) => {
+            setSelectedAlumniIdx(idx);
+            setCurrentPage('alumni');
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+          }}
+        />
 
         {/* JOIN US / ADMISSIONS SECTION */}
         <section className="py-12 md:py-24 bg-primary text-white overflow-hidden">
@@ -2169,6 +2322,9 @@ export default function App() {
                 </div>
               </div>
             </section>
+
+            {/* Staff Directory section (Moved after Principal's Message) */}
+            <StaffDirectory lang={lang} cmsData={cmsData} />
 
             {/* Vision & Mission */}
             <section className="py-16 md:py-24 bg-surface-container-lowest">
@@ -2771,6 +2927,7 @@ export default function App() {
                 
                 {/* School Calendar Section */}
                 <motion.div 
+                  id="academic-calendar"
                   initial={{ opacity: 0, y: 30 }}
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true }}
@@ -2973,13 +3130,282 @@ export default function App() {
                 </div>
               </div>
             </section>
+
+            {/* School Colors Visual Swatches */}
+            <section className="py-16 bg-surface-container-low border-t border-outline-variant/10 relative overflow-hidden">
+              <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-96 h-96 bg-primary/5 rounded-full blur-3xl pointer-events-none" />
+              
+              <div className="max-w-4xl mx-auto px-6 md:px-8 relative z-10">
+                <div className="text-center max-w-2xl mx-auto mb-12">
+                  <div className="inline-flex items-center gap-2 px-3 py-1 bg-primary/5 text-primary text-xs uppercase tracking-widest font-extrabold rounded-full mb-3">
+                    <span className="w-2 h-2 rounded-full bg-primary animate-pulse" />
+                    {lang === 'ENG' ? 'Official Color Specifications' : 'Imininingwane Yemibala Yesikole'}
+                  </div>
+                  <h2 className="text-2xl md:text-3xl font-headline font-black text-primary mb-4 tracking-tight">
+                    {lang === 'ENG' ? 'Our Heritage Swatches' : 'Isikhumbuzo Se-Uniform Esisemthethweni'}
+                  </h2>
+                  <p className="text-xs md:text-sm text-secondary font-light leading-relaxed">
+                    {lang === 'ENG' 
+                      ? 'The visual red and white color palette of Umzilikazi High School defines our identity. Refer to this swatch tool to ensure correct purchase shades.' 
+                      : 'Iphalethi lemibala yesikole ebomvu nomhlophe lichaza ubunikazi bethu. Sebenzisa leli thuluzi lokuhlola imibala ukuze uqiniseke ngokuthenga okulungile.'}
+                  </p>
+                </div>
+
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                  {/* Swatch 1: Scarlet Red */}
+                  <motion.div 
+                    initial={{ opacity: 0, x: -20 }}
+                    whileInView={{ opacity: 1, x: 0 }}
+                    viewport={{ once: true }}
+                    className="bg-white border border-outline-variant/10 rounded-2xl p-6 shadow-sm hover:shadow-md hover:-translate-y-1.5 transition-all duration-300 relative overflow-hidden group flex flex-col justify-between"
+                  >
+                    <div>
+                      {/* Interactive Color Box */}
+                      <div className="relative aspect-[2/1] bg-[#b91c1c] rounded-lg shadow-inner overflow-hidden mb-5 flex items-end justify-between p-4 group-hover:scale-[1.01] transition-transform duration-350">
+                        <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent opacity-60 pointer-events-none" />
+                        <span className="font-mono text-[10px] font-bold text-white relative z-10 bg-black/20 px-2 py-0.5 rounded backdrop-blur-xs">
+                          HEIRLOOM RED
+                        </span>
+                        <span className="font-mono text-sm font-black text-white relative z-10">
+                          #B91C1C
+                        </span>
+                      </div>
+
+                      <h3 className="text-lg font-headline font-bold text-primary mb-3">
+                        {lang === 'ENG' ? 'Pride Scarlet Red' : 'Okubomvu Kwezikhulu (Scarlet Red)'}
+                      </h3>
+                      
+                      <p className="text-xs text-secondary leading-relaxed font-light mb-6">
+                        {lang === 'ENG'
+                          ? 'A bold, premium crimson red representing fortitude, resilience, and high energy.'
+                          : 'Okubomvu okunesibindi okumele isibindi, ukukhuthazela, nomdlandla ophezulu wesikole.'}
+                      </p>
+
+                      <div className="space-y-3 pb-6 border-t border-outline-variant/10 pt-4">
+                        <span className="text-[10px] uppercase font-bold tracking-widest text-[#b91c1c] block">
+                          {lang === 'ENG' ? 'Required Garments' : 'Izingubo Ezidingekayo'}
+                        </span>
+                        <ul className="space-y-2 text-xs text-secondary font-light">
+                          <li className="flex items-center gap-2">
+                            <span className="w-1.5 h-1.5 rounded-full bg-[#b91c1c]" />
+                            {lang === 'ENG' ? 'School Blazer & Trim Accent' : 'Ibhlesa Yesikole kanye Nomphetho'}
+                          </li>
+                          <li className="flex items-center gap-2">
+                            <span className="w-1.5 h-1.5 rounded-full bg-[#b91c1c]" />
+                            {lang === 'ENG' ? 'V-Neck Knitted Jersey Trim' : 'Umphetho Wejezi Likasikole'}
+                          </li>
+                          <li className="flex items-center gap-2">
+                            <span className="w-1.5 h-1.5 rounded-full bg-[#b91c1c]" />
+                            {lang === 'ENG' ? 'Formal School Tie Stripes' : 'Imidwebo Yesitayela sethayi Likasikole'}
+                          </li>
+                        </ul>
+                      </div>
+                    </div>
+
+                    <div className="bg-[#b91c1c]/5 rounded-xl p-3 flex items-center justify-between mt-4">
+                      <span className="text-[10px] font-mono text-[#b91c1c]">MATCH ACCURACY: ~100%</span>
+                      <span className="text-[9px] font-bold text-red-800 uppercase bg-white px-2 py-0.5 rounded shadow-2xs">Primary</span>
+                    </div>
+                  </motion.div>
+
+                  {/* Swatch 2: Crisp White */}
+                  <motion.div 
+                    initial={{ opacity: 0, x: 20 }}
+                    whileInView={{ opacity: 1, x: 0 }}
+                    viewport={{ once: true }}
+                    className="bg-white border border-outline-variant/10 rounded-2xl p-6 shadow-sm hover:shadow-md hover:-translate-y-1.5 transition-all duration-300 relative overflow-hidden group flex flex-col justify-between"
+                  >
+                    <div>
+                      {/* Interactive Color Box */}
+                      <div className="relative aspect-[2/1] bg-white border border-slate-200 rounded-lg shadow-inner overflow-hidden mb-5 flex items-end justify-between p-4 group-hover:scale-[1.01] transition-transform duration-350">
+                        <div className="absolute inset-0 bg-gradient-to-t from-black/5 via-transparent to-transparent opacity-60 pointer-events-none" />
+                        <span className="font-mono text-[10px] font-bold text-secondary relative z-10 bg-slate-100 px-2 py-0.5 rounded border border-slate-200">
+                          CRISP WHITE
+                        </span>
+                        <span className="font-mono text-sm font-black text-secondary relative z-10">
+                          #FFFFFF
+                        </span>
+                      </div>
+
+                      <h3 className="text-lg font-headline font-bold text-primary mb-3">
+                        {lang === 'ENG' ? 'Official Crisp White' : 'Okumhlophe Okuyikhethelo (Crisp White)'}
+                      </h3>
+                      
+                      <p className="text-xs text-secondary leading-relaxed font-light mb-6">
+                        {lang === 'ENG'
+                          ? 'A crisp, clean white symbolizing clarity of mind, integrity, and daily dignity.'
+                          : 'Okumhlophe okukhanyayo okumele ukuhlanzeka kwengqondo, ubuqotho, nesithunzi sansuku zonke.'}
+                      </p>
+
+                      <div className="space-y-3 pb-6 border-t border-outline-variant/10 pt-4">
+                        <span className="text-[10px] uppercase font-bold tracking-widest text-[#b91c1c] block">
+                          {lang === 'ENG' ? 'Required Garments' : 'Izingubo Ezidingekayo'}
+                        </span>
+                        <ul className="space-y-2 text-xs text-secondary font-light">
+                          <li className="flex items-center gap-2">
+                            <span className="w-1.5 h-1.5 rounded-full bg-slate-300" />
+                            {lang === 'ENG' ? 'Button-Down Short/Long Sleeve Shirts' : 'Amahembe Aboshwayo Emikhono Emifushane/Emide'}
+                          </li>
+                          <li className="flex items-center gap-2">
+                            <span className="w-1.5 h-1.5 rounded-full bg-slate-300" />
+                            {lang === 'ENG' ? 'Sports & Athletics P.E. Shirts' : 'Amahembe Emidlalo nawe-Athletics P.E.'}
+                          </li>
+                          <li className="flex items-center gap-2">
+                            <span className="w-1.5 h-1.5 rounded-full bg-slate-300" />
+                            {lang === 'ENG' ? 'Official School White Socks' : 'Amasokisi Alendawo Amhlophe Yesikole'}
+                          </li>
+                        </ul>
+                      </div>
+                    </div>
+
+                    <div className="bg-slate-50 border border-slate-100 rounded-xl p-3 flex items-center justify-between mt-4">
+                      <span className="text-[10px] font-mono text-secondary">MATCH ACCURACY: ~100%</span>
+                      <span className="text-[9px] font-bold text-secondary uppercase bg-white px-2 py-0.5 rounded shadow-2xs">Secondary</span>
+                    </div>
+                  </motion.div>
+                </div>
+
+                {/* Material standard notification */}
+                <div className="mt-10 bg-amber-500/5 border border-amber-500/10 rounded-xl p-4 flex items-center gap-3">
+                  <div className="w-8 h-8 rounded-full bg-amber-500/10 flex items-center justify-center flex-shrink-0 text-amber-600">
+                    💡
+                  </div>
+                  <p className="text-[11px] md:text-xs text-amber-800 leading-normal font-light">
+                    {lang === 'ENG'
+                      ? 'Note for suppliers: Standard crimson dye formulation is PANTONE 18-1662 TCX. Alternation or dilution of the crimson shade is not permitted.'
+                      : 'Inothi kubathengisi: Ifomula yombala obomvu esemthethweni yi-PANTONE 18-1662 TCX. Ukushintshwa noma ukuhlanjululwa kwalo mbala akuvunyelwe.'}
+                  </p>
+                </div>
+              </div>
+            </section>
           </motion.div>
+        ) : currentPage === 'suggestions' ? (
+          <SuggestionBoard lang={lang} t={t} onBack={() => setCurrentPage('home')} />
+        ) : currentPage === 'alumni' ? (
+          <AlumniSpotlight 
+            lang={lang} 
+            isStandalonePage={true} 
+            initialIndex={selectedAlumniIdx} 
+            onBack={() => {
+              setCurrentPage('home');
+              window.scrollTo({ top: 0, behavior: 'smooth' });
+            }} 
+          />
         ) : currentPage === 'news' ? (
           <NewsPage lang={lang} t={t} onBack={() => setCurrentPage('home')} />
         ) : (
           <ContactPage lang={lang} t={t} />
         )}
       </main>
+
+      {/* Creative June Exam Notification Modal Pop-up */}
+      <AnimatePresence>
+        {showJuneExamModal && (
+          <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 md:p-6">
+            {/* Backdrop with elegant blur */}
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              onClick={() => setShowJuneExamModal(false)}
+              className="absolute inset-0 bg-black/70 backdrop-blur-sm"
+            />
+            
+            {/* Modal Box */}
+            <motion.div
+              initial={{ opacity: 0, scale: 0.9, y: 20 }}
+              animate={{ opacity: 1, scale: 1, y: 0 }}
+              exit={{ opacity: 0, scale: 0.9, y: 20 }}
+              transition={{ type: 'spring', damping: 25, stiffness: 350 }}
+              className="bg-white border-2 border-[#FFD700] rounded-lg shadow-2xl relative max-w-xl w-full select-none overflow-hidden z-[101]"
+            >
+              {/* Creative Exam Header Decors */}
+              <div className="bg-gradient-to-r from-primary via-[#b3000d] to-primary text-white p-6 md:p-8 text-center relative border-b border-light-variant">
+                <div className="absolute top-3 right-3">
+                  <button 
+                    onClick={() => setShowJuneExamModal(false)}
+                    className="p-1.5 rounded-full hover:bg-white/10 transition-colors text-white/80 hover:text-white"
+                  >
+                    <X className="w-5 h-5" />
+                  </button>
+                </div>
+                <div className="mx-auto w-16 h-16 bg-white/10 rounded-full flex items-center justify-center mb-4 border border-white/20 animate-pulse">
+                  <GraduationCap className="text-[#FFD700] w-9 h-9" />
+                </div>
+                <h3 className="text-2xl md:text-3xl font-headline font-black tracking-tight text-white uppercase">
+                  {t[lang].juneExamModalTitle}
+                </h3>
+                <span className="text-xs font-mono uppercase tracking-[0.2em] text-[#FFD700] mt-1 block">
+                  Amajuba District • Academic Excellence
+                </span>
+              </div>
+
+              {/* Modal Content */}
+              <div className="p-6 md:p-8 space-y-6">
+                <p className="text-sm md:text-base text-secondary leading-relaxed font-light text-center">
+                  {t[lang].juneExamModalMessage}
+                </p>
+
+                {/* Important Reminders Bullet Grid */}
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 bg-surface-container-lowest p-4 rounded border border-outline-variant/10">
+                  <div className="flex gap-2.5 items-center text-xs md:text-sm text-secondary">
+                    <Clock className="w-4 h-4 text-primary flex-shrink-0" />
+                    <span><strong>Start Times:</strong> Arrive by 08:00 AM</span>
+                  </div>
+                  <div className="flex gap-2.5 items-center text-xs md:text-sm text-secondary">
+                    <FileText className="w-4 h-4 text-primary flex-shrink-0" />
+                    <span><strong>Stationery:</strong> Clear pens & pencil cases</span>
+                  </div>
+                  <div className="flex gap-2.5 items-center text-[#d32f2f] text-xs md:text-sm">
+                    <CheckCircle className="w-4 h-4 flex-shrink-0" />
+                    <span><strong>Uniform:</strong> Strictly school uniform</span>
+                  </div>
+                  <div className="flex gap-2.5 items-center text-xs md:text-sm text-secondary">
+                    <AlertCircle className="w-4 h-4 text-primary flex-shrink-0" />
+                    <span><strong>Hlonipha:</strong> Standard exam conduct</span>
+                  </div>
+                </div>
+
+                {/* Main Action Buttons */}
+                <div className="flex flex-col gap-3 pt-2">
+                  <button
+                    onClick={() => {
+                      setShowJuneExamModal(false);
+                      setCurrentPage('academics');
+                      setTimeout(() => {
+                        setCurrentCalendarMonth(5); // June
+                        const calSection = document.getElementById('academic-calendar');
+                        if (calSection) {
+                          calSection.scrollIntoView({ behavior: 'smooth' });
+                        }
+                      }, 250);
+                    }}
+                    className="w-full py-4 bg-primary text-white font-bold hover:bg-primary/95 transition-colors tracking-widest text-sm uppercase flex items-center justify-center gap-2 shadow-md hover:shadow-lg rounded-sm"
+                  >
+                    <Calendar className="w-4 h-4 text-[#FFD700]" />
+                    {t[lang].juneExamModalButton}
+                  </button>
+
+                  <button
+                    onClick={() => generateJuneExamPDF(lang)}
+                    className="w-full py-4 bg-slate-900 text-white font-bold hover:bg-slate-800 transition-colors tracking-widest text-sm uppercase flex items-center justify-center gap-2 shadow-md hover:shadow-lg rounded-sm border border-slate-800 cursor-pointer"
+                  >
+                    <FileText className="w-4 h-4 text-[#FFD700]" />
+                    {lang === 'ENG' ? 'Download PDF Timetable (Offline)' : 'Landa i-PDF Ye-Timetable (Offline)'}
+                  </button>
+
+                  <button
+                    onClick={() => setShowJuneExamModal(false)}
+                    className="w-full py-2.5 bg-surface-container hover:bg-surface-container-high text-secondary hover:text-primary transition-all text-xs font-semibold tracking-wider uppercase text-center rounded-sm"
+                  >
+                    {t[lang].juneExamModalClose}
+                  </button>
+                </div>
+              </div>
+            </motion.div>
+          </div>
+        )}
+      </AnimatePresence>
 
       <footer className="bg-primary text-white">
         <div className="max-w-7xl mx-auto px-6 py-10 md:px-8 md:py-16">
@@ -3007,11 +3433,18 @@ export default function App() {
                   { name: t[lang].admissions, page: 'admissions' },
                   { name: t[lang].gallery, page: 'gallery' },
                   { name: t[lang].uniforms, page: 'uniforms' },
-                  { name: t[lang].contact, page: 'contact' }
+                  { name: t[lang].successPortal, page: 'success-portal' },
+                  { name: t[lang].suggestions, page: 'suggestions' },
+                  { name: lang === 'ENG' ? 'Alumni Spotlight' : 'Abafundi Bethu (Alumni)', page: 'alumni' },
+                  { name: t[lang].contact, page: 'contact' },
+                  { name: lang === 'ENG' ? '🔒 Administrative Gate' : '🔒 Isango Lokuphatha', page: 'admin' }
                 ].map((link, idx) => (
                   <button 
                     key={idx} 
-                    onClick={() => setCurrentPage(link.page as any)}
+                    onClick={() => {
+                      setCurrentPage(link.page as any);
+                      window.scrollTo({ top: 0, behavior: 'smooth' });
+                    }}
                     className="hover:text-white/70 transition-colors flex items-center gap-1 text-left"
                   >
                     <ChevronRight className="w-3 h-3" /> {link.name}
@@ -3040,6 +3473,26 @@ export default function App() {
           </div>
         </div>
       </footer>
+
+      {/* Floating Scroll to Top button */}
+      <AnimatePresence>
+        {showScrollTop && (
+          <motion.button
+            initial={{ opacity: 0, scale: 0.8, y: 20 }}
+            animate={{ opacity: 1, scale: 1, y: 0 }}
+            exit={{ opacity: 0, scale: 0.8, y: 20 }}
+            whileHover={{ scale: 1.1, translateY: -2 }}
+            whileTap={{ scale: 0.9 }}
+            onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
+            className="fixed bottom-6 right-6 z-[90] p-3.5 bg-primary text-white rounded-full shadow-lg hover:bg-[#b3000d] transition-colors duration-300 focus:outline-none focus:ring-2 focus:ring-red-400 focus:ring-offset-2 flex items-center justify-center border border-white/20 cursor-pointer"
+            title={lang === 'ENG' ? 'Scroll to Top' : 'Buyela Phezulu'}
+            aria-label="Scroll to Top"
+          >
+            <ArrowUp className="w-5 h-5 pointer-events-none" />
+          </motion.button>
+        )}
+      </AnimatePresence>
+
       <CookieConsent lang={lang} t={t} />
     </div>
   );
