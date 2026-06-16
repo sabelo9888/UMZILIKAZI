@@ -34,7 +34,6 @@ import {
 } from 'lucide-react';
 import { motion, AnimatePresence, animate, useMotionValue, useTransform, useInView } from 'motion/react';
 import { useState, useEffect, useRef, FormEvent } from 'react';
-import SuggestionBoard from './components/SuggestionBoard';
 import StaffDirectory from './components/StaffDirectory';
 import AlumniSpotlight from './components/AlumniSpotlight';
 import AdminDashboard from './components/AdminDashboard';
@@ -559,7 +558,7 @@ export default function App() {
   const [currentHero, setCurrentHero] = useState(0);
   const [currentCalendarMonth, setCurrentCalendarMonth] = useState(new Date().getMonth());
   const [lang, setLang] = useState<'ENG' | 'ZUL'>('ENG');
-  const [currentPage, setCurrentPage] = useState<'home' | 'admissions' | 'academics' | 'gallery' | 'uniforms' | 'contact' | 'news' | 'about' | 'success-portal' | 'suggestions' | 'alumni' | 'admin'>('home');
+  const [currentPage, setCurrentPage] = useState<'home' | 'admissions' | 'academics' | 'gallery' | 'uniforms' | 'contact' | 'news' | 'about' | 'success-portal' | 'alumni' | 'admin'>('home');
   const [cmsData, setCmsData] = useState<any>(null);
 
   const fetchCMSData = () => {
@@ -600,7 +599,6 @@ export default function App() {
       gallery: 'Gallery',
       uniforms: 'Uniforms',
       successPortal: 'Success Portal',
-      suggestions: 'Suggestions',
       schoolName: 'Umzilikazi Senior Secondary',
       motto: cmsData?.textResources?.motto_ENG || '“Hlonipha Ze Uhlonishwe” — Respect so that you may be respected',
       rank: '#10 National Rank 2024',
@@ -609,7 +607,7 @@ export default function App() {
       heroDesc: cmsData?.textResources?.heroDesc_ENG || 'As a leading rural high school in our district, we are dedicated to providing world-class education to every learner, proving that excellence is a choice, not a privilege.',
       discover: 'Discover Our Story',
       apply: 'Apply Now',
-      admissionTitle: cmsData?.textResources?.admissionTitle_ENG || 'Admissions & Enrollment',
+      admissionTitle: cmsData?.textResources?.admissionTitle_ENG || 'Admissions & Enrolment',
       admissionSubtitle: cmsData?.textResources?.admissionSubtitle_ENG || 'Join a tradition of excellence and community pride.',
       admissionNotice: cmsData?.textResources?.admissionNotice_ENG || 'Important Notice: Applications for the 2027 academic year will be officially announced in mid-2026. Please check back for updates.',
       requirementsTitle: cmsData?.textResources?.requirementsTitle_ENG || 'Admission Requirements',
@@ -653,8 +651,8 @@ export default function App() {
       readFullArticle: 'Read Full Article',
       urgentAppeal: 'Urgent Appeal',
       rebuildingTitle: 'Rebuilding After the Storm: A Call for Support',
-      stormDesc1: 'On the 26th and 27th of December, our school was struck by devastating thunderstorms that leveled six classrooms and severely damaged ten others. This catastrophe has left over 1,600 learners with only six safe classrooms to share.',
-      stormDesc2: 'Currently, over 600 of our matric and Grade 11 learners are forced to commute to a neighboring primary school, where they face extreme overcrowding with 60 to 70 students packed into single classrooms.',
+      stormDesc1: 'On the 26th and 27th of December, our school was struck by devastating thunderstorms that levelled six classrooms and severely damaged ten others. This catastrophe has left over 1,600 learners with only six safe classrooms to share.',
+      stormDesc2: 'Currently, over 600 of our matric and Grade 11 learners are forced to commute to a neighbouring primary school, where they face extreme overcrowding with 60 to 70 learners packed into single classrooms.',
       stormDesc3: 'Despite achieving a 100% pass rate and proving our commitment to excellence, we are now fighting for our survival. We are making an urgent call to businesses and the private sector for assistance in rebuilding our facilities.',
       leadershipVoice: 'Leadership Voice',
       welcomeTitle: cmsData?.textResources?.welcomeTitle_ENG || 'Welcome to Umzilikazi',
@@ -712,9 +710,9 @@ export default function App() {
       partner2Desc: 'DUT\'s UNI4ALL Community Engagement Programme sends students to assist our Grade 12 learners with tertiary applications, breaking down barriers to higher education.',
       partner3Title: 'eMadlangeni Local Municipality',
       partner3Desc: 'The eMadlangeni Municipality has honoured our school\'s academic excellence at Mayoral Excellence Awards ceremonies, recognising our consistent 100% pass rates.',
-      enrollment: 'Enrollment',
+      enrollment: 'Enrolment',
       becomePart: 'Become Part of the Umzilikazi Family',
-      enrollmentDesc: 'Umzilikazi Senior Secondary School is a public, rural institution. We welcome learners from all Emadlangeni and surrounding areas. Admission is open to Grade 8 through Grade 12 learners. For enquiries, contact our office directly or use the form below.',
+      enrollmentDesc: 'Umzilikazi Senior Secondary School is a public, rural institution. We welcome learners from all Emadlangeni and surrounding areas. Admission is open to Grade 8 to Grade 12 learners. For enquiries, contact our office directly or use the form below.',
       schoolType: 'School Type',
       schoolTypeValue: 'Public Rural School (Quintile 2)',
       grades: 'Grades',
@@ -790,8 +788,8 @@ export default function App() {
       location: 'Location',
       postalAddress: 'Postal Address',
       principal: 'Principal',
-      grade8Enroll: cmsData?.textResources?.grade8Enroll_ENG || 'Grade 8 Enrollment',
-      grade8Desc: cmsData?.textResources?.grade8Desc_ENG || 'We prioritize learners from our local feeder primary schools in Emadlangeni and surrounding areas. Space is limited, so early application is encouraged once the window opens.',
+      grade8Enroll: cmsData?.textResources?.grade8Enroll_ENG || 'Grade 8 Enrolment',
+      grade8Desc: cmsData?.textResources?.grade8Desc_ENG || 'We prioritise learners from our local feeder primary schools in Emadlangeni and surrounding areas. Space is limited, so early application is encouraged once the window opens.',
       transferStudents: cmsData?.textResources?.transferStudents_ENG || 'Transfer Students',
       transferDesc: cmsData?.textResources?.transferDesc_ENG || 'Learners wishing to transfer into Grades 9-11 must provide a valid transfer letter and their most recent academic records for review by the School Governing Body.',
       matricHistory: 'Matric Results History',
@@ -801,11 +799,11 @@ export default function App() {
       specialRecognition: 'Special Recognition',
       gagasiRecognition: 'Proudly adopted by Gagasi FM — Geleza Ne Gagasi 2025',
       visionTitle: 'Our Vision',
-      visionDesc: 'To be a center of excellence that produces holistic, responsible, and globally competitive citizens who are grounded in strong moral values.',
+      visionDesc: 'To be a centre of excellence that produces holistic, responsible, and globally competitive citizens who are grounded in strong moral values.',
       missionTitle: 'Our Mission',
       missionDesc: 'To provide quality teaching and learning through dedication, discipline, and community involvement, ensuring every learner reaches their full potential in a safe and supportive environment.',
       aboutStoryTitle: 'Our Journey of Excellence',
-      aboutStoryDesc: 'Founded on the principles of resilience and academic rigor, Umzilikazi Senior Secondary School has grown from a humble rural institution into a nationally recognized beacon of success. Named after the legendary King Mzilikazi, we embody the spirit of leadership and determination.',
+      aboutStoryDesc: 'Founded on the principles of resilience and academic rigour, Umzilikazi Senior Secondary School has grown from a humble rural institution into a nationally recognised beacon of success. Named after the legendary King Mzilikazi, we embody the spirit of leadership and determination.',
       sloganTitle: 'Our Slogan',
       sloganDesc: '“Hlonipha ukuze nawe uhlonishwe” — Respect so that you may be respected. This is more than just words; it is the foundation of our school culture, teaching our learners that mutual respect is the key to a harmonious and successful society.',
       allRightsReserved: 'All Rights Reserved.',
@@ -944,7 +942,6 @@ export default function App() {
       gallery: 'Imifanekiso',
       uniforms: 'Iyunifomu',
       successPortal: 'Ingosi Yempumelelo',
-      suggestions: 'Iziphakamiso',
       schoolName: 'Umzilikazi Senior Secondary',
       motto: cmsData?.textResources?.motto_ZUL || '“Hlonipha ukuze nawe uhlonishwe”',
       rank: 'Inombolo 10 Ezweni 2024',
@@ -1327,18 +1324,20 @@ export default function App() {
       {/* Global Glowing June Exams Announcement Banner */}
       <div className="bg-primary text-white border-b border-primary-container relative overflow-hidden bg-gradient-to-r from-primary via-[#b3000d] to-primary z-50">
         <div className="absolute inset-0 bg-[linear-gradient(to_right,rgba(255,215,0,0.1)_0%,rgba(255,215,0,0.3)_50%,rgba(255,180,0,0.1)_100%)] animate-pulse pointer-events-none" />
-        <div className="max-w-screen-2xl mx-auto py-2 px-4 md:px-8 text-center text-[10px] sm:text-xs md:text-sm font-medium relative flex items-center justify-center gap-2 md:gap-3 flex-wrap">
-          <motion.div 
-            animate={{ scale: [1, 1.15, 1] }}
-            transition={{ repeat: Infinity, duration: 2 }}
-            className="w-2.5 h-2.5 rounded-full bg-[#FFD700] shadow-[0_0_8px_#FFD700] flex-shrink-0"
-          />
-          <span className="tracking-wide text-white/95 text-left sm:text-center">
-            {t[lang].juneExamBannerText}
-          </span>
+        <div className="max-w-screen-2xl mx-auto py-2 px-4 md:px-8 text-center relative flex flex-col sm:flex-row items-center justify-center gap-1.5 sm:gap-3">
+          <div className="flex items-center gap-2 justify-center">
+            <motion.div 
+              animate={{ scale: [1, 1.15, 1] }}
+              transition={{ repeat: Infinity, duration: 2 }}
+              className="w-2.5 h-2.5 rounded-full bg-[#FFD700] shadow-[0_0_8px_#FFD700] flex-shrink-0"
+            />
+            <span className="tracking-wide text-white/95 text-[10px] sm:text-xs md:text-sm font-semibold leading-relaxed text-center sm:text-left">
+              {t[lang].juneExamBannerText}
+            </span>
+          </div>
           <button
             onClick={() => setShowJuneExamModal(true)}
-            className="underline decoration-wavy decoration-[#FFD700] hover:text-[#FFD700] transition-colors font-bold tracking-wider ml-1 whitespace-nowrap text-xs md:text-sm"
+            className="underline decoration-wavy decoration-[#FFD700] hover:text-[#FFD700] transition-colors font-bold tracking-wider whitespace-nowrap text-[10px] sm:text-xs md:text-sm flex-shrink-0"
           >
             {lang === 'ENG' ? 'Open Notice' : 'Vula Isaziso'} →
           </button>
@@ -1619,40 +1618,37 @@ export default function App() {
         </section>
 
         {/* INTERACTIVE JUNE EXAMS NOTIFICATION CARD */}
-        <section className="bg-surface py-6 border-b border-outline-variant/10">
-          <div className="max-w-7xl mx-auto px-6 md:px-8">
+        <section className="bg-surface py-3 border-b border-outline-variant/10">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 md:px-8">
             <motion.div
               initial={{ opacity: 0, y: 15 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               onClick={() => setShowJuneExamModal(true)}
-              className="bg-gradient-to-r from-red-50 to-amber-50 dark:from-red-950/10 dark:to-amber-950/10 border-l-4 border-primary rounded-lg p-5 md:p-6 shadow-sm hover:shadow-md transition-all duration-300 cursor-pointer group flex flex-col md:flex-row md:items-center justify-between gap-4"
+              className="bg-gradient-to-r from-red-50 to-amber-50 dark:from-red-950/10 dark:to-amber-950/10 border-l-4 border-primary rounded-lg py-2.5 px-4 shadow-sm hover:shadow-md transition-all duration-300 cursor-pointer group flex flex-col sm:flex-row items-center sm:items-center justify-between gap-3"
             >
-              <div className="flex items-start gap-4">
-                <div className="bg-primary/10 p-3 rounded-full text-primary group-hover:scale-110 transition-transform duration-300">
-                  <AlertCircle className="w-6 h-6 md:w-8 md:h-8 animate-pulse" />
+              <div className="flex flex-col sm:flex-row items-center gap-2 text-center sm:text-left">
+                <div className="flex items-center gap-1.5 shrink-0 justify-center">
+                  <span className="bg-primary text-white text-[9px] md:text-xs font-bold uppercase tracking-wider px-2 py-0.5 rounded-sm">
+                    {lang === 'ENG' ? 'Academic Notice' : 'Isaziso Sasekilasini'}
+                  </span>
+                  <span className="text-secondary text-[11px] font-semibold">2026</span>
                 </div>
-                <div>
-                  <div className="flex items-center gap-2">
-                    <span className="bg-primary text-white text-[9px] md:text-xs font-bold uppercase tracking-wider px-2 py-0.5 rounded-sm">
-                      {lang === 'ENG' ? 'Academic Notice' : 'Isaziso Sasekilasini'}
-                    </span>
-                    <span className="text-secondary text-xs font-semibold">2026</span>
-                  </div>
-                  <h3 className="text-lg md:text-xl font-headline font-black text-primary mt-1 group-hover:text-primary transition-colors">
-                    {lang === 'ENG' ? 'June Mid-Year Examinations & Timetable' : 'Izivivinyo Nomhlahlandlela KaNhlangulana (June)'}
+                <div className="flex flex-col sm:flex-row sm:items-center gap-1 sm:gap-2 justify-center">
+                  <h3 className="text-xs sm:text-sm font-headline font-black text-primary group-hover:text-primary transition-colors">
+                    {lang === 'ENG' ? 'June Exams:' : 'Izivivinyo Zika-June:'}
                   </h3>
-                  <p className="text-xs md:text-sm text-secondary font-light mt-1 max-w-2xl leading-relaxed">
+                  <p className="text-[11px] sm:text-xs text-secondary font-medium leading-tight">
                     {lang === 'ENG' 
-                      ? 'The June exam timetable has been updated. Attendance is compulsory. Tap to view exam rules, schedule details and full venue procedures.' 
-                      : 'Uhlelo lwezivivinyo zikaNhlangulana selubuyekeziwe. Ukuba khona kunesibopho. Thinta lapha ukuze ubone imithetho yesikhathi sayo ephelele.'}
+                      ? 'The June exam timetable has been updated.' 
+                      : 'Uhlelo lwezivivinyo zikaNhlangulana selubuyekeziwe.'}
                   </p>
                 </div>
               </div>
-              <div className="flex-shrink-0 self-end md:self-center">
-                <span className="inline-flex items-center gap-1.5 px-4 py-2 bg-primary group-hover:bg-primary-hover text-white text-xs font-bold uppercase tracking-widest transition-all duration-300 rounded-sm">
-                  {lang === 'ENG' ? 'See Timetable' : 'Buka Uhlelo'}
-                  <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-1 transition-transform" />
+              <div className="flex-shrink-0">
+                <span className="inline-flex items-center gap-1 px-3 py-1 bg-primary group-hover:bg-primary-hover text-white text-[10px] font-bold uppercase tracking-widest transition-all duration-300 rounded-sm">
+                  {lang === 'ENG' ? 'See Details' : 'Mininingwane'}
+                  <ArrowRight className="w-3 h-3 group-hover:translate-x-1 transition-transform" />
                 </span>
               </div>
             </motion.div>
@@ -1662,7 +1658,7 @@ export default function App() {
         {/* STATS */}
         <section className="py-12 bg-surface-container-lowest border-b border-outline-variant/30">
           <div className="max-w-7xl mx-auto px-6 md:px-8">
-            <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-6 md:gap-8">
               {t[lang].stats.map((stat: any, idx: number) => (
                 <motion.div 
                   key={idx}
@@ -1670,7 +1666,7 @@ export default function App() {
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true }}
                   transition={{ delay: idx * 0.1 }}
-                  className="flex flex-col text-center md:text-left"
+                  className="flex flex-col text-center"
                 >
                   <span className="text-3xl md:text-4xl font-headline font-extrabold text-primary tracking-tight">
                     <Counter value={stat.value} prefix={stat.prefix} suffix={stat.suffix} decimals={stat.value % 1 !== 0 ? 1 : 0} />
@@ -1683,7 +1679,7 @@ export default function App() {
         </section>
 
         {/* WELCOME FROM PRINCIPAL */}
-        <section className="py-12 md:py-24 bg-surface overflow-hidden">
+        <section className="py-12 md:py-24 bg-white overflow-hidden">
           <div className="max-w-7xl mx-auto px-6 md:px-8 grid grid-cols-1 md:grid-cols-12 gap-8 md:gap-16 items-center">
             <motion.div 
               initial={{ opacity: 0, x: -50 }}
@@ -1723,7 +1719,7 @@ export default function App() {
         </section>
 
         {/* OUR STORY SECTION */}
-        <section className="py-12 md:py-24 bg-surface-container-low">
+        <section className="py-12 md:py-24 bg-slate-950 text-white border-y border-slate-900">
           <div className="max-w-7xl mx-auto px-6 md:px-8">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-10 md:gap-24 mb-12 md:mb-24">
               <motion.div
@@ -1732,9 +1728,9 @@ export default function App() {
                 viewport={{ once: true }}
                 transition={{ duration: 0.8 }}
               >
-                <span className="text-editorial-label text-primary mb-3 block">{t[lang].ourHeritage}</span>
-                <h2 className="text-2xl md:text-5xl editorial-heading mb-6 leading-tight tracking-tight">{t[lang].heritageTitle}</h2>
-                <div className="space-y-4 md:space-y-6 text-on-surface/80 text-sm md:text-lg leading-relaxed">
+                <span className="text-editorial-label text-red-500 mb-3 block font-bold">{t[lang].ourHeritage}</span>
+                <h2 className="text-2xl md:text-5xl editorial-heading mb-6 leading-tight tracking-tight text-white">{t[lang].heritageTitle}</h2>
+                <div className="space-y-4 md:space-y-6 text-slate-300 text-sm md:text-lg leading-relaxed">
                   <p>{t[lang].heritageDesc1}</p>
                   <p>{t[lang].heritageDesc2}</p>
                 </div>
@@ -1746,9 +1742,9 @@ export default function App() {
                 transition={{ duration: 0.8 }}
                 className="flex items-center"
               >
-                <blockquote className="text-base md:text-3xl font-light italic text-on-surface leading-relaxed border-l-4 md:border-l-8 border-primary pl-6 md:pl-8 py-2">
+                <blockquote className="text-base md:text-3xl font-light italic text-slate-100 leading-relaxed border-l-4 md:border-l-8 border-red-600 pl-6 md:pl-8 py-2">
                   {t[lang].principalQuote}
-                  <footer className="mt-4 md:mt-6 text-xs md:text-base font-bold text-primary not-italic">— Mr. Zulu, {t[lang].principalTitle}</footer>
+                  <footer className="mt-4 md:mt-6 text-xs md:text-base font-bold text-red-500 not-italic">— Mr. Zulu, {t[lang].principalTitle}</footer>
                 </blockquote>
               </motion.div>
             </div>
@@ -1766,72 +1762,21 @@ export default function App() {
                   viewport={{ once: true }}
                   transition={{ delay: idx * 0.2 }}
                   whileHover={{ y: -5 }}
-                  className="bg-white p-6 md:p-8 border-t-4 border-primary shadow-sm"
+                  className="bg-slate-900 p-6 md:p-8 border-t-4 border-red-600 shadow-md rounded-md"
                 >
-                  <h3 className="font-headline font-bold text-lg md:text-xl mb-3 text-primary tracking-tight">{pillar.title}</h3>
-                  <p className="text-secondary text-sm md:text-base leading-relaxed">{pillar.desc}</p>
+                  <h3 className="font-headline font-bold text-lg md:text-xl mb-3 text-red-400 tracking-tight">{pillar.title}</h3>
+                  <p className="text-slate-300 text-sm md:text-base leading-relaxed">{pillar.desc}</p>
                 </motion.div>
               ))}
             </div>
           </div>
         </section>
 
-        {/* OUR EDUCATORS SECTION */}
-        <section className="py-12 md:py-24 bg-surface-container-highest">
-          <div className="max-w-7xl mx-auto px-6 md:px-8">
-            <motion.div 
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              className="max-w-3xl mb-10 md:mb-16"
-            >
-              <span className="text-editorial-label text-primary mb-3 block">{t[lang].ourTeam}</span>
-              <h2 className="text-2xl md:text-5xl editorial-heading mb-4 md:mb-6 leading-tight tracking-tight">{t[lang].educatorsTitle}</h2>
-              <p className="text-sm md:text-lg text-secondary leading-relaxed">{t[lang].educatorsDesc}</p>
-            </motion.div>
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-8 mb-10 md:mb-16">
-              {[
-                { title: t[lang].eduFeature1Title, desc: t[lang].eduFeature1Desc },
-                { title: t[lang].eduFeature2Title, desc: t[lang].eduFeature2Desc },
-                { title: t[lang].eduFeature3Title, desc: t[lang].eduFeature3Desc },
-                { title: t[lang].eduFeature4Title, desc: t[lang].eduFeature4Desc }
-              ].map((item, idx) => (
-                <motion.div 
-                  key={idx} 
-                  initial={{ opacity: 0, scale: 0.9 }}
-                  whileInView={{ opacity: 1, scale: 1 }}
-                  viewport={{ once: true }}
-                  transition={{ delay: idx * 0.1 }}
-                  className="bg-surface p-5 md:p-8 rounded-sm"
-                >
-                  <h4 className="font-headline font-bold text-base md:text-lg mb-2">{item.title}</h4>
-                  <p className="text-secondary text-xs md:text-sm leading-relaxed">{item.desc}</p>
-                </motion.div>
-              ))}
-            </div>
-            <motion.div 
-              initial={{ opacity: 0, y: 30 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              className="bg-primary text-white p-6 md:p-12 rounded-sm relative overflow-hidden"
-            >
-              <div className="relative z-10">
-                <h3 className="text-lg md:text-3xl font-headline font-bold mb-4 md:mb-6 tracking-tight">{t[lang].heartSuccessTitle}</h3>
-                <p className="text-sm md:text-lg text-white/90 leading-relaxed mb-6 md:mb-8 max-w-4xl">
-                  {t[lang].heartSuccessDesc}
-                </p>
-                <div className="flex flex-wrap gap-2 md:gap-3">
-                  {t[lang].tags.map((tag: string, idx: number) => (
-                    <span key={idx} className="px-2 py-1 bg-white/10 border border-white/20 text-[9px] md:text-xs uppercase tracking-widest font-bold">{tag}</span>
-                  ))}
-                </div>
-              </div>
-            </motion.div>
-          </div>
-        </section>
+        {/* REAL STAFF DIRECTORY LIST */}
+        <StaffDirectory lang={lang} cmsData={cmsData} onSeeMore={() => { setCurrentPage('about'); window.scrollTo({ top: 0, behavior: 'smooth' }); }} />
 
         {/* ACADEMICS SECTION */}
-        <section className="py-12 md:py-24 bg-surface">
+        <section className="py-12 md:py-24 bg-white border-y border-outline-variant/10">
           <div className="max-w-7xl mx-auto px-6 md:px-8">
             <motion.div 
               initial={{ opacity: 0, y: 20 }}
@@ -1855,7 +1800,7 @@ export default function App() {
                   whileInView={{ opacity: 1, x: 0 }}
                   viewport={{ once: true }}
                   transition={{ delay: idx * 0.1 }}
-                  className="bg-surface-container-low p-6 md:p-8 border-l-4 border-primary"
+                  className="bg-slate-50 p-6 md:p-8 border-l-4 border-primary shadow-sm rounded-sm"
                 >
                   <h3 className="font-headline font-bold text-lg md:text-xl mb-3 tracking-tight">{card.title}</h3>
                   <p className="text-xs md:text-sm text-secondary">{card.desc}</p>
@@ -1905,10 +1850,8 @@ export default function App() {
           </div>
         </section>
 
-        <StormAppeal lang={lang} t={t} onContactClick={() => setCurrentPage('contact')} />
-
         {/* SCHOOL LIFE SECTION */}
-        <section className="py-12 md:py-24 bg-surface-container-low">
+        <section className="py-12 md:py-24 bg-slate-50 border-t border-outline-variant/10">
           <div className="max-w-7xl mx-auto px-6 md:px-8">
             <motion.div 
               initial={{ opacity: 0, y: 20 }}
@@ -1956,6 +1899,8 @@ export default function App() {
             </motion.div>
           </div>
         </section>
+
+        <StormAppeal lang={lang} t={t} onContactClick={() => setCurrentPage('contact')} />
         
         {/* SUCCESS PORTAL PREVIEW */}
         <section className="py-12 md:py-24 bg-primary text-white overflow-hidden relative">
@@ -2061,72 +2006,8 @@ export default function App() {
         </section>
 
         <NewsSection onReadMore={() => setCurrentPage('news')} />
-
-        {/* COMMUNITY SUGGESTION BOARD CTA */}
-        <section className="py-16 md:py-24 bg-gradient-to-r from-surface-container-low via-white to-surface-container-low border-y border-outline-variant/10">
-          <div className="max-w-7xl mx-auto px-6 md:px-8">
-            <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
-              <motion.div
-                initial={{ opacity: 0, x: -30 }}
-                whileInView={{ opacity: 1, x: 0 }}
-                viewport={{ once: true }}
-                className="lg:col-span-7"
-              >
-                <span className="text-editorial-label text-primary mb-3 block uppercase tracking-widest font-semibold flex items-center gap-2">
-                  <span className="w-2 h-2 rounded-full bg-red-600 animate-pulse" />
-                  {lang === 'ENG' ? 'Interactive Community Dialogue' : 'Inkhulumisano Yomphakathi'}
-                </span>
-                <h2 className="text-3xl md:text-5xl editorial-heading mb-6 leading-tight tracking-tight text-primary">
-                  {lang === 'ENG' ? 'School Suggestion & Collaborative Board' : 'Ibhodi Leziphakamiso Lesikole Nabazali'}
-                </h2>
-                <p className="text-base md:text-lg font-light text-secondary mb-8 leading-relaxed max-w-2xl">
-                  {lang === 'ENG' 
-                    ? 'At Umzilikazi, we believe our learners, parents, and community are the foundation of academic excellence. Read positive suggestions, upvote beautiful initiatives (like peer studies or organic gardens), and collaborate to make our school even stronger!' 
-                    : 'Esikoleni saseMzilikazi, sikholelwa ukuthi abafundi bethu, abazali kanti nomphakathi bangunsika yempumelelo yethu. Funda iziphakamiso, usekele imizamo emihle (fana nokuqhutshwa kokufunda namaqembu noma ukulinywa kwezingadi), futhi ubambisene nathi!'}
-                </p>
-                <button
-                  onClick={() => {
-                    setCurrentPage('suggestions');
-                    window.scrollTo({ top: 0, behavior: 'smooth' });
-                  }}
-                  className="px-8 py-4 bg-primary hover:bg-primary-hover text-white font-bold tracking-widest text-xs uppercase flex items-center gap-2.5 shadow-md hover:shadow-xl transition-all duration-300 rounded-sm"
-                >
-                  <MessageSquare className="w-4 h-4 text-[#FFD700]" />
-                  {lang === 'ENG' ? 'Enter Suggestion Board' : 'Ngena Ebhodini Leziphakamiso'} &rarr;
-                </button>
-              </motion.div>
-
-              <motion.div
-                initial={{ opacity: 0, scale: 0.95 }}
-                whileInView={{ opacity: 1, scale: 1 }}
-                viewport={{ once: true }}
-                className="lg:col-span-5 bg-gradient-to-br from-primary to-primary-hover text-white p-8 rounded-sm shadow-xl relative overflow-hidden"
-              >
-                <div className="absolute top-0 right-0 w-32 h-32 bg-white/5 rounded-full translate-x-8 -translate-y-8" />
-                <h3 className="text-sm font-headline font-black mb-4 uppercase tracking-wider text-[#FFD700]">
-                  {lang === 'ENG' ? 'Recent Active Ideas' : 'Imibono Esanda Kufakwa'}
-                </h3>
-                <div className="space-y-4">
-                  {[
-                    { title: lang === 'ENG' ? 'After-School Peer Prep' : 'Amaqembu Wokulungiselela Matric', role: lang === 'ENG' ? 'Learner Idea' : 'Umbono Womfundi', likes: 48 },
-                    { title: lang === 'ENG' ? 'Organic Vegetable Garden' : 'Ingadi Yemifino Yesikole', role: lang === 'ENG' ? 'Parent Idea' : 'Umbono Womzali', likes: 39 },
-                    { title: lang === 'ENG' ? 'Mobile Coding & Web Club' : 'Iqembu Lokubhala Amakhodi', role: lang === 'ENG' ? 'Learner Idea' : 'Umbono Womfundi', likes: 31 }
-                  ].map((idea, i) => (
-                    <div key={i} className="flex justify-between items-center bg-white/10 p-3 rounded border border-white/5">
-                      <div>
-                        <p className="text-xs font-bold text-white tracking-tight">{idea.title}</p>
-                        <p className="text-[10px] text-white/60 font-semibold uppercase">{idea.role}</p>
-                      </div>
-                      <span className="text-xs bg-white/15 px-2.5 py-1 rounded font-bold text-[#FFD700] flex items-center gap-1">
-                        <ThumbsUp className="w-3" /> {idea.likes}
-                      </span>
-                    </div>
-                  ))}
-                </div>
-              </motion.div>
-            </div>
-          </div>
-        </section>
+ 
+        {/* ALUMNI SPOTLIGHT SECTION */}
 
         {/* ALUMNI SPOTLIGHT SECTION */}
         <AlumniSpotlight 
@@ -3279,8 +3160,6 @@ export default function App() {
               </div>
             </section>
           </motion.div>
-        ) : currentPage === 'suggestions' ? (
-          <SuggestionBoard lang={lang} t={t} onBack={() => setCurrentPage('home')} />
         ) : currentPage === 'alumni' ? (
           <AlumniSpotlight 
             lang={lang} 
@@ -3317,7 +3196,7 @@ export default function App() {
               animate={{ opacity: 1, scale: 1, y: 0 }}
               exit={{ opacity: 0, scale: 0.9, y: 20 }}
               transition={{ type: 'spring', damping: 25, stiffness: 350 }}
-              className="bg-white border-2 border-[#FFD700] rounded-lg shadow-2xl relative max-w-xl w-full select-none overflow-hidden z-[101]"
+              className="bg-white border-2 border-[#FFD700] rounded-lg shadow-2xl relative max-w-xl w-full select-none overflow-y-auto max-h-[92vh] z-[101]"
             >
               {/* Creative Exam Header Decors */}
               <div className="bg-gradient-to-r from-primary via-[#b3000d] to-primary text-white p-6 md:p-8 text-center relative border-b border-light-variant">
@@ -3434,7 +3313,6 @@ export default function App() {
                   { name: t[lang].gallery, page: 'gallery' },
                   { name: t[lang].uniforms, page: 'uniforms' },
                   { name: t[lang].successPortal, page: 'success-portal' },
-                  { name: t[lang].suggestions, page: 'suggestions' },
                   { name: lang === 'ENG' ? 'Alumni Spotlight' : 'Abafundi Bethu (Alumni)', page: 'alumni' },
                   { name: t[lang].contact, page: 'contact' },
                   { name: lang === 'ENG' ? '🔒 Administrative Gate' : '🔒 Isango Lokuphatha', page: 'admin' }

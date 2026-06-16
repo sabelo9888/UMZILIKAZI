@@ -31,87 +31,48 @@ interface AdminDashboardProps {
 const DEFAULT_STAFF = [
   {
     id: 'staff_1',
-    name: 'Mr. M. S. Zulu',
-    roleENG: 'Principal / Head of School',
-    roleZUL: 'UThishanhloko / Umphathi Wesikole',
-    dept: 'management',
-    subjectsENG: ['School Governance', 'History'],
-    subjectsZUL: ['Ukuphathwa Kwasetshenziswa', 'Umlando'],
-    bioENG: 'Under Mr. Zulu\'s visionary leadership for over 15 years, Umzilikazi has achieved standard 100% matric pass rates and established itself as a beacon of discipline and excellence in the Amajuba District.',
-    bioZUL: 'Ngaphansi kobuholi obuqotho bukaMnu. Zulu iminyaka engaphezu kwengu-15, isikole saseMzilikazi sizuze amaphuzu aphelele angu-100% kumatikuletsheni, nokuqinisekisile ukuthi siba isibuko sokuziphatha kahle emfundweni.',
-    experience: '28 Years',
-    initials: 'MZ',
-    colorClass: 'from-red-600 to-amber-600'
+    name: 'Chaun Brown',
+    roleENG: 'Agricultural Sciences Educator',
+    roleZUL: 'Uthisha Wezezolimo',
+    dept: 'sciences',
+    subjectsENG: ['Agricultural Sciences'],
+    subjectsZUL: ['EzoLimo'],
+    bioENG: 'Agricultural sciences teacher devoted to practical farming and agro-development.',
+    bioZUL: 'Uthisha wezolimo ozinikele ekulimeni okuphathekayo kanye nentuthuko kwezolimo.',
+    experience: '8 Years',
+    initials: 'CB',
+    colorClass: 'from-amber-600 to-yellow-600',
+    image: 'https://i.ibb.co/0jfNbNY2/file-00000000424871f4b7686970fd65031a.png'
   },
   {
     id: 'staff_2',
-    name: 'Mrs. N. F. Buthelezi',
-    roleENG: 'Deputy Principal',
-    roleZUL: 'Isekela Likathishanhloko',
-    dept: 'management',
-    subjectsENG: ['Mathematics', 'Physical Sciences'],
-    subjectsZUL: ['I-Mathematics', 'I-Physical Sciences'],
-    bioENG: 'A passionate advocate for STEM education, Mrs. Buthelezi streamlines the curriculum delivery, steering active tutoring systems, and fostering our elite math and science achievements.',
-    bioZUL: 'Ulwela imfundo yezesayensi nezobuchwepheshe, uNkk. Buthelezi uqinisekisa ukuthunyelwa kohlelo lokufunda ngendlela egculisayo nokuqhuba izinhlelo zokufundisa ezikhethekile zezibalo.',
-    experience: '22 Years',
-    initials: 'NB',
-    colorClass: 'from-[#b3000d] to-red-500'
+    name: 'Mandisa Dlamini',
+    roleENG: 'isiZulu Language Educator',
+    roleZUL: 'Uthisha weSizulu',
+    dept: 'humanities',
+    subjectsENG: ['isiZulu Home Language'],
+    subjectsZUL: ['IsiZulu'],
+    bioENG: 'Teaching isiZulu language, poetry, cultural preservation, and literature.',
+    bioZUL: 'Ukufundisa ulimi lwesisizulu, izinkondlo, ukulondolozwa kwesiko kanye nezincwadi.',
+    experience: '12 Years',
+    initials: 'MD',
+    colorClass: 'from-red-600 to-rose-500',
+    image: 'https://i.ibb.co/VcR2k0Px/file-0000000054f471f4a64889b669a6299e.png'
   },
   {
     id: 'staff_3',
-    name: 'Mr. S. M. Nkosi',
-    roleENG: 'Head of Department: Sciences',
-    roleZUL: 'Inhloko YoMnyango: EzeSayensi',
-    dept: 'sciences',
-    subjectsENG: ['Life Sciences', 'Agricultural Sciences'],
-    subjectsZUL: ['I-Life Sciences', 'I-Agricultural Sciences'],
-    bioENG: 'Mr. Nkosi champions student research projects and coordinates our daily afternoon matric study networks. He firmly believes hands-on agricultural studies foster community sustainability.',
-    bioZUL: 'UMnu. Nkosi ukhuthaza amaphrojekthi wocwaningo lwabafundi baphinde baqhube amaqembu okufunda ntambama. Ukholelwa ukuthi ezolimo ziqinisekisa ukusimama komphakathi wetshu.',
-    experience: '16 Years',
-    initials: 'SN',
-    colorClass: 'from-amber-500 to-yellow-600'
-  },
-  {
-    id: 'staff_4',
-    name: 'Miss T. P. Shabalala',
-    roleENG: 'Head of Department: Languages',
-    roleZUL: 'Inhloko YoMnyango: Izilimi',
+    name: 'Xolani Mazibuko',
+    roleENG: 'History Educator',
+    roleZUL: 'Uthisha Wezomlando',
     dept: 'humanities',
-    subjectsENG: ['English First Additional Language', 'isiZulu Home Language'],
-    subjectsZUL: ['IsiNgisi', 'IsiZulu'],
-    bioENG: 'Miss Shabalala believes in preserving local heritage while empowering learners with international communication skills. He heads the debating union and school editorial board.',
-    bioZUL: 'UNkosazana Shabalala ukholelwa ekulondolozeni amagugu emveli ngenkathi enikeza abafundi amakhono okuxhumana omhlaba. Uhola iqembu lempikiswano neyamabhuku yesikole.',
-    experience: '14 Years',
-    initials: 'TS',
-    colorClass: 'from-red-700 to-rose-500'
-  },
-  {
-    id: 'staff_5',
-    name: 'Mr. J. B. Smith',
-    roleENG: 'Senior Commercial Educator',
-    roleZUL: 'Uthisha Omkhulu Wezohwebo',
-    dept: 'humanities',
-    subjectsENG: ['Accounting', 'Business Studies'],
-    subjectsZUL: ['I-Accounting', 'I-Business Studies'],
-    bioENG: 'An enthusiastic educator who instills strong entrepreneurial ethics and commercial knowledge, preparing high-performance learners for economic success after their secondary education.',
-    bioZUL: 'Uthisha oshisekayo ogxilisa isimilo esiqotho sezozibhizinisi nolwazi lwezohwebo kubafundi bethu, ebalungiselela uhambo lwangemva kwesikole esiphakeme.',
-    experience: '18 Years',
-    initials: 'JS',
-    colorClass: 'from-red-800 to-amber-700'
-  },
-  {
-    id: 'staff_6',
-    name: 'Mrs. L. G. Dlamini',
-    roleENG: 'Senior Humanities Educator',
-    roleZUL: 'Uthisha Omkhulu Wezobuntu',
-    dept: 'humanities',
-    subjectsENG: ['Geography', 'Tourism'],
-    subjectsZUL: ['I-Geography', 'I-Tourism'],
-    bioENG: 'Dedicated to cultivating environmental stewardship and tourism sector insights, Mrs. Dlamini organizes local field studies mapping geographic features and South African wonders.',
-    bioZUL: 'Uzinikele ekuhlinzekeni ukuvikeleka kwemvelo kanye nokuqonda umkhakha wezokuvakasha. UNkk. Dlamini uhlela uhambo lwangaphandle lokuhlola i-Geography nezindawo zezwe lethu.',
-    experience: '12 Years',
-    initials: 'LD',
-    colorClass: 'from-orange-600 to-amber-500'
+    subjectsENG: ['History'],
+    subjectsZUL: ['Umlando'],
+    bioENG: 'Educator centered on South African history, oral traditions, and world events.',
+    bioZUL: 'Uthisha ogxile emlandweni waseNingizimu Afrika, amasiko omlomo, kanye nezehlakalo zomhlaba.',
+    experience: '10 Years',
+    initials: 'XM',
+    colorClass: 'from-red-800 to-amber-700',
+    image: 'https://i.ibb.co/Fqx6QF64/file-000000009c5c7243b919ae40f5f54a62.png'
   }
 ];
 
@@ -121,7 +82,7 @@ export default function AdminDashboard({ lang, onBack, cmsData, onRefreshCMS }: 
   const [loginError, setLoginError] = useState('');
   
   // Sidebar view state
-  const [activeView, setActiveView] = useState<'homepage' | 'staff' | 'admissions' | 'suggestions'>('homepage');
+  const [activeView, setActiveView] = useState<'homepage' | 'staff' | 'admissions'>('homepage');
 
   // sub-tabs for Edit Homepage screen
   const [activeHomeTab, setActiveHomeTab] = useState<'info' | 'announcements' | 'news' | 'calendar'>('info');
@@ -200,11 +161,6 @@ export default function AdminDashboard({ lang, onBack, cmsData, onRefreshCMS }: 
   const [newEventTitleZul, setNewEventTitleZul] = useState('');
   const [newEventType, setNewEventType] = useState<'academic' | 'event' | 'holiday' | 'exam'>('event');
 
-  // Suggestions state
-  const [suggestions, setSuggestions] = useState<any[]>([]);
-  const [updatingResponseId, setUpdatingResponseId] = useState<string | null>(null);
-  const [tempResponseText, setTempResponseText] = useState('');
-
   // Execution states
   const [isSaving, setIsSaving] = useState(false);
   const [saveStatus, setSaveStatus] = useState<{ success?: boolean; message?: string } | null>(null);
@@ -250,7 +206,7 @@ export default function AdminDashboard({ lang, onBack, cmsData, onRefreshCMS }: 
       setPrincipalQuoteZul(txt.principalQuote_ZUL || '“Othisha bethu bayinsika yempumelelo yethu. Ukuzinikela kwabo, ukuzidela kwabo, nokukholelwa kwabo kuwo wonke umfundi kuguqule isikole sethu saba yisibani sokusebenza kahle.”');
 
       // Admissions general fields info
-      setAdmissionTitleEng(txt.admissionTitle_ENG || 'Admissions & Enrollment');
+      setAdmissionTitleEng(txt.admissionTitle_ENG || 'Admissions & Enrolment');
       setAdmissionTitleZul(txt.admissionTitle_ZUL || 'Ukungeniswa Nokubhaliswa');
       setAdmissionSubtitleEng(txt.admissionSubtitle_ENG || 'Join a tradition of excellence and community pride.');
       setAdmissionSubtitleZul(txt.admissionSubtitle_ZUL || 'Joyina isiko lokusebenza kahle nokuziqhenya komphakathi.');
@@ -274,9 +230,9 @@ export default function AdminDashboard({ lang, onBack, cmsData, onRefreshCMS }: 
         "Ubufakazi bendawo yokuhlala"
       ]);
 
-      setGrade8EnrollEng(txt.grade8Enroll_ENG || 'Grade 8 Enrollment');
+      setGrade8EnrollEng(txt.grade8Enroll_ENG || 'Grade 8 Enrolment');
       setGrade8EnrollZul(txt.grade8Enroll_ZUL || 'Ukubhaliswa kweBanga lesi-8');
-      setGrade8DescEng(txt.grade8Desc_ENG || 'We prioritize learners from our local feeder primary schools in Emadlangeni and surrounding areas. Space is limited, so early application is encouraged once the window opens.');
+      setGrade8DescEng(txt.grade8Desc_ENG || 'We prioritise learners from our local feeder primary schools in Emadlangeni and surrounding areas. Space is limited, so early application is encouraged once the window opens.');
       setGrade8DescZul(txt.grade8Desc_ZUL || 'Sibeka eqhulwini abafundi abavela ezikoleni zethu zamabanga aphansi zaseMadlangeni nezindawo ezizungezile. Isikhala silinganiselwe, ngakho-ke ukufaka isicelo kusenesikhathi kuyakhuthazwa uma iwindi livulwa.');
       
       setTransferStudentsEng(txt.transferStudents_ENG || 'Transfer Students');
@@ -286,7 +242,6 @@ export default function AdminDashboard({ lang, onBack, cmsData, onRefreshCMS }: 
 
       setCalendarEng(cmsData.calendarEvents_ENG || []);
       setCalendarZul(cmsData.calendarEvents_ZUL || []);
-      setSuggestions(cmsData.suggestions || []);
       
       setStaffList(cmsData.staff && cmsData.staff.length > 0 ? cmsData.staff : DEFAULT_STAFF);
     }
@@ -488,45 +443,7 @@ export default function AdminDashboard({ lang, onBack, cmsData, onRefreshCMS }: 
     setCalendarZul(updatedZul);
   };
 
-  // Suggestion actions
-  const submitSchoolResponse = async (id: string) => {
-    try {
-      const res = await fetch(`/api/suggestions/${id}/respond`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ password, schoolResponse: tempResponseText })
-      });
-      const data = await res.json();
-      if (data.success) {
-        setSuggestions(data.suggestions);
-        setUpdatingResponseId(null);
-        setTempResponseText('');
-      } else {
-        alert(data.error || 'Failed to respond');
-      }
-    } catch (err) {
-      alert('Network error');
-    }
-  };
 
-  const deleteSuggestion = async (id: string) => {
-    if (!confirm('Are you sure you want to delete this suggestion?')) return;
-    try {
-      const res = await fetch(`/api/admin/suggestions/${id}/delete`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ password })
-      });
-      const data = await res.json();
-      if (data.success) {
-        setSuggestions(data.suggestions);
-      } else {
-        alert('Failed to delete');
-      }
-    } catch (err) {
-      alert('Communication error');
-    }
-  };
 
   const monthNames = [
     'January (Masingana)', 'February (Nhlolanja)', 'March (Ndasa)', 'April (Mbasa)',
@@ -694,25 +611,6 @@ export default function AdminDashboard({ lang, onBack, cmsData, onRefreshCMS }: 
                     <FileText className="w-4 h-4" /> Edit Admissions
                   </span>
                   <ChevronRight className="w-3.5 h-3.5 opacity-60" />
-                </button>
-
-                <button
-                  type="button"
-                  onClick={() => setActiveView('suggestions')}
-                  className={`w-full text-left px-3 py-2.5 rounded-sm text-xs font-bold uppercase tracking-wider flex items-center justify-between transition-all cursor-pointer ${
-                    activeView === 'suggestions' 
-                      ? 'bg-primary text-white shadow-xs' 
-                      : 'text-slate-600 hover:bg-slate-50 hover:text-primary'
-                  }`}
-                >
-                  <span className="flex items-center gap-2">
-                    <MessageSquare className="w-4 h-4" /> Suggestions
-                  </span>
-                  {suggestions.length > 0 && (
-                    <span className="bg-red-655 text-white rounded-full text-[9px] font-black px-1.5 py-0.5 leading-none">
-                      {suggestions.filter(s => !s.schoolResponse).length}
-                    </span>
-                  )}
                 </button>
               </nav>
 
@@ -1832,118 +1730,7 @@ export default function AdminDashboard({ lang, onBack, cmsData, onRefreshCMS }: 
               </div>
             )}
 
-            {/* VIEW 4: MODERATE SUGGESTIONS */}
-            {activeView === 'suggestions' && (
-              <div className="space-y-6 animate-fade-in">
-                <div className="bg-white p-6 border border-slate-200 shadow-sm rounded-sm">
-                  <div className="border-b pb-3 mb-4 text-center sm:text-left">
-                    <h2 className="text-sm font-headline uppercase tracking-wider text-primary font-bold">Parent & Student Forum Suggestions Moderation</h2>
-                    <p className="text-xs text-slate-500 mt-1 leading-relaxed">
-                      Moderate submissions or formulate SGB feedback. Items displayed here correspond directly to anonymous suggestions submitted by learners or guardians.
-                    </p>
-                  </div>
 
-                  <div className="space-y-4 mt-6">
-                    {suggestions.length === 0 ? (
-                      <div className="text-center py-12 bg-slate-50 border border-dashed border-slate-200 rounded">
-                        <MessageSquare className="w-8 h-8 text-slate-300 mx-auto mb-2" />
-                        <p className="text-xs text-slate-500">No suggestions are currently recorded in the system.</p>
-                      </div>
-                    ) : (
-                      suggestions.map((s) => (
-                        <div key={s.id} className="p-5 border border-slate-200 rounded-sm bg-white hover:shadow-3xs transition-shadow space-y-4">
-                          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-slate-100 pb-3">
-                            <div className="flex items-center gap-2">
-                              <span className="text-[10px] uppercase tracking-widest font-black text-secondary bg-slate-100 px-2.5 py-0.5 rounded font-mono">CODE: {s.id}</span>
-                              <span className="text-[9px] text-slate-400 font-mono font-medium">{s.timestamp || 'Just now'}</span>
-                            </div>
-                            <span className={`text-[10px] font-black uppercase px-2 py-0.5 rounded text-white inline-block text-center ${s.category === 'exam' ? 'bg-red-700' : s.category === 'facility' ? 'bg-indigo-600' : 'bg-slate-700'}`}>
-                              🏫 {s.category || 'general'}
-                            </span>
-                          </div>
-
-                          <div className="space-y-1">
-                            <span className="text-[9px] uppercase tracking-widest font-black text-slate-400 block">Submitted suggestion description text</span>
-                            <p className="text-xs text-slate-800 font-semibold leading-relaxed">{s.text}</p>
-                          </div>
-
-                          {s.regulatoryTags && s.regulatoryTags.length > 0 && (
-                            <div className="flex flex-wrap gap-1.5 items-center">
-                              <span className="text-[8px] uppercase tracking-widest font-black text-slate-400 mr-1">Identified Regulatory Scope:</span>
-                              {s.regulatoryTags.map((tag: string, idx: number) => (
-                                <span key={idx} className="bg-red-50 text-red-700 border border-red-100 text-[8px] font-black uppercase px-2 py-0.5 rounded font-mono">
-                                  ⚠️ {tag}
-                                </span>
-                              ))}
-                            </div>
-                          )}
-
-                          {/* Official response */}
-                          <div className="border-t border-slate-200 pt-3 flex flex-col sm:flex-row sm:items-center justify-between gap-3 text-secondary">
-                            <div className="flex-grow">
-                              <span className="text-[9px] uppercase tracking-widest font-black text-green-700 block mb-1">Official School SGB Response</span>
-                              {s.schoolResponse ? (
-                                <p className="text-xs text-green-800 font-semibold bg-green-50/50 p-2.5 border border-green-100 rounded-sm leading-relaxed">{s.schoolResponse}</p>
-                              ) : (
-                                <p className="text-xs text-slate-400 italic">No administrative response formulated yet.</p>
-                              )}
-                            </div>
-
-                            {updatingResponseId === s.id ? (
-                              <div className="flex flex-col gap-2 w-full sm:w-80 mt-2">
-                                <textarea
-                                  placeholder="Type administrative official verdict or action summary..."
-                                  value={tempResponseText}
-                                  onChange={(e) => setTempResponseText(e.target.value)}
-                                  rows={3}
-                                  className="w-full p-2 bg-white border border-slate-300 text-xs rounded-sm focus:border-green-600 focus:ring-1"
-                                />
-                                <div className="flex items-center gap-1.5 justify-end">
-                                  <button 
-                                    onClick={() => {
-                                      setUpdatingResponseId(null);
-                                      setTempResponseText('');
-                                    }}
-                                    className="text-[10px] font-bold text-slate-500 bg-slate-100 hover:bg-slate-200 px-2.5 py-1.5 rounded-sm uppercase tracking-wider"
-                                  >
-                                    Cancel
-                                  </button>
-                                  <button 
-                                    onClick={() => submitSchoolResponse(s.id)}
-                                    className="text-[10px] font-bold text-white bg-green-700 hover:bg-green-800 px-3 py-1.5 rounded-sm uppercase tracking-wider flex items-center gap-1"
-                                  >
-                                    <Check className="w-3 h-3" /> Commit Response
-                                  </button>
-                                </div>
-                              </div>
-                            ) : (
-                              <div className="flex items-center gap-2">
-                                <button
-                                  onClick={() => {
-                                    setUpdatingResponseId(s.id);
-                                    setTempResponseText(s.schoolResponse || '');
-                                  }}
-                                  className="px-3 py-2 bg-slate-800 text-white font-bold hover:bg-slate-900 transition-colors text-[10px] tracking-widest uppercase rounded-sm cursor-pointer"
-                                >
-                                  {s.schoolResponse ? 'Edit Response' : 'Write Response'}
-                                </button>
-                                <button
-                                  onClick={() => deleteSuggestion(s.id)}
-                                  className="p-2 bg-red-50 text-red-600 border border-red-100 hover:bg-red-100 rounded transition-colors cursor-pointer"
-                                  title="Archive/Delete Suggestion"
-                                >
-                                  <Trash2 className="w-4 h-4" />
-                                </button>
-                              </div>
-                            )}
-                          </div>
-                        </div>
-                      ))
-                    )}
-                  </div>
-                </div>
-              </div>
-            )}
 
           </div>
 
