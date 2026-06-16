@@ -136,6 +136,7 @@ export default function AdminDashboard({ lang, onBack, cmsData, onRefreshCMS }: 
   const [transferStudentsZul, setTransferStudentsZul] = useState('');
   const [transferDescEng, setTransferDescEng] = useState('');
   const [transferDescZul, setTransferDescZul] = useState('');
+  const [googleFormEmbedUrl, setGoogleFormEmbedUrl] = useState('');
 
   // Staff States
   const [staffList, setStaffList] = useState<any[]>([]);
@@ -239,6 +240,7 @@ export default function AdminDashboard({ lang, onBack, cmsData, onRefreshCMS }: 
       setTransferStudentsZul(txt.transferStudents_ZUL || 'Abafundi Abadluliswayo');
       setTransferDescEng(txt.transferDesc_ENG || 'Learners wishing to transfer into Grades 9-11 must provide a valid transfer letter and their most recent academic records for review by the School Governing Body.');
       setTransferDescZul(txt.transferDesc_ZUL || 'Abafundi abafuna ukudluliselwa emabangeni 9-11 kumele balethe incwadi yokudlulisa esemthethweni nemibiko yabo yakamuva yezemfundo ukuze ibuyekezwe yiBhodi elilawula isikole.');
+      setGoogleFormEmbedUrl(txt.googleFormEmbedUrl || 'https://docs.google.com/forms/d/e/1FAIpQLSdyT_h0_D3XQhU1u1l-W8YvMhO_XlE-bPlC-7S3fI700oKstA/viewform?embedded=true');
 
       setCalendarEng(cmsData.calendarEvents_ENG || []);
       setCalendarZul(cmsData.calendarEvents_ZUL || []);
@@ -337,7 +339,8 @@ export default function AdminDashboard({ lang, onBack, cmsData, onRefreshCMS }: 
         transferStudents_ENG: transferStudentsEng,
         transferStudents_ZUL: transferStudentsZul,
         transferDesc_ENG: transferDescEng,
-        transferDesc_ZUL: transferDescZul
+        transferDesc_ZUL: transferDescZul,
+        googleFormEmbedUrl: googleFormEmbedUrl
       },
       calendarEvents_ENG: calendarEng,
       calendarEvents_ZUL: calendarZul,
@@ -1636,6 +1639,30 @@ export default function AdminDashboard({ lang, onBack, cmsData, onRefreshCMS }: 
                         />
                       </div>
                     </div>
+                  </div>
+                </div>
+
+                {/* Google Forms Integration Card */}
+                <div className="bg-white p-6 border border-slate-200 shadow-sm rounded-sm">
+                  <h2 className="text-sm font-headline uppercase tracking-wider text-primary font-bold mb-4 border-b pb-2 flex items-center gap-2">
+                    <svg className="w-4 h-4 text-purple-600" fill="currentColor" viewBox="0 0 24 24"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2m-2 10H7v-2h10v2m0-4H7V7h10v2m0 8H7v-2h10v2z"/></svg>
+                    Google Forms Integration
+                  </h2>
+                  <p className="text-xs text-secondary leading-relaxed mb-4">
+                    Link your public or embedded Google Form (e.g. Pre-admission Form, General Enquiry Form). This allows visitors of the school website to fill in the application or request directly on the Admissions page.
+                  </p>
+                  <div>
+                    <label className="text-[10px] uppercase tracking-widest font-bold text-slate-500 block mb-1">Google Form public link or embed URL</label>
+                    <input 
+                      type="text"
+                      value={googleFormEmbedUrl}
+                      onChange={(e) => setGoogleFormEmbedUrl(e.target.value)}
+                      placeholder="https://docs.google.com/forms/d/e/..."
+                      className="w-full p-3 bg-slate-50 border border-slate-200 focus:border-primary text-xs rounded text-slate-800 font-mono"
+                    />
+                    <span className="text-[10px] text-slate-400 mt-1 block font-light">
+                      Tip: Make sure the Google Form is shared publicly (Anyone with the link can view) so learners can fill it.
+                    </span>
                   </div>
                 </div>
 

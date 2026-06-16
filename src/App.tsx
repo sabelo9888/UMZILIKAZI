@@ -558,7 +558,19 @@ export default function App() {
   const [currentHero, setCurrentHero] = useState(0);
   const [currentCalendarMonth, setCurrentCalendarMonth] = useState(new Date().getMonth());
   const [lang, setLang] = useState<'ENG' | 'ZUL'>('ENG');
-  const [currentPage, setCurrentPage] = useState<'home' | 'admissions' | 'academics' | 'gallery' | 'uniforms' | 'contact' | 'news' | 'about' | 'success-portal' | 'alumni' | 'admin'>('home');
+  // Helper to parse initial page from URL path for Search Console indexing & routing
+  const getInitialPage = (): 'home' | 'admissions' | 'academics' | 'gallery' | 'uniforms' | 'contact' | 'news' | 'about' | 'success-portal' | 'alumni' | 'admin' => {
+    if (typeof window === 'undefined') return 'home';
+    const path = window.location.pathname.replace(/^\/|\/$/g, '').toLowerCase();
+    const validPages = ['home', 'admissions', 'academics', 'gallery', 'uniforms', 'contact', 'news', 'about', 'success-portal', 'alumni', 'admin'];
+    
+    if (validPages.includes(path)) {
+      return path as any;
+    }
+    return 'home';
+  };
+
+  const [currentPage, setCurrentPage] = useState<'home' | 'admissions' | 'academics' | 'gallery' | 'uniforms' | 'contact' | 'news' | 'about' | 'success-portal' | 'alumni' | 'admin'>(getInitialPage());
   const [cmsData, setCmsData] = useState<any>(null);
 
   const fetchCMSData = () => {
@@ -574,6 +586,30 @@ export default function App() {
 
   useEffect(() => {
     fetchCMSData();
+  }, []);
+
+  // Synchronise page state changes with the browser address bar for SEO and user bookmarking
+  useEffect(() => {
+    const expectedPath = currentPage === 'home' ? '/' : `/${currentPage}`;
+    if (window.location.pathname !== expectedPath) {
+      window.history.pushState(null, '', expectedPath);
+      window.scrollTo({ top: 0, behavior: 'instant' });
+    }
+  }, [currentPage]);
+
+  // Handle browser back and forward actions (History PopState)
+  useEffect(() => {
+    const handlePopState = () => {
+      const path = window.location.pathname.replace(/^\/|\/$/g, '').toLowerCase();
+      const validPages = ['home', 'admissions', 'academics', 'gallery', 'uniforms', 'contact', 'news', 'about', 'success-portal', 'alumni', 'admin'];
+      if (validPages.includes(path)) {
+        setCurrentPage(path as any);
+      } else {
+        setCurrentPage('home');
+      }
+    };
+    window.addEventListener('popstate', handlePopState);
+    return () => window.removeEventListener('popstate', handlePopState);
   }, []);
   const [selectedAlumniIdx, setSelectedAlumniIdx] = useState<number>(0);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -2618,6 +2654,62 @@ export default function App() {
                       </li>
                     ))}
                   </ul>
+                </motion.div>
+
+                {/* Google Forms Admissions Embed Section */}
+                <motion.div 
+                  initial={{ opacity: 0, y: 30 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  className="bg-white shadow-xl border-t-8 border-purple-500 rounded-sm overflow-hidden mb-12"
+                >
+                  <div className="p-8 md:p-12 bg-slate-50 border-b border-slate-100">
+                    <div className="flex items-start gap-4">
+                      <div className="bg-purple-100 p-3 rounded-full flex-shrink-0">
+                        <svg className="w-8 h-8 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                        </svg>
+                      </div>
+                      <div>
+                        <h3 className="text-xl md:text-2xl font-headline font-bold text-slate-800 mb-2">
+                          {lang === 'ENG' ? 'Digital Preadmission Form' : 'Ifomu Lokubhalisa Ledijithali'}
+                        </h3>
+                        <p className="text-sm md:text-base text-secondary leading-relaxed">
+                          {lang === 'ENG' 
+                            ? 'Our preadmission form has been digitised through Google Forms. Complete the form below directly on this page to quickly submit your learner intake details to the school management team.'
+                            : 'Ifomu lethu lokubhalisa kusenesikhathi lenziwe ledijithali nge-Google Forms. Gwalisa ifomu elingezansi ngqo kuleli khasi ukuze uthumele imininingwane yakho yabaphathi yesikole.'}
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="p-1 sm:p-4 bg-slate-100 flex flex-col items-center">
+                    <div className="w-full bg-white rounded shadow-inner overflow-hidden border border-slate-200" style={{ height: '700px' }}>
+                      <iframe 
+                        src={cmsData?.textResources?.googleFormEmbedUrl || 'https://docs.google.com/forms/d/e/1FAIpQLSdyT_h0_D3XQhU1u1l-W8YvMhO_XlE-bPlC-7S3fI700oKstA/viewform?embedded=true'}
+                        width="100%" 
+                        height="100%" 
+                        frameBorder="0" 
+                        marginHeight={0} 
+                        marginWidth={0}
+                        title="Google Form admissions"
+                        className="bg-white"
+                      >
+                        Loading…
+                      </iframe>
+                    </div>
+                    <div className="mt-4 flex flex-wrap justify-center gap-4">
+                      <a 
+                        href={cmsData?.textResources?.googleFormEmbedUrl || 'https://docs.google.com/forms/d/e/1FAIpQLSdyT_h0_D3XQhU1u1l-W8YvMhO_XlE-bPlC-7S3fI700oKstA/viewform?embedded=true'}
+                        target="_blank" 
+                        rel="noopener noreferrer"
+                        className="bg-purple-600 hover:bg-purple-700 text-white font-bold tracking-wider text-[11px] uppercase py-3 px-6 rounded shadow flex items-center gap-2 transition-all duration-300"
+                      >
+                        <ExternalLink className="w-4 h-4" />
+                        {lang === 'ENG' ? 'Open in Google Forms' : 'Vula kwi-Google Forms'}
+                      </a>
+                    </div>
+                  </div>
                 </motion.div>
 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-8">

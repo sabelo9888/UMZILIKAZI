@@ -2,6 +2,7 @@ import express from 'express';
 import path from 'path';
 import fs from 'fs';
 import { createServer as createViteServer } from 'vite';
+import { generateSitemapXml } from './src/utils/sitemapGenerator';
 
 const PORT = 3000;
 const DB_PATH = path.join(process.cwd(), 'db.json');
@@ -43,6 +44,16 @@ async function startServer() {
   // Health check endpoint
   app.get('/api/health', (req, res) => {
     res.json({ status: 'ok', time: new Date().toISOString() });
+  });
+
+  // Dynamic Sitemap endpoint for search engines (with automatic host detection)
+  app.get('/sitemap.xml', (req, res) => {
+    const protocol = req.headers['x-forwarded-proto'] === 'https' || req.secure ? 'https' : 'http';
+    const host = req.get('host') || 'ais-pre-fplowarhqojph5clidwlmm-225193497839.europe-west3.run.app';
+    const baseUrl = `${protocol}://${host}`;
+    
+    res.header('Content-Type', 'application/xml');
+    res.send(generateSitemapXml(baseUrl));
   });
 
   // Fetch all CMS content
