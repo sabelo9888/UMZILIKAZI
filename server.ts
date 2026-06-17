@@ -49,11 +49,34 @@ async function startServer() {
   // Dynamic Sitemap endpoint for search engines (with automatic host detection)
   app.get('/sitemap.xml', (req, res) => {
     const protocol = req.headers['x-forwarded-proto'] === 'https' || req.secure ? 'https' : 'http';
-    const host = req.get('host') || 'ais-pre-fplowarhqojph5clidwlmm-225193497839.europe-west3.run.app';
-    const baseUrl = `${protocol}://${host}`;
+    const forwardedHost = req.headers['x-forwarded-host'];
+    const currentHost = (Array.isArray(forwardedHost) ? forwardedHost[0] : forwardedHost) || req.get('host') || '';
+    
+    // Always default to the official, primary custom production domain
+    let baseUrl = 'https://umzilikazissschool.co.za';
+    
+    // If accessed through the development sandbox or local preview, preserve it dynamically for easy testing
+    if (currentHost && (currentHost.includes('europe-west3.run.app') || currentHost.includes('localhost') || currentHost.includes('127.0.0.1') || currentHost.includes('3000'))) {
+      baseUrl = `${protocol}://${currentHost}`;
+    }
     
     res.header('Content-Type', 'application/xml');
     res.send(generateSitemapXml(baseUrl));
+  });
+
+  // Robots.txt endpoint for search engines and crawlers
+  app.get('/robots.txt', (req, res) => {
+    const protocol = req.headers['x-forwarded-proto'] === 'https' || req.secure ? 'https' : 'http';
+    const forwardedHost = req.headers['x-forwarded-host'];
+    const currentHost = (Array.isArray(forwardedHost) ? forwardedHost[0] : forwardedHost) || req.get('host') || '';
+    
+    let baseUrl = 'https://umzilikazissschool.co.za';
+    if (currentHost && (currentHost.includes('europe-west3.run.app') || currentHost.includes('localhost') || currentHost.includes('127.0.0.1') || currentHost.includes('3000'))) {
+      baseUrl = `${protocol}://${currentHost}`;
+    }
+
+    res.header('Content-Type', 'text/plain');
+    res.send(`User-agent: *\nAllow: /\n\nSitemap: ${baseUrl}/sitemap.xml\n`);
   });
 
   // Fetch all CMS content

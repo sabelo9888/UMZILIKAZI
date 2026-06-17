@@ -50,7 +50,7 @@ try {
   );
 
   if (isDirectRun) {
-    const defaultBaseUrl = 'https://ais-pre-fplowarhqojph5clidwlmm-225193497839.europe-west3.run.app';
+    const defaultBaseUrl = 'https://umzilikazissschool.co.za';
     console.log('[Sitemap Generator] Running CLI script with base URL:', defaultBaseUrl);
     const xmlContent = generateSitemapXml(defaultBaseUrl);
     
