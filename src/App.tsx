@@ -611,6 +611,160 @@ export default function App() {
     window.addEventListener('popstate', handlePopState);
     return () => window.removeEventListener('popstate', handlePopState);
   }, []);
+
+  // Dynamic SEO Page Meta & Title Update for Google Search Console Indexing
+  useEffect(() => {
+    const seoMeta: Record<string, {
+      title: { ENG: string; ZUL: string };
+      desc: { ENG: string; ZUL: string };
+    }> = {
+      home: {
+        title: {
+          ENG: "Umzilikazi Senior Secondary School | Official Website",
+          ZUL: "Umzilikazi Senior Secondary School | Iwebhusayithi Esisemthethweni"
+        },
+        desc: {
+          ENG: "Welcome to Umzilikazi Senior Secondary School. Our school is a beacon of academic excellence in Emadlangeni, KwaZulu-Natal, upholding our motto 'Hlonipha Ze Uhlonishwe'.",
+          ZUL: "Siyakwamukela eMzilikazi Senior Secondary School. Isikole sethu siyilungu lokugqama kwezemfundo eMadlangeni, KwaZulu-Natal, sigcina isiqubulo sethu 'Hlonipha Ze Uhlonishwe'."
+        }
+      },
+      about: {
+        title: {
+          ENG: "About Us | Umzilikazi Senior Secondary School",
+          ZUL: "Mayelana Nathi | Isikole Sasemzilikazi"
+        },
+        desc: {
+          ENG: "Learn about the rich history, noble vision, mission, and dedicated teaching staff of Umzilikazi Senior Secondary School in Amajuba district.",
+          ZUL: "Funda mayelana nomlando ocebile, umbono omuhle, umgomo, nabasebenzi bokufundisa abazinikezele besikole samabanga aphakeme saseMzilikazi esifundeni sase-Amajuba."
+        }
+      },
+      admissions: {
+        title: {
+          ENG: "Admissions & Enrolment | Umzilikazi Senior Secondary School",
+          ZUL: "Ukungeniswa Nokubhaliswa | Isikole Sasemzilikazi"
+        },
+        desc: {
+          ENG: "Apply for admission. Find direct links to our official Google preadmission form, fee structures, timelines, and required documents.",
+          ZUL: "Faka isicelo sokungeniswa esikoleni. Thola izixhumanisi eziqondile zefomu lethu ledijithali le-Google, imigomo, nezincwadi ezidingekayo."
+        }
+      },
+      academics: {
+        title: {
+          ENG: "Academic Curriculum & APS Calculator | Umzilikazi Senior Secondary",
+          ZUL: "Uhlelo Lwezemfundo ne-APS Calculator | Isikole Sasemzilikazi"
+        },
+        desc: {
+          ENG: "Explore our curriculum, dynamic matric pass rate records, and calculate your admission points score (APS) using our interactive calculator.",
+          ZUL: "Hlola isilabhasi yethu, amarekhodi okuphasa kwamatric, bese ubala amaphuzu akho we-APS usebenzisa okokubala okulula."
+        }
+      },
+      gallery: {
+        title: {
+          ENG: "Media & Campus Gallery | Umzilikazi Senior Secondary School",
+          ZUL: "Igalari Yezithombe | Isikole Sasemzilikazi"
+        },
+        desc: {
+          ENG: "View photographs and highlights of student lifestyle, sports, academic bootcamps, and Gagasi FM Geleza Nathi learning events.",
+          ZUL: "Buka izithombe namaphuzu avelele empilo yabafundi, ezemidlalo, amakamphu ezifundo, nemicimbi yokufunda ye-Gagasi FM Geleza Nathi."
+        }
+      },
+      uniforms: {
+        title: {
+          ENG: "Official School Uniform | Umzilikazi Senior Secondary School",
+          ZUL: "Iyunifomu Yesikole Esisemthethweni | Isikole Sasemzilikazi"
+        },
+        desc: {
+          ENG: "Detailed style and colour specs for boys, girls, and sports tracksuits of Umzilikazi. View standard swatches and guidelines for suppliers.",
+          ZUL: "Imininingwane yesitayela nemibala yombala yabafana, amantombazane, nethrekhi yezemidlalo yaseMzilikazi. Buka imihlahlandlela yabahlinzeki."
+        }
+      },
+      'success-portal': {
+        title: {
+          ENG: "Learner Career Success Portal | Umzilikazi Senior Secondary",
+          ZUL: "Ingosi Yempumelelo Yomfundi | Isikole Sasemzilikazi"
+        },
+        desc: {
+          ENG: "A dedicated resource center for matriculants. Check NSFAS applications, CAO KZN submissions, SA Youth portals, and study guides.",
+          ZUL: "Isikhungo semithombo esizinikezele sabafundi bakamatric. Hlola izicelo ze-NSFAS, ukuthunyelwa kwe-CAO KZN, neziqondiso zokufunda."
+        }
+      },
+      contact: {
+        title: {
+          ENG: "Contact Us & Directions | Umzilikazi Senior Secondary School",
+          ZUL: "Thintana Nathi | Isikole Sasemzilikazi"
+        },
+        desc: {
+          ENG: "Reach our administration office in Emadlangeni. Contact numbers, school operating hours, email addresses, and location map directions.",
+          ZUL: "Finyelela ehhovisi lethu labaphathi eMadlangeni. Thola nezinombolo zocingo, amahora omsebenzi, amakheli e-imeyili, nemephu yendawo."
+        }
+      },
+      news: {
+        title: {
+          ENG: "Exams Schedule & Relocation News | Umzilikazi Senior Secondary",
+          ZUL: "Izindaba Nezaziso | Isikole Sasemzilikazi"
+        },
+        desc: {
+          ENG: "Read the latest official announcements, June Mid-Year exam timetables, and press releases regarding our temporary relocation.",
+          ZUL: "Funda izaziso zakamuva ezisemthethweni, amathayimithebula ezivivinyo zikaNhlangulana, nemibiko mayelana nokuthuthela eSgodiphola."
+        }
+      },
+      alumni: {
+        title: {
+          ENG: "Alumni Spotlight & Legacy | Umzilikazi Senior Secondary School",
+          ZUL: "Abafundi Abaphothula | Isikole Sasemzilikazi"
+        },
+        desc: {
+          ENG: "Meet our successful alumni who graduated from Umzilikazi and became pioneers in engineering, medicine, and technology.",
+          ZUL: "Hlangana nabafundi bethu abaphumelele abaphothula eMzilikazi futhi baba ngamaphayona kwezobunjiniyela, ezokwelapha, nezobuchwepheshe."
+        }
+      },
+      admin: {
+        title: {
+          ENG: "Admin CMS Dashboard | Umzilikazi Senior Secondary School",
+          ZUL: "Ingosi Yomqondisi we-CMS | Isikole Sasemzilikazi"
+        },
+        desc: {
+          ENG: "Secure administration panel to manage news, staff registry, calendar schedules, and contact form enquiries.",
+          ZUL: "Iphaneli yokuphatha evikelekile yokuphatha izindaba, othisha, ikhalenda lemicimbi, nemibuzo yokuxhumana."
+        }
+      }
+    };
+
+    const currentMeta = seoMeta[currentPage] || seoMeta.home;
+    const resolvedTitle = currentMeta.title[lang];
+    const resolvedDesc = currentMeta.desc[lang];
+
+    // 1. Update Title
+    document.title = resolvedTitle;
+
+    // 2. Update Standard Description Meta Tag
+    let metaDescription = document.querySelector('meta[name="description"]');
+    if (!metaDescription) {
+      metaDescription = document.createElement('meta');
+      metaDescription.setAttribute('name', 'description');
+      document.head.appendChild(metaDescription);
+    }
+    metaDescription.setAttribute('content', resolvedDesc);
+
+    // 3. Update OG Title Meta Tag
+    let ogTitle = document.querySelector('meta[property="og:title"]');
+    if (!ogTitle) {
+      ogTitle = document.createElement('meta');
+      ogTitle.setAttribute('property', 'og:title');
+      document.head.appendChild(ogTitle);
+    }
+    ogTitle.setAttribute('content', resolvedTitle);
+
+    // 4. Update OG Description Meta Tag
+    let ogDesc = document.querySelector('meta[property="og:description"]');
+    if (!ogDesc) {
+      ogDesc = document.createElement('meta');
+      ogDesc.setAttribute('property', 'og:description');
+      document.head.appendChild(ogDesc);
+    }
+    ogDesc.setAttribute('content', resolvedDesc);
+
+  }, [currentPage, lang]);
   const [selectedAlumniIdx, setSelectedAlumniIdx] = useState<number>(0);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [apsSubjects, setApsSubjects] = useState(
